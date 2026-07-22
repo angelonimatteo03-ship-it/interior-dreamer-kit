@@ -345,6 +345,8 @@ function Step2({
   wallColor,
   items,
   setItems,
+  customProducts,
+  setCustomProducts,
   onBack,
   onNext,
 }: {
@@ -353,9 +355,16 @@ function Step2({
   wallColor: string;
   items: PlacedItem[];
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
+  customProducts: Product[];
+  setCustomProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   onBack: () => void;
   onNext: () => void;
 }) {
+  const CUSTOM_CATEGORY = "I miei prodotti";
+  const allCategories = useMemo(
+    () => [...CATEGORIES, CUSTOM_CATEGORY],
+    [],
+  );
   const [category, setCategory] = useState<string>(CATEGORIES[0]);
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
 
@@ -395,13 +404,23 @@ function Step2({
     if (selectedUid === uid) setSelectedUid(null);
   };
 
+  const removeCustom = (id: string) => {
+    setCustomProducts((prev) => prev.filter((p) => p.id !== id));
+    // also remove any placed instances of it
+    setItems((prev) => prev.filter((it) => it.productId !== id));
+  };
+
   const filteredProducts = useMemo(
-    () => PRODUCTS.filter((p) => p.categoria === category),
-    [category],
+    () =>
+      category === CUSTOM_CATEGORY
+        ? customProducts
+        : PRODUCTS.filter((p) => p.categoria === category),
+    [category, customProducts],
   );
 
   return (
     <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
+
       {/* Room canvas */}
       <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
