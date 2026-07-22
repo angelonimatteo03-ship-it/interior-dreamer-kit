@@ -1107,6 +1107,7 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
   // any extra photos are sent to the render model to guide realism.
   const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [dragOver, setDragOver] = useState(false);
 
   const onFiles = (files: FileList | null) => {
     setError(null);
