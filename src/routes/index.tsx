@@ -918,34 +918,57 @@ function buildRenderPrompt(
   wallColor: string,
   items: PlacedItem[],
   customProducts: Product[],
-): string {
+): { prompt: string; images: string[] } {
   const colorName =
     WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
     "neutro";
-  // Aggregate pieces by product
+
+  // Aggregate placed pieces by product id
   const counts = new Map<string, number>();
   for (const it of items) counts.set(it.productId, (counts.get(it.productId) ?? 0) + 1);
-  const pieces = Array.from(counts.entries())
-    .map(([id, qty]) => {
-      const p =
-        PRODUCTS.find((x) => x.id === id) ??
-        customProducts.find((x) => x.id === id);
-      if (!p) return null;
-      return `${qty}× ${p.nome}`;
-    })
-    .filter(Boolean)
-    .join(", ");
 
-  return [
-    `Fotografia interior design realistica di una stanza di ${width}×${length} metri`,
-    `con pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro,`,
-    `luce naturale morbida da grande finestra, estetica Maisons du Monde calda e naturale,`,
-    `stile scandinavo/mediterraneo con tessuti bouclé, legno naturale, ceramica.`,
-    pieces
-      ? `La stanza contiene: ${pieces}.`
-      : "La stanza è vuota, minimalista.",
-    `Rendering fotorealistico, angolazione ampia grandangolare, alta qualità, dettagli materiali.`,
+  const images: string[] = [];
+  const pieceLines: string[] = [];
+  let refIndex = 0;
+
+  for (const [id, qty] of counts) {
+    const p =
+      PRODUCTS.find((x) => x.id === id) ??
+      customProducts.find((x) => x.id === id);
+    if (!p) continue;
+
+    // Collect reference photos: the main image + any extra reference photos.
+    const refs = [p.immagine_url, ...(p.reference_images ?? [])].filter(Boolean);
+    const refTags: string[] = [];
+    for (const url of refs) {
+      if (images.length >= 12) break;
+      refIndex += 1;
+      images.push(url);
+      refTags.push(`[REF ${refIndex}]`);
+    }
+
+    const link = p.link ? ` — scheda prodotto: ${p.link}` : "";
+    const note = p.descrizione ? ` (${p.descrizione})` : "";
+    pieceLines.push(
+      `- ${qty}× ${p.nome}${note}${link}${refTags.length ? " " + refTags.join(" ") : ""}`,
+    );
+  }
+
+  const piecesBlock = pieceLines.length
+    ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
+    : "La stanza è vuota, minimalista.";
+
+  const prompt = [
+    `Fotografia interior design fotorealistica di una stanza di ${width}×${length} metri,`,
+    `pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro a listoni,`,
+    `luce naturale morbida da grande finestra laterale, atmosfera Maisons du Monde calda e accogliente,`,
+    `estetica scandinava/mediterranea con tessuti bouclé, legno naturale, ceramica, ottone brunito.`,
+    piecesBlock,
+    `Le foto di riferimento allegate mostrano l'aspetto ESATTO di ogni prodotto: mantieni identici modello, colore, tessuto e finiture — non inventare varianti.`,
+    `Rendering fotorealistico ad alta risoluzione, vista prospettica grandangolare a livello degli occhi, dettagli nitidi dei materiali, ombre morbide, profondità di campo cinematografica.`,
   ].join(" ");
+
+  return { prompt, images };
 }
 
 function Render3DPanel({
@@ -971,12 +994,18 @@ function Render3DPanel({
     setError(null);
     setSrc(null);
     setIsFinal(false);
-    const prompt = buildRenderPrompt(width, length, wallColor, items, customProducts);
+    const { prompt, images } = buildRenderPrompt(
+      width,
+      length,
+      wallColor,
+      items,
+      customProducts,
+    );
     try {
       const res = await fetch("/api/render-room", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt, images }),
       });
       if (!res.ok || !res.body) {
         throw new Error(await res.text().catch(() => "Errore generazione"));
@@ -1072,37 +1101,56 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
   const [nome, setNome] = useState("");
   const [larghezza, setLarghezza] = useState(80);
   const [profondita, setProfondita] = useState(60);
-  const [dataUrl, setDataUrl] = useState<string | null>(null);
+  const [link, setLink] = useState("");
+  const [descrizione, setDescrizione] = useState("");
+  // Multiple reference photos: the first one is the "main" catalog image,
+  // any extra photos are sent to the render model to guide realism.
+  const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const onFile = (file: File | null) => {
+  const onFiles = (files: FileList | null) => {
     setError(null);
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setError("Il file deve essere un'immagine.");
-      return;
+    if (!files || files.length === 0) return;
+    const pending: File[] = [];
+    for (const f of Array.from(files)) {
+      if (!f.type.startsWith("image/")) {
+        setError("Ogni file deve essere un'immagine.");
+        return;
+      }
+      if (f.size > 4 * 1024 * 1024) {
+        setError("Immagine troppo grande (max 4 MB).");
+        return;
+      }
+      pending.push(f);
     }
-    if (file.size > 4 * 1024 * 1024) {
-      setError("Immagine troppo grande (max 4 MB).");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => setDataUrl(String(reader.result));
-    reader.onerror = () => setError("Errore durante la lettura del file.");
-    reader.readAsDataURL(file);
+    Promise.all(
+      pending.map(
+        (file) =>
+          new Promise<string>((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(String(r.result));
+            r.onerror = () => reject(new Error("read"));
+            r.readAsDataURL(file);
+          }),
+      ),
+    )
+      .then((urls) => setImages((prev) => [...prev, ...urls].slice(0, 5)))
+      .catch(() => setError("Errore durante la lettura di un file."));
   };
 
   const reset = () => {
     setNome("");
     setLarghezza(80);
     setProfondita(60);
-    setDataUrl(null);
+    setLink("");
+    setDescrizione("");
+    setImages([]);
     setError(null);
   };
 
   const submit = () => {
-    if (!dataUrl) {
-      setError("Carica un'immagine.");
+    if (images.length === 0) {
+      setError("Carica almeno un'immagine.");
       return;
     }
     if (!nome.trim()) {
@@ -1114,8 +1162,10 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
       nome: nome.trim().slice(0, 80),
       categoria: "I miei prodotti",
       prezzo: 0,
-      immagine_url: dataUrl,
-      link: "",
+      immagine_url: images[0],
+      link: link.trim(),
+      descrizione: descrizione.trim().slice(0, 160) || undefined,
+      reference_images: images.slice(1),
       larghezza_cm: Math.max(10, Math.min(500, larghezza)),
       profondita_cm: Math.max(10, Math.min(500, profondita)),
     });
@@ -1125,27 +1175,74 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
   return (
     <div className="mb-4 space-y-3 rounded-xl border border-dashed border-border bg-secondary/30 p-3">
       <p className="text-xs font-medium">Aggiungi un tuo prodotto</p>
+      <p className="text-[11px] leading-snug text-muted-foreground">
+        Più foto carichi (angolazioni diverse, dettagli materiali) e più il render 3D sarà fedele al prodotto reale.
+      </p>
 
-      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 py-4 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground">
+      {images.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {images.map((url, i) => (
+            <div key={i} className="relative">
+              <img
+                src={url}
+                alt={`Riferimento ${i + 1}`}
+                className="h-14 w-14 rounded object-cover"
+              />
+              <button
+                type="button"
+                onClick={() =>
+                  setImages((prev) => prev.filter((_, j) => j !== i))
+                }
+                className="absolute -right-1.5 -top-1.5 rounded-full bg-background p-0.5 shadow ring-1 ring-border"
+                aria-label="Rimuovi immagine"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 py-3 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground">
         <input
           type="file"
           accept="image/*"
+          multiple
           className="hidden"
-          onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+          onChange={(e) => onFiles(e.target.files)}
         />
-        {dataUrl ? (
-          <img
-            src={dataUrl}
-            alt="Anteprima"
-            className="h-16 w-16 rounded object-cover"
-          />
-        ) : (
-          <>
-            <Upload className="h-4 w-4" />
-            <span>Carica immagine</span>
-          </>
-        )}
+        <Upload className="h-4 w-4" />
+        <span>
+          {images.length === 0
+            ? "Carica foto (una o più)"
+            : `Aggiungi altre foto (${images.length}/5)`}
+        </span>
       </label>
+
+      <input
+        type="text"
+        placeholder="Nome prodotto"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+      />
+
+      <input
+        type="url"
+        placeholder="Link scheda prodotto (opzionale)"
+        value={link}
+        onChange={(e) => setLink(e.target.value)}
+        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+      />
+
+      <input
+        type="text"
+        placeholder="Descrizione breve (materiale, colore…)"
+        value={descrizione}
+        onChange={(e) => setDescrizione(e.target.value)}
+        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+      />
+
 
       <input
         type="text"
