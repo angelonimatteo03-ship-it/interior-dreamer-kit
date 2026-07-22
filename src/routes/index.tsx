@@ -768,10 +768,12 @@ function clamp(v: number, min: number, max: number) {
 
 function Step3({
   items,
+  customProducts,
   onBack,
   onRestart,
 }: {
   items: PlacedItem[];
+  customProducts: Product[];
   onBack: () => void;
   onRestart: () => void;
 }) {
@@ -779,14 +781,16 @@ function Step3({
   const grouped = useMemo(() => {
     const map = new Map<string, { product: Product; qty: number }>();
     for (const it of items) {
-      const p = PRODUCTS.find((x) => x.id === it.productId);
+      const p =
+        PRODUCTS.find((x) => x.id === it.productId) ??
+        customProducts.find((x) => x.id === it.productId);
       if (!p) continue;
       const entry = map.get(p.id);
       if (entry) entry.qty += 1;
       else map.set(p.id, { product: p, qty: 1 });
     }
     return Array.from(map.values());
-  }, [items]);
+  }, [items, customProducts]);
 
   const total = grouped.reduce((s, r) => s + r.product.prezzo * r.qty, 0);
 
