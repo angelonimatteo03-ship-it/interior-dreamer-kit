@@ -8,6 +8,10 @@ export type Product = {
   link: string;
   larghezza_cm?: number; // width in cm (for scale in the room)
   profondita_cm?: number; // depth in cm
+  // Extra reference photos (data URLs or https URLs) used to guide the 3D render
+  reference_images?: string[];
+  // Optional short descriptive note (materials, colour) used in the render prompt
+  descrizione?: string;
 };
 
 // Default footprints (cm) per category when a product has no explicit size
