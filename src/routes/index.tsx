@@ -918,34 +918,57 @@ function buildRenderPrompt(
   wallColor: string,
   items: PlacedItem[],
   customProducts: Product[],
-): string {
+): { prompt: string; images: string[] } {
   const colorName =
     WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
     "neutro";
-  // Aggregate pieces by product
+
+  // Aggregate placed pieces by product id
   const counts = new Map<string, number>();
   for (const it of items) counts.set(it.productId, (counts.get(it.productId) ?? 0) + 1);
-  const pieces = Array.from(counts.entries())
-    .map(([id, qty]) => {
-      const p =
-        PRODUCTS.find((x) => x.id === id) ??
-        customProducts.find((x) => x.id === id);
-      if (!p) return null;
-      return `${qty}× ${p.nome}`;
-    })
-    .filter(Boolean)
-    .join(", ");
 
-  return [
-    `Fotografia interior design realistica di una stanza di ${width}×${length} metri`,
-    `con pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro,`,
-    `luce naturale morbida da grande finestra, estetica Maisons du Monde calda e naturale,`,
-    `stile scandinavo/mediterraneo con tessuti bouclé, legno naturale, ceramica.`,
-    pieces
-      ? `La stanza contiene: ${pieces}.`
-      : "La stanza è vuota, minimalista.",
-    `Rendering fotorealistico, angolazione ampia grandangolare, alta qualità, dettagli materiali.`,
+  const images: string[] = [];
+  const pieceLines: string[] = [];
+  let refIndex = 0;
+
+  for (const [id, qty] of counts) {
+    const p =
+      PRODUCTS.find((x) => x.id === id) ??
+      customProducts.find((x) => x.id === id);
+    if (!p) continue;
+
+    // Collect reference photos: the main image + any extra reference photos.
+    const refs = [p.immagine_url, ...(p.reference_images ?? [])].filter(Boolean);
+    const refTags: string[] = [];
+    for (const url of refs) {
+      if (images.length >= 12) break;
+      refIndex += 1;
+      images.push(url);
+      refTags.push(`[REF ${refIndex}]`);
+    }
+
+    const link = p.link ? ` — scheda prodotto: ${p.link}` : "";
+    const note = p.descrizione ? ` (${p.descrizione})` : "";
+    pieceLines.push(
+      `- ${qty}× ${p.nome}${note}${link}${refTags.length ? " " + refTags.join(" ") : ""}`,
+    );
+  }
+
+  const piecesBlock = pieceLines.length
+    ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
+    : "La stanza è vuota, minimalista.";
+
+  const prompt = [
+    `Fotografia interior design fotorealistica di una stanza di ${width}×${length} metri,`,
+    `pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro a listoni,`,
+    `luce naturale morbida da grande finestra laterale, atmosfera Maisons du Monde calda e accogliente,`,
+    `estetica scandinava/mediterranea con tessuti bouclé, legno naturale, ceramica, ottone brunito.`,
+    piecesBlock,
+    `Le foto di riferimento allegate mostrano l'aspetto ESATTO di ogni prodotto: mantieni identici modello, colore, tessuto e finiture — non inventare varianti.`,
+    `Rendering fotorealistico ad alta risoluzione, vista prospettica grandangolare a livello degli occhi, dettagli nitidi dei materiali, ombre morbide, profondità di campo cinematografica.`,
   ].join(" ");
+
+  return { prompt, images };
 }
 
 function Render3DPanel({
