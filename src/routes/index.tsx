@@ -31,11 +31,11 @@ export const Route = createFileRoute("/")({
         content:
           "Configura la stanza dei tuoi clienti: dimensioni, colori pareti, arredi Maisons du Monde e shopping list stampabile.",
       },
-      { property: "og:title", content: "Configuratore Stanze MDM" },
+      { property: "og:title", content: "Configuratore Stanze MDM — Maisons du Monde" },
       {
         property: "og:description",
         content:
-          "Strumento per venditori Maisons du Monde: componi la stanza e genera la shopping list.",
+          "Configura la stanza dei tuoi clienti: dimensioni, colori pareti, arredi Maisons du Monde e shopping list stampabile.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
