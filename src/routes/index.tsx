@@ -916,6 +916,7 @@ function buildRenderPrompt(
   length: number,
   wallColor: string,
   items: PlacedItem[],
+  customProducts: Product[],
 ): string {
   const colorName =
     WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
@@ -925,7 +926,9 @@ function buildRenderPrompt(
   for (const it of items) counts.set(it.productId, (counts.get(it.productId) ?? 0) + 1);
   const pieces = Array.from(counts.entries())
     .map(([id, qty]) => {
-      const p = PRODUCTS.find((x) => x.id === id);
+      const p =
+        PRODUCTS.find((x) => x.id === id) ??
+        customProducts.find((x) => x.id === id);
       if (!p) return null;
       return `${qty}× ${p.nome}`;
     })
@@ -949,11 +952,13 @@ function Render3DPanel({
   length,
   wallColor,
   items,
+  customProducts,
 }: {
   width: number;
   length: number;
   wallColor: string;
   items: PlacedItem[];
+  customProducts: Product[];
 }) {
   const [src, setSrc] = useState<string | null>(null);
   const [isFinal, setIsFinal] = useState(false);
