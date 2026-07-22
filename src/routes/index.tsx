@@ -66,6 +66,7 @@ function App() {
   const [length, setLength] = useState(4);
   const [wallColor, setWallColor] = useState(WALL_COLORS[0].value);
   const [items, setItems] = useState<PlacedItem[]>([]);
+  const [customProducts, setCustomProducts] = useState<Product[]>([]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -89,6 +90,8 @@ function App() {
             wallColor={wallColor}
             items={items}
             setItems={setItems}
+            customProducts={customProducts}
+            setCustomProducts={setCustomProducts}
             onBack={() => setStep(1)}
             onNext={() => setStep(3)}
           />
@@ -96,9 +99,11 @@ function App() {
         {step === 3 && (
           <Step3
             items={items}
+            customProducts={customProducts}
             onBack={() => setStep(2)}
             onRestart={() => {
               setItems([]);
+              setCustomProducts([]);
               setStep(1);
             }}
           />
