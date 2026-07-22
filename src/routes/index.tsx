@@ -841,3 +841,155 @@ function Step3({
     </section>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* 3D Render panel — AI-generated interior visualization              */
+/* ------------------------------------------------------------------ */
+
+function buildRenderPrompt(
+  width: number,
+  length: number,
+  wallColor: string,
+  items: PlacedItem[],
+): string {
+  const colorName =
+    WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
+    "neutro";
+  // Aggregate pieces by product
+  const counts = new Map<string, number>();
+  for (const it of items) counts.set(it.productId, (counts.get(it.productId) ?? 0) + 1);
+  const pieces = Array.from(counts.entries())
+    .map(([id, qty]) => {
+      const p = PRODUCTS.find((x) => x.id === id);
+      if (!p) return null;
+      return `${qty}× ${p.nome}`;
+    })
+    .filter(Boolean)
+    .join(", ");
+
+  return [
+    `Fotografia interior design realistica di una stanza di ${width}×${length} metri`,
+    `con pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro,`,
+    `luce naturale morbida da grande finestra, estetica Maisons du Monde calda e naturale,`,
+    `stile scandinavo/mediterraneo con tessuti bouclé, legno naturale, ceramica.`,
+    pieces
+      ? `La stanza contiene: ${pieces}.`
+      : "La stanza è vuota, minimalista.",
+    `Rendering fotorealistico, angolazione ampia grandangolare, alta qualità, dettagli materiali.`,
+  ].join(" ");
+}
+
+function Render3DPanel({
+  width,
+  length,
+  wallColor,
+  items,
+}: {
+  width: number;
+  length: number;
+  wallColor: string;
+  items: PlacedItem[];
+}) {
+  const [src, setSrc] = useState<string | null>(null);
+  const [isFinal, setIsFinal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const generate = async () => {
+    setLoading(true);
+    setError(null);
+    setSrc(null);
+    setIsFinal(false);
+    const prompt = buildRenderPrompt(width, length, wallColor, items);
+    try {
+      const res = await fetch("/api/render-room", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!res.ok || !res.body) {
+        throw new Error(await res.text().catch(() => "Errore generazione"));
+      }
+      let sawCompleted = false;
+      let streamError: string | undefined;
+      const parser = createParser({
+        onEvent(event) {
+          let payload: any;
+          try {
+            payload = JSON.parse(event.data);
+          } catch {
+            return;
+          }
+          if (event.event === "error" || payload?.type === "error") {
+            streamError = payload?.error?.message ?? "Errore generazione";
+            return;
+          }
+          if (
+            event.event !== "image_generation.partial_image" &&
+            event.event !== "image_generation.completed"
+          )
+            return;
+          const final = event.event === "image_generation.completed";
+          flushSync(() => {
+            setSrc(`data:image/png;base64,${payload.b64_json}`);
+            if (final) setIsFinal(true);
+          });
+          if (final) sawCompleted = true;
+        },
+      });
+      const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        parser.feed(value);
+      }
+      if (streamError) throw new Error(streamError);
+      if (!sawCompleted && !src) throw new Error("Nessuna immagine ricevuta");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Errore generazione");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="no-print mt-6 rounded-xl border border-border bg-secondary/30 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="text-sm font-medium">Render 3D fotorealistico</p>
+          <p className="text-xs text-muted-foreground">
+            Genera un'anteprima realistica della stanza con l'AI.
+          </p>
+        </div>
+        <button
+          onClick={generate}
+          disabled={loading}
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+        >
+          <Sparkles className="h-4 w-4" />
+          {loading ? "Generazione…" : src ? "Rigenera" : "Genera Render 3D"}
+        </button>
+      </div>
+
+      {error && (
+        <p className="mt-3 rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
+          {error}
+        </p>
+      )}
+
+      {src && (
+        <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
+          <img
+            src={src}
+            alt="Render 3D della stanza"
+            className={
+              "h-auto w-full object-cover transition-[filter] duration-500 " +
+              (isFinal ? "blur-0" : "blur-xl")
+            }
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
