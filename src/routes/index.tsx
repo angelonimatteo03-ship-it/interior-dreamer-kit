@@ -18,6 +18,7 @@ import {
   Minus,
   Plus,
   Sparkles,
+  Upload,
   X,
 } from "lucide-react";
 
