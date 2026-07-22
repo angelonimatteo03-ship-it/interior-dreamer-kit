@@ -651,7 +651,7 @@ function RoomCanvas({
     setItems((prev) =>
       prev.map((it) => {
         if (it.uid !== d.uid) return it;
-        const p = PRODUCTS.find((x) => x.id === it.productId)!;
+        const p = findProduct(it.productId)!;
         const fp = getFootprint(p);
         const rotated = it.rotation === 90 || it.rotation === 270;
         const w = rotated ? fp.d : fp.w;
