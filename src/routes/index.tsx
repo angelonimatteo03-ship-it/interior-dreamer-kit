@@ -1107,6 +1107,7 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
   // any extra photos are sent to the render model to guide realism.
   const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [dragOver, setDragOver] = useState(false);
 
   const onFiles = (files: FileList | null) => {
     setError(null);
@@ -1203,7 +1204,27 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
         </div>
       )}
 
-      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 py-3 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground">
+      <label
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragOver(false);
+          onFiles(e.dataTransfer.files);
+        }}
+        className={`flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed px-3 py-4 text-xs transition-colors ${
+          dragOver
+            ? "border-primary bg-primary/5 text-foreground"
+            : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
+        }`}
+      >
         <input
           type="file"
           accept="image/*"
@@ -1216,6 +1237,9 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
           {images.length === 0
             ? "Carica foto (una o più)"
             : `Aggiungi altre foto (${images.length}/5)`}
+        </span>
+        <span className="hidden text-[10px] text-muted-foreground md:block">
+          oppure trascina qui le immagini
         </span>
       </label>
 
