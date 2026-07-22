@@ -594,6 +594,7 @@ function RoomCanvas({
   wallColor,
   items,
   setItems,
+  customProducts,
   selectedUid,
   setSelectedUid,
   onRemove,
@@ -603,10 +604,14 @@ function RoomCanvas({
   wallColor: string;
   items: PlacedItem[];
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
+  customProducts: Product[];
   selectedUid: string | null;
   setSelectedUid: (u: string | null) => void;
   onRemove: (u: string) => void;
 }) {
+  const findProduct = (id: string) =>
+    PRODUCTS.find((x) => x.id === id) ??
+    customProducts.find((x) => x.id === id);
   const containerRef = useRef<HTMLDivElement | null>(null);
   // Track drag offsets in cm so we don't need extra state re-renders
   const dragState = useRef<{
