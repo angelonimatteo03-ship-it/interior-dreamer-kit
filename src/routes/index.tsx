@@ -440,6 +440,13 @@ function Step2({
         <p className="mt-3 text-center text-[11px] uppercase tracking-widest text-muted-foreground">
           {width} × {length} m — vista dall'alto in scala
         </p>
+
+        <Render3DPanel
+          width={width}
+          length={length}
+          wallColor={wallColor}
+          items={items}
+        />
       </div>
 
       {/* Product sidebar */}
