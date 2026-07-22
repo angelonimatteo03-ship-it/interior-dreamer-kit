@@ -456,6 +456,7 @@ function Step2({
           wallColor={wallColor}
           items={items}
           setItems={setItems}
+          customProducts={customProducts}
           selectedUid={selectedUid}
           setSelectedUid={setSelectedUid}
           onRemove={removeItem}
@@ -470,6 +471,7 @@ function Step2({
           length={length}
           wallColor={wallColor}
           items={items}
+          customProducts={customProducts}
         />
       </div>
 
@@ -482,7 +484,7 @@ function Step2({
 
         {/* Category tabs */}
         <div className="mb-4 flex flex-wrap gap-1.5">
-          {CATEGORIES.map((c) => {
+          {allCategories.map((c) => {
             const active = c === category;
             return (
               <button
@@ -501,35 +503,65 @@ function Step2({
           })}
         </div>
 
+        {category === CUSTOM_CATEGORY && (
+          <CustomProductUploader
+            onAdd={(p) => setCustomProducts((prev) => [...prev, p])}
+          />
+        )}
+
         <div className="max-h-[560px] space-y-2 overflow-y-auto pr-1">
           {filteredProducts.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              Nessun prodotto in questa categoria.
+              {category === CUSTOM_CATEGORY
+                ? "Nessun prodotto personale. Caricane uno qui sopra."
+                : "Nessun prodotto in questa categoria."}
             </p>
           )}
-          {filteredProducts.map((p) => (
-            <button
-              key={p.id}
-              onClick={() => addProduct(p)}
-              className="group flex w-full items-center gap-3 rounded-xl border border-border bg-background p-2 text-left transition-colors hover:border-primary/50 hover:bg-secondary/40"
-            >
-              <img
-                src={p.immagine_url}
-                alt={p.nome}
-                loading="lazy"
-                className="h-14 w-14 flex-shrink-0 rounded-md object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="line-clamp-2 text-xs leading-tight">{p.nome}</p>
-                <p className="mt-1 text-xs font-semibold text-primary">
-                  € {p.prezzo.toFixed(2)}
-                </p>
+          {filteredProducts.map((p) => {
+            const isCustom = category === CUSTOM_CATEGORY;
+            return (
+              <div
+                key={p.id}
+                className="group flex w-full items-center gap-3 rounded-xl border border-border bg-background p-2 text-left transition-colors hover:border-primary/50 hover:bg-secondary/40"
+              >
+                <button
+                  onClick={() => addProduct(p)}
+                  className="flex flex-1 items-center gap-3 text-left"
+                >
+                  <img
+                    src={p.immagine_url}
+                    alt={p.nome}
+                    loading="lazy"
+                    className="h-14 w-14 flex-shrink-0 rounded-md object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 text-xs leading-tight">
+                      {p.nome}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-primary">
+                      {p.prezzo > 0
+                        ? `€ ${p.prezzo.toFixed(2)}`
+                        : `${p.larghezza_cm ?? "?"}×${p.profondita_cm ?? "?"} cm`}
+                    </p>
+                  </div>
+                  <Plus className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary" />
+                </button>
+                {isCustom && (
+                  <button
+                    onClick={() => removeCustom(p.id)}
+                    className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    aria-label="Elimina prodotto personale"
+                    title="Elimina dal catalogo personale"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                )}
               </div>
-              <Plus className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary" />
-            </button>
-          ))}
+            );
+          })}
         </div>
       </aside>
+
 
       {/* Nav */}
       <div className="col-span-full flex items-center justify-between pt-2">
