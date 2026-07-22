@@ -18,6 +18,7 @@ import {
   Minus,
   Plus,
   Sparkles,
+  Upload,
   X,
 } from "lucide-react";
 
@@ -66,6 +67,7 @@ function App() {
   const [length, setLength] = useState(4);
   const [wallColor, setWallColor] = useState(WALL_COLORS[0].value);
   const [items, setItems] = useState<PlacedItem[]>([]);
+  const [customProducts, setCustomProducts] = useState<Product[]>([]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -89,6 +91,8 @@ function App() {
             wallColor={wallColor}
             items={items}
             setItems={setItems}
+            customProducts={customProducts}
+            setCustomProducts={setCustomProducts}
             onBack={() => setStep(1)}
             onNext={() => setStep(3)}
           />
@@ -96,9 +100,11 @@ function App() {
         {step === 3 && (
           <Step3
             items={items}
+            customProducts={customProducts}
             onBack={() => setStep(2)}
             onRestart={() => {
               setItems([]);
+              setCustomProducts([]);
               setStep(1);
             }}
           />
@@ -340,6 +346,8 @@ function Step2({
   wallColor,
   items,
   setItems,
+  customProducts,
+  setCustomProducts,
   onBack,
   onNext,
 }: {
@@ -348,9 +356,16 @@ function Step2({
   wallColor: string;
   items: PlacedItem[];
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
+  customProducts: Product[];
+  setCustomProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   onBack: () => void;
   onNext: () => void;
 }) {
+  const CUSTOM_CATEGORY = "I miei prodotti";
+  const allCategories = useMemo(
+    () => [...CATEGORIES, CUSTOM_CATEGORY],
+    [],
+  );
   const [category, setCategory] = useState<string>(CATEGORIES[0]);
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
 
@@ -390,13 +405,23 @@ function Step2({
     if (selectedUid === uid) setSelectedUid(null);
   };
 
+  const removeCustom = (id: string) => {
+    setCustomProducts((prev) => prev.filter((p) => p.id !== id));
+    // also remove any placed instances of it
+    setItems((prev) => prev.filter((it) => it.productId !== id));
+  };
+
   const filteredProducts = useMemo(
-    () => PRODUCTS.filter((p) => p.categoria === category),
-    [category],
+    () =>
+      category === CUSTOM_CATEGORY
+        ? customProducts
+        : PRODUCTS.filter((p) => p.categoria === category),
+    [category, customProducts],
   );
 
   return (
     <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
+
       {/* Room canvas */}
       <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -432,6 +457,7 @@ function Step2({
           wallColor={wallColor}
           items={items}
           setItems={setItems}
+          customProducts={customProducts}
           selectedUid={selectedUid}
           setSelectedUid={setSelectedUid}
           onRemove={removeItem}
@@ -446,6 +472,7 @@ function Step2({
           length={length}
           wallColor={wallColor}
           items={items}
+          customProducts={customProducts}
         />
       </div>
 
@@ -458,7 +485,7 @@ function Step2({
 
         {/* Category tabs */}
         <div className="mb-4 flex flex-wrap gap-1.5">
-          {CATEGORIES.map((c) => {
+          {allCategories.map((c) => {
             const active = c === category;
             return (
               <button
@@ -477,35 +504,65 @@ function Step2({
           })}
         </div>
 
+        {category === CUSTOM_CATEGORY && (
+          <CustomProductUploader
+            onAdd={(p) => setCustomProducts((prev) => [...prev, p])}
+          />
+        )}
+
         <div className="max-h-[560px] space-y-2 overflow-y-auto pr-1">
           {filteredProducts.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              Nessun prodotto in questa categoria.
+              {category === CUSTOM_CATEGORY
+                ? "Nessun prodotto personale. Caricane uno qui sopra."
+                : "Nessun prodotto in questa categoria."}
             </p>
           )}
-          {filteredProducts.map((p) => (
-            <button
-              key={p.id}
-              onClick={() => addProduct(p)}
-              className="group flex w-full items-center gap-3 rounded-xl border border-border bg-background p-2 text-left transition-colors hover:border-primary/50 hover:bg-secondary/40"
-            >
-              <img
-                src={p.immagine_url}
-                alt={p.nome}
-                loading="lazy"
-                className="h-14 w-14 flex-shrink-0 rounded-md object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="line-clamp-2 text-xs leading-tight">{p.nome}</p>
-                <p className="mt-1 text-xs font-semibold text-primary">
-                  € {p.prezzo.toFixed(2)}
-                </p>
+          {filteredProducts.map((p: Product) => {
+            const isCustom = category === CUSTOM_CATEGORY;
+            return (
+              <div
+                key={p.id}
+                className="group flex w-full items-center gap-3 rounded-xl border border-border bg-background p-2 text-left transition-colors hover:border-primary/50 hover:bg-secondary/40"
+              >
+                <button
+                  onClick={() => addProduct(p)}
+                  className="flex flex-1 items-center gap-3 text-left"
+                >
+                  <img
+                    src={p.immagine_url}
+                    alt={p.nome}
+                    loading="lazy"
+                    className="h-14 w-14 flex-shrink-0 rounded-md object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 text-xs leading-tight">
+                      {p.nome}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-primary">
+                      {p.prezzo > 0
+                        ? `€ ${p.prezzo.toFixed(2)}`
+                        : `${p.larghezza_cm ?? "?"}×${p.profondita_cm ?? "?"} cm`}
+                    </p>
+                  </div>
+                  <Plus className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary" />
+                </button>
+                {isCustom && (
+                  <button
+                    onClick={() => removeCustom(p.id)}
+                    className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    aria-label="Elimina prodotto personale"
+                    title="Elimina dal catalogo personale"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                )}
               </div>
-              <Plus className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary" />
-            </button>
-          ))}
+            );
+          })}
         </div>
       </aside>
+
 
       {/* Nav */}
       <div className="col-span-full flex items-center justify-between pt-2">
@@ -538,6 +595,7 @@ function RoomCanvas({
   wallColor,
   items,
   setItems,
+  customProducts,
   selectedUid,
   setSelectedUid,
   onRemove,
@@ -547,10 +605,14 @@ function RoomCanvas({
   wallColor: string;
   items: PlacedItem[];
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
+  customProducts: Product[];
   selectedUid: string | null;
   setSelectedUid: (u: string | null) => void;
   onRemove: (u: string) => void;
 }) {
+  const findProduct = (id: string) =>
+    PRODUCTS.find((x) => x.id === id) ??
+    customProducts.find((x) => x.id === id);
   const containerRef = useRef<HTMLDivElement | null>(null);
   // Track drag offsets in cm so we don't need extra state re-renders
   const dragState = useRef<{
@@ -590,7 +652,7 @@ function RoomCanvas({
     setItems((prev) =>
       prev.map((it) => {
         if (it.uid !== d.uid) return it;
-        const p = PRODUCTS.find((x) => x.id === it.productId)!;
+        const p = findProduct(it.productId)!;
         const fp = getFootprint(p);
         const rotated = it.rotation === 90 || it.rotation === 270;
         const w = rotated ? fp.d : fp.w;
@@ -634,7 +696,7 @@ function RoomCanvas({
       />
 
       {items.map((it) => {
-        const p = PRODUCTS.find((x) => x.id === it.productId);
+        const p = findProduct(it.productId);
         if (!p) return null;
         const fp = getFootprint(p);
         const rotated = it.rotation === 90 || it.rotation === 270;
@@ -707,10 +769,12 @@ function clamp(v: number, min: number, max: number) {
 
 function Step3({
   items,
+  customProducts,
   onBack,
   onRestart,
 }: {
   items: PlacedItem[];
+  customProducts: Product[];
   onBack: () => void;
   onRestart: () => void;
 }) {
@@ -718,14 +782,16 @@ function Step3({
   const grouped = useMemo(() => {
     const map = new Map<string, { product: Product; qty: number }>();
     for (const it of items) {
-      const p = PRODUCTS.find((x) => x.id === it.productId);
+      const p =
+        PRODUCTS.find((x) => x.id === it.productId) ??
+        customProducts.find((x) => x.id === it.productId);
       if (!p) continue;
       const entry = map.get(p.id);
       if (entry) entry.qty += 1;
       else map.set(p.id, { product: p, qty: 1 });
     }
     return Array.from(map.values());
-  }, [items]);
+  }, [items, customProducts]);
 
   const total = grouped.reduce((s, r) => s + r.product.prezzo * r.qty, 0);
 
@@ -851,6 +917,7 @@ function buildRenderPrompt(
   length: number,
   wallColor: string,
   items: PlacedItem[],
+  customProducts: Product[],
 ): string {
   const colorName =
     WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
@@ -860,7 +927,9 @@ function buildRenderPrompt(
   for (const it of items) counts.set(it.productId, (counts.get(it.productId) ?? 0) + 1);
   const pieces = Array.from(counts.entries())
     .map(([id, qty]) => {
-      const p = PRODUCTS.find((x) => x.id === id);
+      const p =
+        PRODUCTS.find((x) => x.id === id) ??
+        customProducts.find((x) => x.id === id);
       if (!p) return null;
       return `${qty}× ${p.nome}`;
     })
@@ -884,11 +953,13 @@ function Render3DPanel({
   length,
   wallColor,
   items,
+  customProducts,
 }: {
   width: number;
   length: number;
   wallColor: string;
   items: PlacedItem[];
+  customProducts: Product[];
 }) {
   const [src, setSrc] = useState<string | null>(null);
   const [isFinal, setIsFinal] = useState(false);
@@ -900,7 +971,7 @@ function Render3DPanel({
     setError(null);
     setSrc(null);
     setIsFinal(false);
-    const prompt = buildRenderPrompt(width, length, wallColor, items);
+    const prompt = buildRenderPrompt(width, length, wallColor, items, customProducts);
     try {
       const res = await fetch("/api/render-room", {
         method: "POST",
@@ -992,4 +1063,140 @@ function Render3DPanel({
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Custom product uploader — user-supplied images                     */
+/* ------------------------------------------------------------------ */
+
+function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
+  const [nome, setNome] = useState("");
+  const [larghezza, setLarghezza] = useState(80);
+  const [profondita, setProfondita] = useState(60);
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const onFile = (file: File | null) => {
+    setError(null);
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setError("Il file deve essere un'immagine.");
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      setError("Immagine troppo grande (max 4 MB).");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setDataUrl(String(reader.result));
+    reader.onerror = () => setError("Errore durante la lettura del file.");
+    reader.readAsDataURL(file);
+  };
+
+  const reset = () => {
+    setNome("");
+    setLarghezza(80);
+    setProfondita(60);
+    setDataUrl(null);
+    setError(null);
+  };
+
+  const submit = () => {
+    if (!dataUrl) {
+      setError("Carica un'immagine.");
+      return;
+    }
+    if (!nome.trim()) {
+      setError("Inserisci un nome.");
+      return;
+    }
+    onAdd({
+      id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      nome: nome.trim().slice(0, 80),
+      categoria: "I miei prodotti",
+      prezzo: 0,
+      immagine_url: dataUrl,
+      link: "",
+      larghezza_cm: Math.max(10, Math.min(500, larghezza)),
+      profondita_cm: Math.max(10, Math.min(500, profondita)),
+    });
+    reset();
+  };
+
+  return (
+    <div className="mb-4 space-y-3 rounded-xl border border-dashed border-border bg-secondary/30 p-3">
+      <p className="text-xs font-medium">Aggiungi un tuo prodotto</p>
+
+      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 py-4 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground">
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+        />
+        {dataUrl ? (
+          <img
+            src={dataUrl}
+            alt="Anteprima"
+            className="h-16 w-16 rounded object-cover"
+          />
+        ) : (
+          <>
+            <Upload className="h-4 w-4" />
+            <span>Carica immagine</span>
+          </>
+        )}
+      </label>
+
+      <input
+        type="text"
+        placeholder="Nome prodotto"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+      />
+
+      <div className="grid grid-cols-2 gap-2">
+        <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
+          L
+          <input
+            type="number"
+            min={10}
+            max={500}
+            value={larghezza}
+            onChange={(e) => setLarghezza(Number(e.target.value) || 0)}
+            className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
+          />
+          cm
+        </label>
+        <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
+          P
+          <input
+            type="number"
+            min={10}
+            max={500}
+            value={profondita}
+            onChange={(e) => setProfondita(Number(e.target.value) || 0)}
+            className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
+          />
+          cm
+        </label>
+      </div>
+
+      {error && (
+        <p className="rounded-md bg-destructive/10 px-2 py-1 text-[11px] text-destructive">
+          {error}
+        </p>
+      )}
+
+      <button
+        onClick={submit}
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        <Plus className="h-3.5 w-3.5" />
+        Aggiungi al catalogo
+      </button>
+    </div>
+  );
+}
+
 
