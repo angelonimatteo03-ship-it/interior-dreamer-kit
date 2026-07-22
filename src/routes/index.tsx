@@ -1064,3 +1064,139 @@ function Render3DPanel({
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Custom product uploader — user-supplied images                     */
+/* ------------------------------------------------------------------ */
+
+function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
+  const [nome, setNome] = useState("");
+  const [larghezza, setLarghezza] = useState(80);
+  const [profondita, setProfondita] = useState(60);
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const onFile = (file: File | null) => {
+    setError(null);
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setError("Il file deve essere un'immagine.");
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      setError("Immagine troppo grande (max 4 MB).");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setDataUrl(String(reader.result));
+    reader.onerror = () => setError("Errore durante la lettura del file.");
+    reader.readAsDataURL(file);
+  };
+
+  const reset = () => {
+    setNome("");
+    setLarghezza(80);
+    setProfondita(60);
+    setDataUrl(null);
+    setError(null);
+  };
+
+  const submit = () => {
+    if (!dataUrl) {
+      setError("Carica un'immagine.");
+      return;
+    }
+    if (!nome.trim()) {
+      setError("Inserisci un nome.");
+      return;
+    }
+    onAdd({
+      id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      nome: nome.trim().slice(0, 80),
+      categoria: "I miei prodotti",
+      prezzo: 0,
+      immagine_url: dataUrl,
+      link: "",
+      larghezza_cm: Math.max(10, Math.min(500, larghezza)),
+      profondita_cm: Math.max(10, Math.min(500, profondita)),
+    });
+    reset();
+  };
+
+  return (
+    <div className="mb-4 space-y-3 rounded-xl border border-dashed border-border bg-secondary/30 p-3">
+      <p className="text-xs font-medium">Aggiungi un tuo prodotto</p>
+
+      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 py-4 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground">
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+        />
+        {dataUrl ? (
+          <img
+            src={dataUrl}
+            alt="Anteprima"
+            className="h-16 w-16 rounded object-cover"
+          />
+        ) : (
+          <>
+            <Upload className="h-4 w-4" />
+            <span>Carica immagine</span>
+          </>
+        )}
+      </label>
+
+      <input
+        type="text"
+        placeholder="Nome prodotto"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+      />
+
+      <div className="grid grid-cols-2 gap-2">
+        <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
+          L
+          <input
+            type="number"
+            min={10}
+            max={500}
+            value={larghezza}
+            onChange={(e) => setLarghezza(Number(e.target.value) || 0)}
+            className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
+          />
+          cm
+        </label>
+        <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
+          P
+          <input
+            type="number"
+            min={10}
+            max={500}
+            value={profondita}
+            onChange={(e) => setProfondita(Number(e.target.value) || 0)}
+            className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
+          />
+          cm
+        </label>
+      </div>
+
+      {error && (
+        <p className="rounded-md bg-destructive/10 px-2 py-1 text-[11px] text-destructive">
+          {error}
+        </p>
+      )}
+
+      <button
+        onClick={submit}
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        <Plus className="h-3.5 w-3.5" />
+        Aggiungi al catalogo
+      </button>
+    </div>
+  );
+}
+
+
