@@ -994,12 +994,18 @@ function Render3DPanel({
     setError(null);
     setSrc(null);
     setIsFinal(false);
-    const prompt = buildRenderPrompt(width, length, wallColor, items, customProducts);
+    const { prompt, images } = buildRenderPrompt(
+      width,
+      length,
+      wallColor,
+      items,
+      customProducts,
+    );
     try {
       const res = await fetch("/api/render-room", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt, images }),
       });
       if (!res.ok || !res.body) {
         throw new Error(await res.text().catch(() => "Errore generazione"));
