@@ -517,7 +517,7 @@ function Step2({
                 : "Nessun prodotto in questa categoria."}
             </p>
           )}
-          {filteredProducts.map((p) => {
+          {filteredProducts.map((p: Product) => {
             const isCustom = category === CUSTOM_CATEGORY;
             return (
               <div
