@@ -970,7 +970,7 @@ function Render3DPanel({
     setError(null);
     setSrc(null);
     setIsFinal(false);
-    const prompt = buildRenderPrompt(width, length, wallColor, items);
+    const prompt = buildRenderPrompt(width, length, wallColor, items, customProducts);
     try {
       const res = await fetch("/api/render-room", {
         method: "POST",
