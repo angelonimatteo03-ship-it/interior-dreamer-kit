@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import { createParser } from "eventsource-parser";
 import {
   PRODUCTS,
   CATEGORIES,
@@ -15,6 +17,7 @@ import {
   Trash2,
   Minus,
   Plus,
+  Sparkles,
   X,
 } from "lucide-react";
 
