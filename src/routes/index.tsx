@@ -1269,7 +1269,11 @@ function Render3DPanel({
 /* Custom product uploader — user-supplied images                     */
 /* ------------------------------------------------------------------ */
 
-function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
+function CustomProductUploader({
+  onAdd,
+}: {
+  onAdd: (p: Product, save: boolean) => void;
+}) {
   const [nome, setNome] = useState("");
   const [larghezza, setLarghezza] = useState(80);
   const [profondita, setProfondita] = useState(60);
@@ -1280,6 +1284,7 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
   const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [saveToLibrary, setSaveToLibrary] = useState(false);
 
   const onFiles = (files: FileList | null) => {
     setError(null);
