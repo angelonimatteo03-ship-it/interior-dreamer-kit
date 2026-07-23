@@ -42,9 +42,11 @@ export const Route = createFileRoute("/share/$slug")({
   ),
 });
 
+type SharedDesign = Awaited<ReturnType<typeof loadDesign>>;
+
 function SharedDesignPage() {
   const { options } = Route.useLoaderData();
-  const { data: design } = useSuspenseQuery(options);
+  const { data: design } = useSuspenseQuery<SharedDesign>(options);
 
   const roomWidthCm = design.width * 100;
   const roomLengthCm = design.length * 100;
