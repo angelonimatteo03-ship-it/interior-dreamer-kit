@@ -390,6 +390,9 @@ function Step2({
   setItems,
   customProducts,
   setCustomProducts,
+  savedProducts,
+  setSavedProducts,
+  userProducts,
   onBack,
   onNext,
 }: {
@@ -400,12 +403,16 @@ function Step2({
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
   customProducts: Product[];
   setCustomProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  savedProducts: Product[];
+  setSavedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  userProducts: Product[];
   onBack: () => void;
   onNext: () => void;
 }) {
   const CUSTOM_CATEGORY = "I miei prodotti";
+  const SAVED_CATEGORY = "Prodotti salvati";
   const allCategories = useMemo(
-    () => [...CATEGORIES, CUSTOM_CATEGORY],
+    () => [...CATEGORIES, CUSTOM_CATEGORY, SAVED_CATEGORY],
     [],
   );
   const [category, setCategory] = useState<string>(CATEGORIES[0]);
