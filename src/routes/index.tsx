@@ -1108,16 +1108,79 @@ function Render3DPanel({
       )}
 
       {src && (
-        <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
-          <img
-            src={src}
-            alt="Render 3D della stanza"
-            className={
-              "h-auto w-full object-cover transition-[filter] duration-500 " +
-              (isFinal ? "blur-0" : "blur-xl")
-            }
-          />
-        </div>
+        <>
+          <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
+            <img
+              src={src}
+              alt="Render 3D della stanza"
+              className={
+                "h-auto w-full object-cover transition-[filter] duration-500 " +
+                (isFinal ? "blur-0" : "blur-xl")
+              }
+            />
+          </div>
+          {isFinal && (
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                {feedback === "like"
+                  ? "Grazie! Terremo lo stesso stile al prossimo render."
+                  : feedback === "dislike"
+                    ? "Grazie! Miglioreremo la fedeltà ai prodotti al prossimo render."
+                    : "Il render è fedele ai prodotti?"}
+              </p>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  aria-label="Mi piace"
+                  aria-pressed={feedback === "like"}
+                  onClick={() => {
+                    const next = feedback === "like" ? null : "like";
+                    setFeedback(next);
+                    if (next) {
+                      setFeedbackStats((s) => ({
+                        likes: s.likes + 1,
+                        dislikes: s.dislikes,
+                        lastFeedback: "like",
+                      }));
+                    }
+                  }}
+                  className={
+                    "inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors " +
+                    (feedback === "like"
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground")
+                  }
+                >
+                  <ThumbsUp className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Non mi piace"
+                  aria-pressed={feedback === "dislike"}
+                  onClick={() => {
+                    const next = feedback === "dislike" ? null : "dislike";
+                    setFeedback(next);
+                    if (next) {
+                      setFeedbackStats((s) => ({
+                        likes: s.likes,
+                        dislikes: s.dislikes + 1,
+                        lastFeedback: "dislike",
+                      }));
+                    }
+                  }}
+                  className={
+                    "inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors " +
+                    (feedback === "dislike"
+                      ? "border-destructive bg-destructive text-destructive-foreground"
+                      : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground")
+                  }
+                >
+                  <ThumbsDown className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
