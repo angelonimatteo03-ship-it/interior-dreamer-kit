@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { createParser } from "eventsource-parser";
+import { useServerFn } from "@tanstack/react-start";
 import {
   PRODUCTS,
   CATEGORIES,
@@ -9,6 +10,12 @@ import {
   getFootprint,
   type Product,
 } from "@/lib/products";
+import {
+  saveDesign,
+  loadMyDesign,
+  type PlacedItem as SavedPlacedItem,
+} from "@/lib/designs.functions";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft,
   ArrowRight,
@@ -22,6 +29,10 @@ import {
   ThumbsUp,
   Upload,
   X,
+  Save,
+  Share2,
+  LogIn,
+  User,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
