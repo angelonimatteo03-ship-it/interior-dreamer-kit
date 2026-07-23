@@ -931,16 +931,31 @@ function clamp(v: number, min: number, max: number) {
 /* ------------------------------------------------------------------ */
 
 function Step3({
+  width,
+  length,
+  wallColor,
   items,
   customProducts,
+  user,
   onBack,
   onRestart,
 }: {
+  width: number;
+  length: number;
+  wallColor: string;
   items: PlacedItem[];
   customProducts: Product[];
+  user: { email?: string } | null;
   onBack: () => void;
   onRestart: () => void;
 }) {
+  const [designName, setDesignName] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [savedSlug, setSavedSlug] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const saveDesignFn = useServerFn(saveDesign);
+
   // Aggregate quantities by product
   const grouped = useMemo(() => {
     const map = new Map<string, { product: Product; qty: number }>();
@@ -957,6 +972,41 @@ function Step3({
   }, [items, customProducts]);
 
   const total = grouped.reduce((s, r) => s + r.product.prezzo * r.qty, 0);
+
+  const handleSave = async () => {
+    if (!user) {
+      setSaveError("Accedi per salvare il progetto.");
+      return;
+    }
+    const name = designName.trim() || "Progetto senza nome";
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const result = await saveDesignFn({
+        data: {
+          name,
+          width,
+          length,
+          wallColor,
+          items,
+        },
+      });
+      setSavedSlug(result.slug);
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : "Errore durante il salvataggio.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const shareUrl = savedSlug ? `${window.location.origin}/share/${savedSlug}` : "";
+
+  const copyLink = async () => {
+    if (!shareUrl) return;
+    await navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <section className="space-y-6">
@@ -1048,6 +1098,73 @@ function Step3({
                 </tr>
               </tfoot>
             </table>
+          </div>
+        )}
+      </div>
+
+      <div className="no-print rounded-2xl border border-border bg-card p-6 sm:p-8">
+        <h3 className="text-xl">Salva e condividi</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Salva il progetto sul tuo account per modificarlo in seguito o condividilo con un link pubblico.
+        </p>
+
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              Nome del progetto
+            </label>
+            <input
+              type="text"
+              value={designName}
+              onChange={(e) => setDesignName(e.target.value)}
+              placeholder="es. Soggiorno moderno"
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            />
+          </div>
+          <button
+            onClick={handleSave}
+            disabled={saving || !user}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+          >
+            <Save className="h-4 w-4" />
+            {saving ? "Salvataggio…" : "Salva progetto"}
+          </button>
+        </div>
+
+        {!user && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            <Link to="/auth" className="text-primary underline-offset-2 hover:underline">
+              Accedi
+            </Link>{" "}
+            per salvare e condividere il progetto.
+          </p>
+        )}
+
+        {saveError && (
+          <p className="mt-3 text-xs text-destructive">{saveError}</p>
+        )}
+
+        {savedSlug && (
+          <div className="mt-4 rounded-xl border border-border bg-secondary/30 p-4">
+            <p className="text-sm font-medium">Progetto salvato!</p>
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                type="text"
+                readOnly
+                value={shareUrl}
+                className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-xs"
+              />
+              <button
+                onClick={copyLink}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium transition-colors hover:bg-secondary"
+              >
+                <Share2 className="h-3.5 w-3.5" />
+                {copied ? "Copiato!" : "Copia link"}
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Chiunque abbia il link può visualizzare il progetto.
+            </p>
           </div>
         )}
       </div>
