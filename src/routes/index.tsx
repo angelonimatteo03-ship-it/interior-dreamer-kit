@@ -583,11 +583,14 @@ function Step2({
             <p className="text-sm text-muted-foreground">
               {category === CUSTOM_CATEGORY
                 ? "Nessun prodotto personale. Caricane uno qui sopra."
-                : "Nessun prodotto in questa categoria."}
+                : category === SAVED_CATEGORY
+                  ? "Nessun prodotto salvato. Quando aggiungi un tuo prodotto, spunta la casella per salvarlo qui."
+                  : "Nessun prodotto in questa categoria."}
             </p>
           )}
           {filteredProducts.map((p: Product) => {
             const isCustom = category === CUSTOM_CATEGORY;
+            const isSaved = category === SAVED_CATEGORY;
             return (
               <div
                 key={p.id}
@@ -621,6 +624,16 @@ function Step2({
                     className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     aria-label="Elimina prodotto personale"
                     title="Elimina dal catalogo personale"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                )}
+                {isSaved && (
+                  <button
+                    onClick={() => removeSaved(p.id)}
+                    className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    aria-label="Rimuovi dai prodotti salvati"
+                    title="Rimuovi dai prodotti salvati"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
