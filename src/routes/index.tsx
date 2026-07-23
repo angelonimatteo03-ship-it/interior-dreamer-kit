@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { createParser } from "eventsource-parser";
 import {
@@ -63,6 +63,8 @@ type PlacedItem = {
 /* Main App                                                           */
 /* ------------------------------------------------------------------ */
 
+const SAVED_PRODUCTS_STORAGE_KEY = "mdm.savedProducts.v1";
+
 function App() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [width, setWidth] = useState(5); // meters
@@ -70,6 +72,41 @@ function App() {
   const [wallColor, setWallColor] = useState(WALL_COLORS[0].value);
   const [items, setItems] = useState<PlacedItem[]>([]);
   const [customProducts, setCustomProducts] = useState<Product[]>([]);
+  const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+
+  // Load saved products from localStorage on mount (client-only to avoid SSR mismatch).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(SAVED_PRODUCTS_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setSavedProducts(parsed as Product[]);
+      }
+    } catch {
+      // ignore corrupt storage
+    }
+  }, []);
+
+  // Persist saved products.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(
+        SAVED_PRODUCTS_STORAGE_KEY,
+        JSON.stringify(savedProducts),
+      );
+    } catch {
+      // ignore quota errors
+    }
+  }, [savedProducts]);
+
+  // Merged pool of user-scoped products (session + persisted) — used for
+  // lookups by placed items in the 2D canvas, 3D render, and summary.
+  const userProducts = useMemo(
+    () => [...customProducts, ...savedProducts],
+    [customProducts, savedProducts],
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -95,6 +132,9 @@ function App() {
             setItems={setItems}
             customProducts={customProducts}
             setCustomProducts={setCustomProducts}
+            savedProducts={savedProducts}
+            setSavedProducts={setSavedProducts}
+            userProducts={userProducts}
             onBack={() => setStep(1)}
             onNext={() => setStep(3)}
           />
@@ -102,7 +142,7 @@ function App() {
         {step === 3 && (
           <Step3
             items={items}
-            customProducts={customProducts}
+            customProducts={userProducts}
             onBack={() => setStep(2)}
             onRestart={() => {
               setItems([]);
@@ -350,6 +390,9 @@ function Step2({
   setItems,
   customProducts,
   setCustomProducts,
+  savedProducts,
+  setSavedProducts,
+  userProducts,
   onBack,
   onNext,
 }: {
@@ -360,12 +403,16 @@ function Step2({
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
   customProducts: Product[];
   setCustomProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  savedProducts: Product[];
+  setSavedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  userProducts: Product[];
   onBack: () => void;
   onNext: () => void;
 }) {
   const CUSTOM_CATEGORY = "I miei prodotti";
+  const SAVED_CATEGORY = "Prodotti salvati";
   const allCategories = useMemo(
-    () => [...CATEGORIES, CUSTOM_CATEGORY],
+    () => [...CATEGORIES, CUSTOM_CATEGORY, SAVED_CATEGORY],
     [],
   );
   const [category, setCategory] = useState<string>(CATEGORIES[0]);
@@ -413,13 +460,16 @@ function Step2({
     setItems((prev) => prev.filter((it) => it.productId !== id));
   };
 
-  const filteredProducts = useMemo(
-    () =>
-      category === CUSTOM_CATEGORY
-        ? customProducts
-        : PRODUCTS.filter((p) => p.categoria === category),
-    [category, customProducts],
-  );
+  const removeSaved = (id: string) => {
+    setSavedProducts((prev) => prev.filter((p) => p.id !== id));
+    setItems((prev) => prev.filter((it) => it.productId !== id));
+  };
+
+  const filteredProducts = useMemo(() => {
+    if (category === CUSTOM_CATEGORY) return customProducts;
+    if (category === SAVED_CATEGORY) return savedProducts;
+    return PRODUCTS.filter((p) => p.categoria === category);
+  }, [category, customProducts, savedProducts]);
 
   return (
     <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
@@ -459,7 +509,7 @@ function Step2({
           wallColor={wallColor}
           items={items}
           setItems={setItems}
-          customProducts={customProducts}
+          customProducts={userProducts}
           selectedUid={selectedUid}
           setSelectedUid={setSelectedUid}
           onRemove={removeItem}
@@ -474,7 +524,7 @@ function Step2({
           length={length}
           wallColor={wallColor}
           items={items}
-          customProducts={customProducts}
+          customProducts={userProducts}
         />
       </div>
 
@@ -508,8 +558,24 @@ function Step2({
 
         {category === CUSTOM_CATEGORY && (
           <CustomProductUploader
-            onAdd={(p) => setCustomProducts((prev) => [...prev, p])}
+            onAdd={(p, save) => {
+              setCustomProducts((prev) => [...prev, p]);
+              if (save) {
+                setSavedProducts((prev) => {
+                  // avoid duplicate ids
+                  if (prev.some((x) => x.id === p.id)) return prev;
+                  return [...prev, p];
+                });
+              }
+            }}
           />
+        )}
+
+        {category === SAVED_CATEGORY && savedProducts.length > 0 && (
+          <p className="mb-3 text-[11px] leading-snug text-muted-foreground">
+            I prodotti salvati restano disponibili anche nei progetti futuri su
+            questo dispositivo.
+          </p>
         )}
 
         <div className="max-h-[560px] space-y-2 overflow-y-auto pr-1">
@@ -517,11 +583,14 @@ function Step2({
             <p className="text-sm text-muted-foreground">
               {category === CUSTOM_CATEGORY
                 ? "Nessun prodotto personale. Caricane uno qui sopra."
-                : "Nessun prodotto in questa categoria."}
+                : category === SAVED_CATEGORY
+                  ? "Nessun prodotto salvato. Quando aggiungi un tuo prodotto, spunta la casella per salvarlo qui."
+                  : "Nessun prodotto in questa categoria."}
             </p>
           )}
           {filteredProducts.map((p: Product) => {
             const isCustom = category === CUSTOM_CATEGORY;
+            const isSaved = category === SAVED_CATEGORY;
             return (
               <div
                 key={p.id}
@@ -555,6 +624,16 @@ function Step2({
                     className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     aria-label="Elimina prodotto personale"
                     title="Elimina dal catalogo personale"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                )}
+                {isSaved && (
+                  <button
+                    onClick={() => removeSaved(p.id)}
+                    className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    aria-label="Rimuovi dai prodotti salvati"
+                    title="Rimuovi dai prodotti salvati"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
@@ -1190,7 +1269,11 @@ function Render3DPanel({
 /* Custom product uploader — user-supplied images                     */
 /* ------------------------------------------------------------------ */
 
-function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
+function CustomProductUploader({
+  onAdd,
+}: {
+  onAdd: (p: Product, save: boolean) => void;
+}) {
   const [nome, setNome] = useState("");
   const [larghezza, setLarghezza] = useState(80);
   const [profondita, setProfondita] = useState(60);
@@ -1201,6 +1284,7 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
   const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [saveToLibrary, setSaveToLibrary] = useState(false);
 
   const onFiles = (files: FileList | null) => {
     setError(null);
@@ -1240,6 +1324,7 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
     setDescrizione("");
     setImages([]);
     setError(null);
+    setSaveToLibrary(false);
   };
 
   const submit = () => {
@@ -1251,18 +1336,21 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
       setError("Inserisci un nome.");
       return;
     }
-    onAdd({
-      id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-      nome: nome.trim().slice(0, 80),
-      categoria: "I miei prodotti",
-      prezzo: 0,
-      immagine_url: images[0],
-      link: link.trim(),
-      descrizione: descrizione.trim().slice(0, 160) || undefined,
-      reference_images: images.slice(1),
-      larghezza_cm: Math.max(10, Math.min(500, larghezza)),
-      profondita_cm: Math.max(10, Math.min(500, profondita)),
-    });
+    onAdd(
+      {
+        id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        nome: nome.trim().slice(0, 80),
+        categoria: "I miei prodotti",
+        prezzo: 0,
+        immagine_url: images[0],
+        link: link.trim(),
+        descrizione: descrizione.trim().slice(0, 160) || undefined,
+        reference_images: images.slice(1),
+        larghezza_cm: Math.max(10, Math.min(500, larghezza)),
+        profondita_cm: Math.max(10, Math.min(500, profondita)),
+      },
+      saveToLibrary,
+    );
     reset();
   };
 
@@ -1402,13 +1490,48 @@ function CustomProductUploader({ onAdd }: { onAdd: (p: Product) => void }) {
         </p>
       )}
 
-      <button
-        onClick={submit}
-        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-      >
-        <Plus className="h-3.5 w-3.5" />
-        Aggiungi al catalogo
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          role="checkbox"
+          aria-checked={saveToLibrary}
+          aria-label='Salva in "Prodotti salvati"'
+          title='Salva in "Prodotti salvati" per riutilizzarlo in futuro'
+          onClick={() => setSaveToLibrary((v) => !v)}
+          className={
+            "flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border transition-colors " +
+            (saveToLibrary
+              ? "border-primary bg-primary"
+              : "border-input bg-background hover:border-primary/60")
+          }
+        >
+          {saveToLibrary && (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4 text-primary-foreground"
+              aria-hidden="true"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          )}
+        </button>
+        <button
+          onClick={submit}
+          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          Aggiungi al catalogo
+        </button>
+      </div>
+      <p className="text-[10px] leading-snug text-muted-foreground">
+        Spunta la casella per salvare il prodotto in "Prodotti salvati" e
+        riutilizzarlo nei prossimi progetti.
+      </p>
     </div>
   );
 }
