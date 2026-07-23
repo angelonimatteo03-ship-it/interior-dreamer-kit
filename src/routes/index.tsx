@@ -31,6 +31,7 @@ import {
   X,
   Save,
   Share2,
+  ExternalLink,
   LogIn,
   User,
 } from "lucide-react";
@@ -1148,13 +1149,23 @@ function Step3({
         {savedSlug && (
           <div className="mt-4 rounded-xl border border-border bg-secondary/30 p-4">
             <p className="text-sm font-medium">Progetto salvato!</p>
-            <div className="mt-2 flex items-center gap-2">
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               <input
                 type="text"
                 readOnly
                 value={shareUrl}
-                className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-xs"
+                onFocus={(e) => e.currentTarget.select()}
+                className="min-w-0 flex-1 rounded-md border border-input bg-background px-3 py-2 text-xs"
               />
+              <a
+                href={shareUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium transition-colors hover:bg-secondary"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                Apri
+              </a>
               <button
                 onClick={copyLink}
                 className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium transition-colors hover:bg-secondary"

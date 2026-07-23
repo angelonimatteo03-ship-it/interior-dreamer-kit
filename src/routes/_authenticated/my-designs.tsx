@@ -141,18 +141,29 @@ function MyDesignsPage() {
                   </button>
 
                   {d.is_public && (
-                    <button
-                      onClick={() => copyLink(d.slug)}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
-                    >
-                      {copiedSlug === d.slug ? "Copiato!" : "Copia link"}
-                    </button>
+                    <>
+                      <a
+                        href={`/share/${d.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                        Apri link
+                      </a>
+                      <button
+                        onClick={() => copyLink(d.slug)}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
+                      >
+                        {copiedSlug === d.slug ? "Copiato!" : "Copia link"}
+                      </button>
+                    </>
                   )}
                 </div>
 
                 {d.is_public && (
                   <p className="mt-3 truncate text-[11px] text-muted-foreground">
-                    {window.location.origin}/share/{d.slug}
+                    /share/{d.slug}
                   </p>
                 )}
               </div>
