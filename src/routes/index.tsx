@@ -558,8 +558,24 @@ function Step2({
 
         {category === CUSTOM_CATEGORY && (
           <CustomProductUploader
-            onAdd={(p) => setCustomProducts((prev) => [...prev, p])}
+            onAdd={(p, save) => {
+              setCustomProducts((prev) => [...prev, p]);
+              if (save) {
+                setSavedProducts((prev) => {
+                  // avoid duplicate ids
+                  if (prev.some((x) => x.id === p.id)) return prev;
+                  return [...prev, p];
+                });
+              }
+            }}
           />
+        )}
+
+        {category === SAVED_CATEGORY && savedProducts.length > 0 && (
+          <p className="mb-3 text-[11px] leading-snug text-muted-foreground">
+            I prodotti salvati restano disponibili anche nei progetti futuri su
+            questo dispositivo.
+          </p>
         )}
 
         <div className="max-h-[560px] space-y-2 overflow-y-auto pr-1">
