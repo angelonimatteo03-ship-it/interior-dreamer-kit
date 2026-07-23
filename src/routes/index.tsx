@@ -989,6 +989,7 @@ function Step3({
           length,
           wallColor,
           items,
+          isPublic: true,
         },
       });
       setSavedSlug(result.slug);
