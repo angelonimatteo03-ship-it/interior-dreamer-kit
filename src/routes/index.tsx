@@ -524,7 +524,7 @@ function Step2({
           length={length}
           wallColor={wallColor}
           items={items}
-          customProducts={customProducts}
+          customProducts={userProducts}
         />
       </div>
 
