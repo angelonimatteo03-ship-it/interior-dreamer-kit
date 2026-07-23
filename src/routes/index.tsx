@@ -18,6 +18,8 @@ import {
   Minus,
   Plus,
   Sparkles,
+  ThumbsDown,
+  ThumbsUp,
   Upload,
   X,
 } from "lucide-react";
