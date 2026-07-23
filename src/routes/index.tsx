@@ -920,6 +920,7 @@ function buildRenderPrompt(
   wallColor: string,
   items: PlacedItem[],
   customProducts: Product[],
+  feedback?: { likes: number; dislikes: number; lastFeedback: "like" | "dislike" | null },
 ): { prompt: string; images: string[] } {
   const colorName =
     WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
