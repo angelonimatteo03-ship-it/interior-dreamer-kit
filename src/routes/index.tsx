@@ -1324,6 +1324,7 @@ function CustomProductUploader({
     setDescrizione("");
     setImages([]);
     setError(null);
+    setSaveToLibrary(false);
   };
 
   const submit = () => {
@@ -1335,18 +1336,21 @@ function CustomProductUploader({
       setError("Inserisci un nome.");
       return;
     }
-    onAdd({
-      id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-      nome: nome.trim().slice(0, 80),
-      categoria: "I miei prodotti",
-      prezzo: 0,
-      immagine_url: images[0],
-      link: link.trim(),
-      descrizione: descrizione.trim().slice(0, 160) || undefined,
-      reference_images: images.slice(1),
-      larghezza_cm: Math.max(10, Math.min(500, larghezza)),
-      profondita_cm: Math.max(10, Math.min(500, profondita)),
-    });
+    onAdd(
+      {
+        id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        nome: nome.trim().slice(0, 80),
+        categoria: "I miei prodotti",
+        prezzo: 0,
+        immagine_url: images[0],
+        link: link.trim(),
+        descrizione: descrizione.trim().slice(0, 160) || undefined,
+        reference_images: images.slice(1),
+        larghezza_cm: Math.max(10, Math.min(500, larghezza)),
+        profondita_cm: Math.max(10, Math.min(500, profondita)),
+      },
+      saveToLibrary,
+    );
     reset();
   };
 
