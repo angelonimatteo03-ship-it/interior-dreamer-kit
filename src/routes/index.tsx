@@ -31,6 +31,7 @@ import {
   X,
   Save,
   Share2,
+  ExternalLink,
   LogIn,
   User,
 } from "lucide-react";
