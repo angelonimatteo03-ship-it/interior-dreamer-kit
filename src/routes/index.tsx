@@ -460,13 +460,16 @@ function Step2({
     setItems((prev) => prev.filter((it) => it.productId !== id));
   };
 
-  const filteredProducts = useMemo(
-    () =>
-      category === CUSTOM_CATEGORY
-        ? customProducts
-        : PRODUCTS.filter((p) => p.categoria === category),
-    [category, customProducts],
-  );
+  const removeSaved = (id: string) => {
+    setSavedProducts((prev) => prev.filter((p) => p.id !== id));
+    setItems((prev) => prev.filter((it) => it.productId !== id));
+  };
+
+  const filteredProducts = useMemo(() => {
+    if (category === CUSTOM_CATEGORY) return customProducts;
+    if (category === SAVED_CATEGORY) return savedProducts;
+    return PRODUCTS.filter((p) => p.categoria === category);
+  }, [category, customProducts, savedProducts]);
 
   return (
     <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
