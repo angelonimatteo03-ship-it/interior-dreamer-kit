@@ -63,6 +63,8 @@ type PlacedItem = {
 /* Main App                                                           */
 /* ------------------------------------------------------------------ */
 
+const SAVED_PRODUCTS_STORAGE_KEY = "mdm.savedProducts.v1";
+
 function App() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [width, setWidth] = useState(5); // meters
@@ -70,6 +72,41 @@ function App() {
   const [wallColor, setWallColor] = useState(WALL_COLORS[0].value);
   const [items, setItems] = useState<PlacedItem[]>([]);
   const [customProducts, setCustomProducts] = useState<Product[]>([]);
+  const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+
+  // Load saved products from localStorage on mount (client-only to avoid SSR mismatch).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(SAVED_PRODUCTS_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setSavedProducts(parsed as Product[]);
+      }
+    } catch {
+      // ignore corrupt storage
+    }
+  }, []);
+
+  // Persist saved products.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(
+        SAVED_PRODUCTS_STORAGE_KEY,
+        JSON.stringify(savedProducts),
+      );
+    } catch {
+      // ignore quota errors
+    }
+  }, [savedProducts]);
+
+  // Merged pool of user-scoped products (session + persisted) — used for
+  // lookups by placed items in the 2D canvas, 3D render, and summary.
+  const userProducts = useMemo(
+    () => [...customProducts, ...savedProducts],
+    [customProducts, savedProducts],
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -95,6 +132,9 @@ function App() {
             setItems={setItems}
             customProducts={customProducts}
             setCustomProducts={setCustomProducts}
+            savedProducts={savedProducts}
+            setSavedProducts={setSavedProducts}
+            userProducts={userProducts}
             onBack={() => setStep(1)}
             onNext={() => setStep(3)}
           />
@@ -102,7 +142,7 @@ function App() {
         {step === 3 && (
           <Step3
             items={items}
-            customProducts={customProducts}
+            customProducts={userProducts}
             onBack={() => setStep(2)}
             onRestart={() => {
               setItems([]);
