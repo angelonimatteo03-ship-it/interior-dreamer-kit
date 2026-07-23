@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { createParser } from "eventsource-parser";
+import { useServerFn } from "@tanstack/react-start";
 import {
   PRODUCTS,
   CATEGORIES,
@@ -9,6 +10,12 @@ import {
   getFootprint,
   type Product,
 } from "@/lib/products";
+import {
+  saveDesign,
+  loadMyDesign,
+  type PlacedItem as SavedPlacedItem,
+} from "@/lib/designs.functions";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft,
   ArrowRight,
@@ -22,6 +29,10 @@ import {
   ThumbsUp,
   Upload,
   X,
+  Save,
+  Share2,
+  LogIn,
+  User,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -66,6 +77,7 @@ type PlacedItem = {
 const SAVED_PRODUCTS_STORAGE_KEY = "mdm.savedProducts.v1";
 
 function App() {
+  const navigate = useNavigate();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [width, setWidth] = useState(5); // meters
   const [length, setLength] = useState(4);
@@ -73,6 +85,10 @@ function App() {
   const [items, setItems] = useState<PlacedItem[]>([]);
   const [customProducts, setCustomProducts] = useState<Product[]>([]);
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+  const [user, setUser] = useState<{ email?: string } | null>(null);
+  const [loadingDesign, setLoadingDesign] = useState(false);
+
+  const loadDesignFn = useServerFn(loadMyDesign);
 
   // Load saved products from localStorage on mount (client-only to avoid SSR mismatch).
   useEffect(() => {
@@ -101,6 +117,37 @@ function App() {
     }
   }, [savedProducts]);
 
+  // Track auth state for the header.
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user ? { email: data.user.email } : null));
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
+        setUser(session?.user ? { email: session.user.email } : null);
+      }
+    });
+    return () => subscription.subscription.unsubscribe();
+  }, []);
+
+  // Load a shared/saved design from the URL ?design= param.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const designId = params.get("design");
+    if (!designId) return;
+    setLoadingDesign(true);
+    loadDesignFn({ data: designId })
+      .then((design) => {
+        setWidth(Number(design.width));
+        setLength(Number(design.length));
+        setWallColor(design.wall_color);
+        setItems((design.items as unknown as SavedPlacedItem[]) ?? []);
+        setStep(2);
+      })
+      .catch(() => {
+        // silently fail; the user can continue with a blank project
+      })
+      .finally(() => setLoadingDesign(false));
+  }, [loadDesignFn]);
+
   // Merged pool of user-scoped products (session + persisted) — used for
   // lookups by placed items in the 2D canvas, 3D render, and summary.
   const userProducts = useMemo(
@@ -110,8 +157,13 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header step={step} />
+      <Header step={step} user={user} />
       <main className="mx-auto max-w-7xl px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+        {loadingDesign && (
+          <div className="mb-4 rounded-md bg-primary/10 px-4 py-2 text-sm text-primary">
+            Caricamento progetto…
+          </div>
+        )}
         {step === 1 && (
           <Step1
             width={width}
@@ -141,13 +193,18 @@ function App() {
         )}
         {step === 3 && (
           <Step3
+            width={width}
+            length={length}
+            wallColor={wallColor}
             items={items}
             customProducts={userProducts}
+            user={user}
             onBack={() => setStep(2)}
             onRestart={() => {
               setItems([]);
               setCustomProducts([]);
               setStep(1);
+              navigate({ to: "/", replace: true });
             }}
           />
         )}
@@ -160,7 +217,13 @@ function App() {
 /* Header + stepper                                                   */
 /* ------------------------------------------------------------------ */
 
-function Header({ step }: { step: 1 | 2 | 3 }) {
+function Header({
+  step,
+  user,
+}: {
+  step: 1 | 2 | 3;
+  user: { email?: string } | null;
+}) {
   const steps = [
     { n: 1, label: "Stanza" },
     { n: 2, label: "Progettazione" },
@@ -175,43 +238,62 @@ function Header({ step }: { step: 1 | 2 | 3 }) {
           </p>
           <h1 className="text-2xl leading-tight">Configuratore Stanze</h1>
         </div>
-        <ol className="flex items-center gap-2 sm:gap-4">
-          {steps.map((s, i) => {
-            const active = s.n === step;
-            const done = s.n < step;
-            return (
-              <li key={s.n} className="flex items-center gap-2 sm:gap-4">
-                <div
-                  className={
-                    "flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors " +
-                    (active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : done
-                        ? "border-accent bg-accent/20 text-foreground"
-                        : "border-border bg-transparent text-muted-foreground")
-                  }
-                >
-                  <span
+        <div className="flex flex-wrap items-center gap-4">
+          <ol className="flex items-center gap-2 sm:gap-4">
+            {steps.map((s, i) => {
+              const active = s.n === step;
+              const done = s.n < step;
+              return (
+                <li key={s.n} className="flex items-center gap-2 sm:gap-4">
+                  <div
                     className={
-                      "flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold " +
+                      "flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors " +
                       (active
-                        ? "bg-primary-foreground text-primary"
+                        ? "border-primary bg-primary text-primary-foreground"
                         : done
-                          ? "bg-accent text-accent-foreground"
-                          : "bg-muted text-muted-foreground")
+                          ? "border-accent bg-accent/20 text-foreground"
+                          : "border-border bg-transparent text-muted-foreground")
                     }
                   >
-                    {s.n}
-                  </span>
-                  <span className="hidden font-medium sm:inline">{s.label}</span>
-                </div>
-                {i < steps.length - 1 && (
-                  <span className="h-px w-4 bg-border sm:w-8" />
-                )}
-              </li>
-            );
-          })}
-        </ol>
+                    <span
+                      className={
+                        "flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold " +
+                        (active
+                          ? "bg-primary-foreground text-primary"
+                          : done
+                            ? "bg-accent text-accent-foreground"
+                            : "bg-muted text-muted-foreground")
+                      }
+                    >
+                      {s.n}
+                    </span>
+                    <span className="hidden font-medium sm:inline">{s.label}</span>
+                  </div>
+                  {i < steps.length - 1 && (
+                    <span className="h-px w-4 bg-border sm:w-8" />
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+          {user ? (
+            <Link
+              to="/my-designs"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
+            >
+              <User className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">I miei progetti</span>
+            </Link>
+          ) : (
+            <Link
+              to="/auth"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Accedi</span>
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
@@ -849,16 +931,31 @@ function clamp(v: number, min: number, max: number) {
 /* ------------------------------------------------------------------ */
 
 function Step3({
+  width,
+  length,
+  wallColor,
   items,
   customProducts,
+  user,
   onBack,
   onRestart,
 }: {
+  width: number;
+  length: number;
+  wallColor: string;
   items: PlacedItem[];
   customProducts: Product[];
+  user: { email?: string } | null;
   onBack: () => void;
   onRestart: () => void;
 }) {
+  const [designName, setDesignName] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [savedSlug, setSavedSlug] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const saveDesignFn = useServerFn(saveDesign);
+
   // Aggregate quantities by product
   const grouped = useMemo(() => {
     const map = new Map<string, { product: Product; qty: number }>();
@@ -875,6 +972,42 @@ function Step3({
   }, [items, customProducts]);
 
   const total = grouped.reduce((s, r) => s + r.product.prezzo * r.qty, 0);
+
+  const handleSave = async () => {
+    if (!user) {
+      setSaveError("Accedi per salvare il progetto.");
+      return;
+    }
+    const name = designName.trim() || "Progetto senza nome";
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const result = await saveDesignFn({
+        data: {
+          name,
+          width,
+          length,
+          wallColor,
+          items,
+          isPublic: true,
+        },
+      });
+      setSavedSlug(result.slug);
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : "Errore durante il salvataggio.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const shareUrl = savedSlug ? `${window.location.origin}/share/${savedSlug}` : "";
+
+  const copyLink = async () => {
+    if (!shareUrl) return;
+    await navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <section className="space-y-6">
@@ -966,6 +1099,73 @@ function Step3({
                 </tr>
               </tfoot>
             </table>
+          </div>
+        )}
+      </div>
+
+      <div className="no-print rounded-2xl border border-border bg-card p-6 sm:p-8">
+        <h3 className="text-xl">Salva e condividi</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Salva il progetto sul tuo account per modificarlo in seguito o condividilo con un link pubblico.
+        </p>
+
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              Nome del progetto
+            </label>
+            <input
+              type="text"
+              value={designName}
+              onChange={(e) => setDesignName(e.target.value)}
+              placeholder="es. Soggiorno moderno"
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            />
+          </div>
+          <button
+            onClick={handleSave}
+            disabled={saving || !user}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+          >
+            <Save className="h-4 w-4" />
+            {saving ? "Salvataggio…" : "Salva progetto"}
+          </button>
+        </div>
+
+        {!user && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            <Link to="/auth" className="text-primary underline-offset-2 hover:underline">
+              Accedi
+            </Link>{" "}
+            per salvare e condividere il progetto.
+          </p>
+        )}
+
+        {saveError && (
+          <p className="mt-3 text-xs text-destructive">{saveError}</p>
+        )}
+
+        {savedSlug && (
+          <div className="mt-4 rounded-xl border border-border bg-secondary/30 p-4">
+            <p className="text-sm font-medium">Progetto salvato!</p>
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                type="text"
+                readOnly
+                value={shareUrl}
+                className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-xs"
+              />
+              <button
+                onClick={copyLink}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium transition-colors hover:bg-secondary"
+              >
+                <Share2 className="h-3.5 w-3.5" />
+                {copied ? "Copiato!" : "Copia link"}
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Chiunque abbia il link può visualizzare il progetto.
+            </p>
           </div>
         )}
       </div>
