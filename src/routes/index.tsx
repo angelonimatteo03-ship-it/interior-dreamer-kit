@@ -509,7 +509,7 @@ function Step2({
           wallColor={wallColor}
           items={items}
           setItems={setItems}
-          customProducts={customProducts}
+          customProducts={userProducts}
           selectedUid={selectedUid}
           setSelectedUid={setSelectedUid}
           onRemove={removeItem}
