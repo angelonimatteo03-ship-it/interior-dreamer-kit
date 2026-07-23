@@ -961,6 +961,24 @@ function buildRenderPrompt(
     ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
     : "La stanza è vuota, minimalista.";
 
+  const feedbackLines: string[] = [];
+  if (feedback && (feedback.likes > 0 || feedback.dislikes > 0)) {
+    if (feedback.lastFeedback === "dislike") {
+      feedbackLines.push(
+        `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. I prodotti non erano abbastanza fedeli alle foto di riferimento. In questa nuova versione: aumenta drasticamente la fedeltà visiva ad ogni [REF] (materiali, colori esatti, texture, forma, proporzioni, dettagli di finitura). NON inventare varianti, NON stilizzare, NON modificare colori o tessuti. Mantieni composizione e inquadratura della stanza.`,
+      );
+    } else if (feedback.lastFeedback === "like") {
+      feedbackLines.push(
+        `Feedback cliente sul render precedente: POSITIVO. Mantieni lo stesso stile, atmosfera, palette e livello di realismo. Conserva la stessa fedeltà ai prodotti di riferimento variando leggermente inquadratura/luce per una nuova versione coerente.`,
+      );
+    }
+    if (feedback.dislikes >= 2) {
+      feedbackLines.push(
+        `Il cliente ha già segnalato più volte scarsa somiglianza dei prodotti: dai priorità assoluta alla riproduzione 1:1 delle foto [REF] rispetto a qualsiasi scelta stilistica.`,
+      );
+    }
+  }
+
   const prompt = [
     `Fotografia interior design fotorealistica di una stanza di ${width}×${length} metri,`,
     `pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro a listoni,`,
@@ -968,6 +986,7 @@ function buildRenderPrompt(
     `estetica scandinava/mediterranea con tessuti bouclé, legno naturale, ceramica, ottone brunito.`,
     piecesBlock,
     `Le foto di riferimento allegate mostrano l'aspetto ESATTO di ogni prodotto: mantieni identici modello, colore, tessuto e finiture — non inventare varianti.`,
+    ...feedbackLines,
     `Rendering fotorealistico ad alta risoluzione, vista prospettica grandangolare a livello degli occhi, dettagli nitidi dei materiali, ombre morbide, profondità di campo cinematografica.`,
   ].join(" ");
 
