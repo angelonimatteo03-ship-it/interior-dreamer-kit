@@ -18,6 +18,8 @@ import {
   Minus,
   Plus,
   Sparkles,
+  ThumbsDown,
+  ThumbsUp,
   Upload,
   X,
 } from "lucide-react";
@@ -918,6 +920,7 @@ function buildRenderPrompt(
   wallColor: string,
   items: PlacedItem[],
   customProducts: Product[],
+  feedback?: { likes: number; dislikes: number; lastFeedback: "like" | "dislike" | null },
 ): { prompt: string; images: string[] } {
   const colorName =
     WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
@@ -958,6 +961,24 @@ function buildRenderPrompt(
     ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
     : "La stanza è vuota, minimalista.";
 
+  const feedbackLines: string[] = [];
+  if (feedback && (feedback.likes > 0 || feedback.dislikes > 0)) {
+    if (feedback.lastFeedback === "dislike") {
+      feedbackLines.push(
+        `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. I prodotti non erano abbastanza fedeli alle foto di riferimento. In questa nuova versione: aumenta drasticamente la fedeltà visiva ad ogni [REF] (materiali, colori esatti, texture, forma, proporzioni, dettagli di finitura). NON inventare varianti, NON stilizzare, NON modificare colori o tessuti. Mantieni composizione e inquadratura della stanza.`,
+      );
+    } else if (feedback.lastFeedback === "like") {
+      feedbackLines.push(
+        `Feedback cliente sul render precedente: POSITIVO. Mantieni lo stesso stile, atmosfera, palette e livello di realismo. Conserva la stessa fedeltà ai prodotti di riferimento variando leggermente inquadratura/luce per una nuova versione coerente.`,
+      );
+    }
+    if (feedback.dislikes >= 2) {
+      feedbackLines.push(
+        `Il cliente ha già segnalato più volte scarsa somiglianza dei prodotti: dai priorità assoluta alla riproduzione 1:1 delle foto [REF] rispetto a qualsiasi scelta stilistica.`,
+      );
+    }
+  }
+
   const prompt = [
     `Fotografia interior design fotorealistica di una stanza di ${width}×${length} metri,`,
     `pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro a listoni,`,
@@ -965,6 +986,7 @@ function buildRenderPrompt(
     `estetica scandinava/mediterranea con tessuti bouclé, legno naturale, ceramica, ottone brunito.`,
     piecesBlock,
     `Le foto di riferimento allegate mostrano l'aspetto ESATTO di ogni prodotto: mantieni identici modello, colore, tessuto e finiture — non inventare varianti.`,
+    ...feedbackLines,
     `Rendering fotorealistico ad alta risoluzione, vista prospettica grandangolare a livello degli occhi, dettagli nitidi dei materiali, ombre morbide, profondità di campo cinematografica.`,
   ].join(" ");
 
@@ -988,18 +1010,26 @@ function Render3DPanel({
   const [isFinal, setIsFinal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
+  const [feedbackStats, setFeedbackStats] = useState<{
+    likes: number;
+    dislikes: number;
+    lastFeedback: "like" | "dislike" | null;
+  }>({ likes: 0, dislikes: 0, lastFeedback: null });
 
   const generate = async () => {
     setLoading(true);
     setError(null);
     setSrc(null);
     setIsFinal(false);
+    setFeedback(null);
     const { prompt, images } = buildRenderPrompt(
       width,
       length,
       wallColor,
       items,
       customProducts,
+      feedbackStats,
     );
     try {
       const res = await fetch("/api/render-room", {
@@ -1078,16 +1108,79 @@ function Render3DPanel({
       )}
 
       {src && (
-        <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
-          <img
-            src={src}
-            alt="Render 3D della stanza"
-            className={
-              "h-auto w-full object-cover transition-[filter] duration-500 " +
-              (isFinal ? "blur-0" : "blur-xl")
-            }
-          />
-        </div>
+        <>
+          <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
+            <img
+              src={src}
+              alt="Render 3D della stanza"
+              className={
+                "h-auto w-full object-cover transition-[filter] duration-500 " +
+                (isFinal ? "blur-0" : "blur-xl")
+              }
+            />
+          </div>
+          {isFinal && (
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                {feedback === "like"
+                  ? "Grazie! Terremo lo stesso stile al prossimo render."
+                  : feedback === "dislike"
+                    ? "Grazie! Miglioreremo la fedeltà ai prodotti al prossimo render."
+                    : "Il render è fedele ai prodotti?"}
+              </p>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  aria-label="Mi piace"
+                  aria-pressed={feedback === "like"}
+                  onClick={() => {
+                    const next = feedback === "like" ? null : "like";
+                    setFeedback(next);
+                    if (next) {
+                      setFeedbackStats((s) => ({
+                        likes: s.likes + 1,
+                        dislikes: s.dislikes,
+                        lastFeedback: "like",
+                      }));
+                    }
+                  }}
+                  className={
+                    "inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors " +
+                    (feedback === "like"
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground")
+                  }
+                >
+                  <ThumbsUp className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Non mi piace"
+                  aria-pressed={feedback === "dislike"}
+                  onClick={() => {
+                    const next = feedback === "dislike" ? null : "dislike";
+                    setFeedback(next);
+                    if (next) {
+                      setFeedbackStats((s) => ({
+                        likes: s.likes,
+                        dislikes: s.dislikes + 1,
+                        lastFeedback: "dislike",
+                      }));
+                    }
+                  }}
+                  className={
+                    "inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors " +
+                    (feedback === "dislike"
+                      ? "border-destructive bg-destructive text-destructive-foreground"
+                      : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground")
+                  }
+                >
+                  <ThumbsDown className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
