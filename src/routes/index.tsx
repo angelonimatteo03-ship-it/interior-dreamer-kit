@@ -1490,13 +1490,48 @@ function CustomProductUploader({
         </p>
       )}
 
-      <button
-        onClick={submit}
-        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-      >
-        <Plus className="h-3.5 w-3.5" />
-        Aggiungi al catalogo
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          role="checkbox"
+          aria-checked={saveToLibrary}
+          aria-label='Salva in "Prodotti salvati"'
+          title='Salva in "Prodotti salvati" per riutilizzarlo in futuro'
+          onClick={() => setSaveToLibrary((v) => !v)}
+          className={
+            "flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border transition-colors " +
+            (saveToLibrary
+              ? "border-primary bg-primary"
+              : "border-input bg-background hover:border-primary/60")
+          }
+        >
+          {saveToLibrary && (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4 text-primary-foreground"
+              aria-hidden="true"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          )}
+        </button>
+        <button
+          onClick={submit}
+          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          Aggiungi al catalogo
+        </button>
+      </div>
+      <p className="text-[10px] leading-snug text-muted-foreground">
+        Spunta la casella per salvare il prodotto in "Prodotti salvati" e
+        riutilizzarlo nei prossimi progetti.
+      </p>
     </div>
   );
 }
