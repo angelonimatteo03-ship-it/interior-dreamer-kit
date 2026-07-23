@@ -217,7 +217,13 @@ function App() {
 /* Header + stepper                                                   */
 /* ------------------------------------------------------------------ */
 
-function Header({ step }: { step: 1 | 2 | 3 }) {
+function Header({
+  step,
+  user,
+}: {
+  step: 1 | 2 | 3;
+  user: { email?: string } | null;
+}) {
   const steps = [
     { n: 1, label: "Stanza" },
     { n: 2, label: "Progettazione" },
@@ -232,43 +238,62 @@ function Header({ step }: { step: 1 | 2 | 3 }) {
           </p>
           <h1 className="text-2xl leading-tight">Configuratore Stanze</h1>
         </div>
-        <ol className="flex items-center gap-2 sm:gap-4">
-          {steps.map((s, i) => {
-            const active = s.n === step;
-            const done = s.n < step;
-            return (
-              <li key={s.n} className="flex items-center gap-2 sm:gap-4">
-                <div
-                  className={
-                    "flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors " +
-                    (active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : done
-                        ? "border-accent bg-accent/20 text-foreground"
-                        : "border-border bg-transparent text-muted-foreground")
-                  }
-                >
-                  <span
+        <div className="flex flex-wrap items-center gap-4">
+          <ol className="flex items-center gap-2 sm:gap-4">
+            {steps.map((s, i) => {
+              const active = s.n === step;
+              const done = s.n < step;
+              return (
+                <li key={s.n} className="flex items-center gap-2 sm:gap-4">
+                  <div
                     className={
-                      "flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold " +
+                      "flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors " +
                       (active
-                        ? "bg-primary-foreground text-primary"
+                        ? "border-primary bg-primary text-primary-foreground"
                         : done
-                          ? "bg-accent text-accent-foreground"
-                          : "bg-muted text-muted-foreground")
+                          ? "border-accent bg-accent/20 text-foreground"
+                          : "border-border bg-transparent text-muted-foreground")
                     }
                   >
-                    {s.n}
-                  </span>
-                  <span className="hidden font-medium sm:inline">{s.label}</span>
-                </div>
-                {i < steps.length - 1 && (
-                  <span className="h-px w-4 bg-border sm:w-8" />
-                )}
-              </li>
-            );
-          })}
-        </ol>
+                    <span
+                      className={
+                        "flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold " +
+                        (active
+                          ? "bg-primary-foreground text-primary"
+                          : done
+                            ? "bg-accent text-accent-foreground"
+                            : "bg-muted text-muted-foreground")
+                      }
+                    >
+                      {s.n}
+                    </span>
+                    <span className="hidden font-medium sm:inline">{s.label}</span>
+                  </div>
+                  {i < steps.length - 1 && (
+                    <span className="h-px w-4 bg-border sm:w-8" />
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+          {user ? (
+            <Link
+              to="/my-designs"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
+            >
+              <User className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">I miei progetti</span>
+            </Link>
+          ) : (
+            <Link
+              to="/auth"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Accedi</span>
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
