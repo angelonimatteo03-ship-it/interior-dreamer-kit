@@ -1010,18 +1010,26 @@ function Render3DPanel({
   const [isFinal, setIsFinal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
+  const [feedbackStats, setFeedbackStats] = useState<{
+    likes: number;
+    dislikes: number;
+    lastFeedback: "like" | "dislike" | null;
+  }>({ likes: 0, dislikes: 0, lastFeedback: null });
 
   const generate = async () => {
     setLoading(true);
     setError(null);
     setSrc(null);
     setIsFinal(false);
+    setFeedback(null);
     const { prompt, images } = buildRenderPrompt(
       width,
       length,
       wallColor,
       items,
       customProducts,
+      feedbackStats,
     );
     try {
       const res = await fetch("/api/render-room", {
