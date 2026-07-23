@@ -77,6 +77,7 @@ type PlacedItem = {
 const SAVED_PRODUCTS_STORAGE_KEY = "mdm.savedProducts.v1";
 
 function App() {
+  const navigate = useNavigate();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [width, setWidth] = useState(5); // meters
   const [length, setLength] = useState(4);
@@ -84,6 +85,10 @@ function App() {
   const [items, setItems] = useState<PlacedItem[]>([]);
   const [customProducts, setCustomProducts] = useState<Product[]>([]);
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+  const [user, setUser] = useState<{ email?: string } | null>(null);
+  const [loadingDesign, setLoadingDesign] = useState(false);
+
+  const loadDesignFn = useServerFn(loadMyDesign);
 
   // Load saved products from localStorage on mount (client-only to avoid SSR mismatch).
   useEffect(() => {
@@ -112,6 +117,37 @@ function App() {
     }
   }, [savedProducts]);
 
+  // Track auth state for the header.
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user ? { email: data.user.email } : null));
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
+        setUser(session?.user ? { email: session.user.email } : null);
+      }
+    });
+    return () => subscription.subscription.unsubscribe();
+  }, []);
+
+  // Load a shared/saved design from the URL ?design= param.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const designId = params.get("design");
+    if (!designId) return;
+    setLoadingDesign(true);
+    loadDesignFn({ data: designId })
+      .then((design) => {
+        setWidth(Number(design.width));
+        setLength(Number(design.length));
+        setWallColor(design.wall_color);
+        setItems((design.items as unknown as SavedPlacedItem[]) ?? []);
+        setStep(2);
+      })
+      .catch(() => {
+        // silently fail; the user can continue with a blank project
+      })
+      .finally(() => setLoadingDesign(false));
+  }, [loadDesignFn]);
+
   // Merged pool of user-scoped products (session + persisted) — used for
   // lookups by placed items in the 2D canvas, 3D render, and summary.
   const userProducts = useMemo(
@@ -121,8 +157,13 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header step={step} />
+      <Header step={step} user={user} />
       <main className="mx-auto max-w-7xl px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+        {loadingDesign && (
+          <div className="mb-4 rounded-md bg-primary/10 px-4 py-2 text-sm text-primary">
+            Caricamento progetto…
+          </div>
+        )}
         {step === 1 && (
           <Step1
             width={width}
@@ -152,13 +193,18 @@ function App() {
         )}
         {step === 3 && (
           <Step3
+            width={width}
+            length={length}
+            wallColor={wallColor}
             items={items}
             customProducts={userProducts}
+            user={user}
             onBack={() => setStep(2)}
             onRestart={() => {
               setItems([]);
               setCustomProducts([]);
               setStep(1);
+              navigate({ to: "/", replace: true });
             }}
           />
         )}
