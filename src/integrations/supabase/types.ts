@@ -14,7 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      room_designs: {
+        Row: {
+          created_at: string
+          id: string
+          is_public: boolean
+          items: Json
+          length: number
+          name: string
+          slug: string
+          updated_at: string
+          user_id: string
+          wall_color: string
+          width: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          items?: Json
+          length: number
+          name: string
+          slug: string
+          updated_at?: string
+          user_id: string
+          wall_color: string
+          width: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          items?: Json
+          length?: number
+          name?: string
+          slug?: string
+          updated_at?: string
+          user_id?: string
+          wall_color?: string
+          width?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
