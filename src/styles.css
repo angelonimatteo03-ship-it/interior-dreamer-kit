@@ -29,47 +29,175 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
   --color-terracotta: var(--terracotta);
   --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --shadow-soft: 0 1px 2px oklch(0.28 0.02 60 / 0.04), 0 8px 24px -12px oklch(0.28 0.02 60 / 0.12);
+  --shadow-lift: 0 2px 4px oklch(0.28 0.02 60 / 0.05), 0 18px 40px -18px oklch(0.28 0.02 60 / 0.22);
 }
 
 :root {
-  --radius: 0.75rem;
-  /* MDM warm natural palette */
-  --background: oklch(0.975 0.012 80);       /* warm cream */
-  --foreground: oklch(0.28 0.02 60);         /* deep warm brown */
-  --card: oklch(0.99 0.008 85);
-  --card-foreground: oklch(0.28 0.02 60);
-  --popover: oklch(0.99 0.008 85);
-  --popover-foreground: oklch(0.28 0.02 60);
-  --primary: oklch(0.55 0.11 40);            /* terracotta */
-  --primary-foreground: oklch(0.98 0.008 85);
-  --secondary: oklch(0.93 0.02 80);          /* beige */
-  --secondary-foreground: oklch(0.32 0.03 50);
-  --muted: oklch(0.94 0.015 80);
-  --muted-foreground: oklch(0.5 0.02 60);
-  --accent: oklch(0.72 0.06 145);            /* salvia */
-  --accent-foreground: oklch(0.22 0.02 60);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.98 0.008 85);
-  --border: oklch(0.88 0.015 75);
-  --input: oklch(0.9 0.015 75);
-  --ring: oklch(0.55 0.11 40);
-  --sage: oklch(0.72 0.06 145);
-  --terracotta: oklch(0.6 0.13 40);
-  --cream: oklch(0.97 0.015 85);
+  --radius: 0.875rem;
+  /* Editorial ivory / sand palette with deep terracotta + sage */
+  --background: oklch(0.981 0.008 85);       /* ivory */
+  --foreground: oklch(0.255 0.018 55);       /* warm ink */
+  --card: oklch(0.995 0.004 90);
+  --card-foreground: oklch(0.255 0.018 55);
+  --popover: oklch(0.995 0.004 90);
+  --popover-foreground: oklch(0.255 0.018 55);
+  --primary: oklch(0.49 0.115 38);           /* deep terracotta */
+  --primary-foreground: oklch(0.985 0.006 85);
+  --secondary: oklch(0.945 0.014 82);        /* sand */
+  --secondary-foreground: oklch(0.3 0.025 50);
+  --muted: oklch(0.955 0.012 82);
+  --muted-foreground: oklch(0.455 0.02 58);  /* AA on ivory */
+  --accent: oklch(0.62 0.05 148);            /* sage */
+  --accent-foreground: oklch(0.985 0.006 85);
+  --destructive: oklch(0.52 0.19 25);
+  --destructive-foreground: oklch(0.985 0.006 85);
+  --border: oklch(0.895 0.012 78);
+  --input: oklch(0.885 0.014 78);
+  --ring: oklch(0.49 0.115 38);
+  --sage: oklch(0.62 0.05 148);
+  --sage-soft: oklch(0.93 0.025 148);
+  --terracotta: oklch(0.49 0.115 38);
+  --cream: oklch(0.975 0.012 85);
+  --sand: oklch(0.945 0.014 82);
+  --ink: oklch(0.255 0.018 55);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  h1, h2, h3 { font-family: var(--font-serif); letter-spacing: -0.01em; }
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.015em;
+    font-weight: 400;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+  }
+
+  .surface {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+    transition:
+      background-color 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.18s ease;
+    cursor: pointer;
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    box-shadow: var(--shadow-soft);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: color-mix(in oklab, var(--color-primary) 88%, black);
+    box-shadow: var(--shadow-lift);
+  }
+  .btn-secondary {
+    background-color: var(--color-card);
+    color: var(--color-foreground);
+    border: 1px solid var(--color-border);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+    border-color: color-mix(in oklab, var(--color-primary) 35%, var(--color-border));
+  }
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--color-muted-foreground);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+    color: var(--color-foreground);
+  }
+  .btn-sm {
+    min-height: 36px;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .field {
+    width: 100%;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-input);
+    background-color: var(--color-card);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-foreground);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .field::placeholder { color: color-mix(in oklab, var(--color-muted-foreground) 80%, transparent); }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary) 18%, transparent);
+  }
+
+  .label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-foreground);
+    margin-bottom: 0.375rem;
+  }
+
+  .hairline { height: 1px; background-color: var(--color-border); }
+
+  .range {
+    width: 100%;
+    accent-color: var(--color-primary);
+    height: 24px;
+  }
 }
 
 @media print {
