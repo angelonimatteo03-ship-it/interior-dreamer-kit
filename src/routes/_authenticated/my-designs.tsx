@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { listMyDesigns, deleteDesign, togglePublic } from "@/lib/designs.functions";
 import { useServerFn } from "@tanstack/react-start";
-import { Trash2, Share2, ExternalLink, LogOut } from "lucide-react";
+import { Trash2, Share2, ExternalLink, LogOut, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/my-designs")({
   head: () => ({
@@ -51,124 +51,125 @@ function MyDesignsPage() {
   };
 
   const handleSignOut = async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
     window.location.href = "/";
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border/60 bg-card/60 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              Maisons du Monde
-            </p>
-            <h1 className="text-2xl leading-tight">I miei progetti</h1>
+      <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+          <div className="min-w-0">
+            <p className="eyebrow">Maisons du Monde</p>
+            <h1 className="truncate text-lg leading-tight sm:text-xl">I miei progetti</h1>
           </div>
-          <div className="flex items-center gap-3">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
-            >
-              Nuovo progetto
+          <div className="flex items-center gap-2">
+            <Link to="/" className="btn btn-primary btn-sm">
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Nuovo progetto</span>
             </Link>
-            <button
-              onClick={handleSignOut}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary"
-            >
+            <button onClick={handleSignOut} className="btn btn-secondary btn-sm">
               <LogOut className="h-4 w-4" />
-              Esci
+              <span className="hidden sm:inline">Esci</span>
             </button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {isLoading ? (
           <p className="text-sm text-muted-foreground">Caricamento…</p>
         ) : designs.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border py-16 text-center">
-            <p className="text-muted-foreground">Nessun progetto salvato.</p>
-            <Link
-              to="/"
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
+          <div className="surface flex flex-col items-center px-6 py-16 text-center">
+            <p className="eyebrow">Archivio vuoto</p>
+            <h2 className="mt-2 text-2xl">Nessun progetto salvato</h2>
+            <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+              Configura una stanza e salvala: la ritroverai qui, pronta da
+              modificare o condividere.
+            </p>
+            <Link to="/" className="btn btn-primary mt-6">
               Crea il primo progetto
             </Link>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {designs.map((d) => (
-              <div
-                key={d.id}
-                className="rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-sm"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="truncate text-lg font-medium">{d.name}</h3>
-                  <button
-                    onClick={() => handleDelete(d.id)}
-                    className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                    aria-label="Elimina"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
+          <>
+            <p className="mb-5 text-sm text-muted-foreground">
+              {designs.length} {designs.length === 1 ? "progetto" : "progetti"} salvati
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {designs.map((d) => (
+                <article key={d.id} className="surface flex flex-col p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h3 className="truncate text-xl leading-snug">{d.name}</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {d.width} × {d.length} m ·{" "}
+                        {new Date(d.updated_at).toLocaleDateString("it-IT")}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleDelete(d.id)}
+                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                      aria-label={`Elimina ${d.name}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
 
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {d.width} × {d.length} m · {new Date(d.updated_at).toLocaleDateString("it-IT")}
-                </p>
+                  <div className="mt-5 flex flex-wrap items-center gap-2">
+                    <Link
+                      to="/"
+                      search={{ design: d.id }}
+                      className="btn btn-primary btn-sm"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Apri
+                    </Link>
 
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <Link
-                    to="/"
-                    search={{ design: d.id }}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" />
-                    Apri
-                  </Link>
-
-                  <button
-                    onClick={() => handleToggle(d.id, d.is_public)}
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                      d.is_public
-                        ? "border-primary/30 bg-primary/10 text-primary"
-                        : "border-border bg-background text-muted-foreground hover:bg-secondary"
-                    }`}
-                  >
-                    <Share2 className="h-3.5 w-3.5" />
-                    {d.is_public ? "Pubblico" : "Privato"}
-                  </button>
+                    <button
+                      onClick={() => handleToggle(d.id, d.is_public)}
+                      aria-pressed={d.is_public}
+                      className={
+                        "btn btn-sm " +
+                        (d.is_public
+                          ? "btn-secondary border-accent/50 text-foreground"
+                          : "btn-secondary text-muted-foreground")
+                      }
+                    >
+                      <Share2 className="h-4 w-4" />
+                      {d.is_public ? "Pubblico" : "Privato"}
+                    </button>
+                  </div>
 
                   {d.is_public && (
-                    <>
-                      <a
-                        href={`/share/${d.slug}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        Apri link
-                      </a>
-                      <button
-                        onClick={() => copyLink(d.slug)}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
-                      >
-                        {copiedSlug === d.slug ? "Copiato!" : "Copia link"}
-                      </button>
-                    </>
+                    <div className="mt-4 rounded-xl border border-border bg-secondary/40 p-3">
+                      <p className="truncate text-[11px] text-muted-foreground">
+                        /share/{d.slug}
+                      </p>
+                      <div className="mt-2 flex gap-2">
+                        <a
+                          href={`/share/${d.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-secondary btn-sm flex-1"
+                        >
+                          Apri link
+                        </a>
+                        <button
+                          onClick={() => copyLink(d.slug)}
+                          className="btn btn-secondary btn-sm flex-1"
+                        >
+                          {copiedSlug === d.slug ? "Copiato!" : "Copia"}
+                        </button>
+                      </div>
+                    </div>
                   )}
-                </div>
-
-                {d.is_public && (
-                  <p className="mt-3 truncate text-[11px] text-muted-foreground">
-                    /share/{d.slug}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
+                </article>
+              ))}
+            </div>
+          </>
         )}
       </main>
     </div>

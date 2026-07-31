@@ -159,12 +159,13 @@ function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header step={step} user={user} />
-      <main className="mx-auto max-w-7xl px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-7xl px-4 pb-20 pt-6 sm:px-6 sm:pt-8 lg:px-8">
         {loadingDesign && (
-          <div className="mb-4 rounded-md bg-primary/10 px-4 py-2 text-sm text-primary">
+          <div className="mb-4 rounded-xl border border-border bg-secondary/60 px-4 py-2.5 text-sm text-muted-foreground">
             Caricamento progetto…
           </div>
         )}
+
         {step === 1 && (
           <Step1
             width={width}
