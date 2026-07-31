@@ -231,74 +231,96 @@ function Header({
     { n: 3, label: "Riepilogo" },
   ];
   return (
-    <header className="no-print border-b border-border/60 bg-card/60 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-5 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-        <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Maisons du Monde
-          </p>
-          <h1 className="text-2xl leading-tight">Configuratore Stanze</h1>
+    <header className="no-print sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="min-w-0">
+          <p className="eyebrow">Maisons du Monde</p>
+          <h1 className="truncate text-lg leading-tight sm:text-xl">Configuratore Stanze</h1>
         </div>
-        <div className="flex flex-wrap items-center gap-4">
-          <ol className="flex items-center gap-2 sm:gap-4">
+
+        <nav aria-label="Avanzamento" className="hidden md:block">
+          <ol className="flex items-center gap-3">
             {steps.map((s, i) => {
               const active = s.n === step;
               const done = s.n < step;
               return (
-                <li key={s.n} className="flex items-center gap-2 sm:gap-4">
+                <li key={s.n} className="flex items-center gap-3">
                   <div
                     className={
-                      "flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors " +
+                      "flex items-center gap-2 text-sm transition-colors " +
                       (active
-                        ? "border-primary bg-primary text-primary-foreground"
+                        ? "text-foreground"
                         : done
-                          ? "border-accent bg-accent/20 text-foreground"
-                          : "border-border bg-transparent text-muted-foreground")
+                          ? "text-foreground/80"
+                          : "text-muted-foreground")
                     }
+                    aria-current={active ? "step" : undefined}
                   >
                     <span
                       className={
-                        "flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold " +
+                        "flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-semibold " +
                         (active
-                          ? "bg-primary-foreground text-primary"
+                          ? "border-primary bg-primary text-primary-foreground"
                           : done
-                            ? "bg-accent text-accent-foreground"
-                            : "bg-muted text-muted-foreground")
+                            ? "border-accent bg-accent text-accent-foreground"
+                            : "border-border bg-card text-muted-foreground")
                       }
                     >
                       {s.n}
                     </span>
-                    <span className="hidden font-medium sm:inline">{s.label}</span>
+                    <span className={active ? "font-medium" : ""}>{s.label}</span>
                   </div>
-                  {i < steps.length - 1 && (
-                    <span className="h-px w-4 bg-border sm:w-8" />
-                  )}
+                  {i < steps.length - 1 && <span className="h-px w-6 bg-border" />}
                 </li>
               );
             })}
           </ol>
-          {user ? (
-            <Link
-              to="/my-designs"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
-            >
-              <User className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">I miei progetti</span>
-            </Link>
-          ) : (
-            <Link
-              to="/auth"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-secondary"
-            >
-              <LogIn className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Accedi</span>
-            </Link>
-          )}
-        </div>
+        </nav>
+
+        {user ? (
+          <Link to="/my-designs" className="btn btn-secondary btn-sm">
+            <User className="h-4 w-4" />
+            <span className="hidden sm:inline">I miei progetti</span>
+          </Link>
+        ) : (
+          <Link to="/auth" className="btn btn-secondary btn-sm">
+            <LogIn className="h-4 w-4" />
+            <span className="hidden sm:inline">Accedi</span>
+          </Link>
+        )}
+      </div>
+
+      {/* Compact mobile stepper */}
+      <div className="border-t border-border/60 px-4 py-2 md:hidden">
+        <ol className="flex items-center gap-2">
+          {steps.map((s) => {
+            const active = s.n === step;
+            const done = s.n < step;
+            return (
+              <li key={s.n} className="flex flex-1 flex-col gap-1.5">
+                <span
+                  className={
+                    "h-1 w-full rounded-full " +
+                    (active ? "bg-primary" : done ? "bg-accent" : "bg-border")
+                  }
+                />
+                <span
+                  className={
+                    "text-[11px] " +
+                    (active ? "font-medium text-foreground" : "text-muted-foreground")
+                  }
+                >
+                  {s.n}. {s.label}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </header>
   );
 }
+
 
 /* ------------------------------------------------------------------ */
 /* STEP 1 — Room setup                                                */
@@ -322,17 +344,18 @@ function Step1({
   onNext: () => void;
 }) {
   return (
-    <section className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
-      <div className="space-y-8 rounded-2xl border border-border bg-card p-6 sm:p-8">
+    <section className="grid gap-6 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:gap-10">
+      <div className="surface space-y-8 p-5 sm:p-7">
         <div>
-          <h2 className="text-3xl">Impostazione della stanza</h2>
-          <p className="mt-2 max-w-md text-sm text-muted-foreground">
-            Inserisci le dimensioni della stanza del cliente e scegli il colore
-            delle pareti per iniziare la progettazione.
+          <p className="eyebrow">Passo 1 di 3</p>
+          <h2 className="mt-2 text-3xl sm:text-4xl">La stanza</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Inserisci le misure reali e scegli la finitura delle pareti.
+            Potrai modificarle in qualsiasi momento.
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-7">
           <DimensionField
             label="Larghezza"
             value={width}
@@ -349,28 +372,54 @@ function Step1({
           />
         </div>
 
+        <div className="hairline" />
+
         <div>
-          <p className="mb-3 text-sm font-medium">Colore pareti</p>
-          <div className="grid grid-cols-4 gap-3 sm:grid-cols-8 lg:grid-cols-4 xl:grid-cols-8">
+          <div className="mb-1 flex items-baseline justify-between gap-3">
+            <p className="text-sm font-medium">Colore pareti</p>
+            <p className="text-xs text-muted-foreground">
+              {WALL_COLORS.find((c) => c.value === wallColor)?.name}
+            </p>
+          </div>
+          <p className="mb-4 text-xs text-muted-foreground">
+            Le tinte influenzano anche il render 3D.
+          </p>
+          <div
+            role="radiogroup"
+            aria-label="Colore pareti"
+            className="grid grid-cols-4 gap-2.5 sm:grid-cols-6"
+          >
             {WALL_COLORS.map((c) => {
               const selected = c.value === wallColor;
               return (
                 <button
                   key={c.value}
                   type="button"
+                  role="radio"
+                  aria-checked={selected}
                   onClick={() => onWallColor(c.value)}
                   className={
-                    "group flex flex-col items-center gap-1.5 rounded-xl border p-2 text-center transition-all " +
+                    "group flex flex-col items-center gap-1.5 rounded-lg border p-1.5 text-center transition-all " +
                     (selected
-                      ? "border-primary shadow-sm ring-2 ring-primary/20"
-                      : "border-border hover:border-primary/40")
+                      ? "border-primary bg-primary/5"
+                      : "border-transparent hover:border-border")
                   }
                 >
                   <span
-                    className="h-12 w-full rounded-lg border border-border/50"
+                    className={
+                      "block h-11 w-full rounded-md border transition-shadow " +
+                      (selected
+                        ? "border-primary/40 shadow-[inset_0_0_0_2px_var(--color-card)]"
+                        : "border-border/70")
+                    }
                     style={{ backgroundColor: c.value }}
                   />
-                  <span className="text-[11px] leading-tight text-muted-foreground group-hover:text-foreground">
+                  <span
+                    className={
+                      "text-[11px] leading-tight " +
+                      (selected ? "text-foreground" : "text-muted-foreground")
+                    }
+                  >
                     {c.name}
                   </span>
                 </button>
@@ -379,32 +428,26 @@ function Step1({
           </div>
         </div>
 
-        <div className="flex justify-end pt-2">
-          <button
-            onClick={onNext}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Continua
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
+        <button onClick={onNext} className="btn btn-primary w-full sm:w-auto">
+          Continua alla progettazione
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
 
       {/* Live preview */}
-      <div className="flex items-center justify-center rounded-2xl border border-border bg-secondary/40 p-6">
-        <div className="w-full max-w-sm">
-          <p className="mb-3 text-center text-xs uppercase tracking-widest text-muted-foreground">
-            Anteprima — {width} × {length} m
-          </p>
-          <div
-            className="mx-auto aspect-square w-full max-w-xs rounded-md border-[6px] shadow-inner"
-            style={{
-              borderColor: "#8a7863",
-              backgroundColor: wallColor,
-              aspectRatio: `${width} / ${length}`,
-            }}
-          />
-        </div>
+      <div className="surface flex flex-col items-center justify-center gap-4 bg-secondary/40 p-5 sm:p-8">
+        <p className="eyebrow">Anteprima in scala</p>
+        <div
+          className="w-full max-w-lg rounded-lg border-[6px] shadow-inner"
+          style={{
+            borderColor: "#8a7863",
+            backgroundColor: wallColor,
+            aspectRatio: `${width} / ${length}`,
+          }}
+        />
+        <p className="text-sm text-muted-foreground">
+          {width} × {length} m · {(width * length).toFixed(1)} m²
+        </p>
       </div>
     </section>
   );
@@ -423,12 +466,16 @@ function DimensionField({
   min: number;
   max: number;
 }) {
+  const id = `dim-${label.toLowerCase()}`;
   return (
     <div>
-      <div className="mb-2 flex items-baseline justify-between">
-        <label className="text-sm font-medium">{label}</label>
-        <span className="text-sm text-muted-foreground">
+      <div className="mb-2 flex items-end justify-between gap-3">
+        <label htmlFor={id} className="text-sm font-medium">
+          {label}
+        </label>
+        <div className="flex items-center gap-1.5">
           <input
+            id={id}
             type="number"
             min={min}
             max={max}
@@ -439,27 +486,29 @@ function DimensionField({
                 Math.max(min, Math.min(max, Number(e.target.value) || min)),
               )
             }
-            className="w-16 rounded-md border border-input bg-background px-2 py-1 text-right text-sm text-foreground"
+            className="field w-20 text-right tabular-nums"
           />
-          <span className="ml-1">m</span>
-        </span>
+          <span className="text-sm text-muted-foreground">m</span>
+        </div>
       </div>
       <input
         type="range"
+        aria-label={`${label} in metri`}
         min={min}
         max={max}
         step={0.1}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[var(--color-primary)]"
+        className="range"
       />
       <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
-        <span>{min}m</span>
-        <span>{max}m</span>
+        <span>min {min} m</span>
+        <span>max {max} m</span>
       </div>
     </div>
   );
 }
+
 
 /* ------------------------------------------------------------------ */
 /* STEP 2 — Room design                                               */
