@@ -597,39 +597,47 @@ function Step2({
     setItems((prev) => prev.filter((it) => it.productId !== id));
   };
 
+  const [query, setQuery] = useState("");
+
   const filteredProducts = useMemo(() => {
-    if (category === CUSTOM_CATEGORY) return customProducts;
-    if (category === SAVED_CATEGORY) return savedProducts;
-    return PRODUCTS.filter((p) => p.categoria === category);
-  }, [category, customProducts, savedProducts]);
+    const base =
+      category === CUSTOM_CATEGORY
+        ? customProducts
+        : category === SAVED_CATEGORY
+          ? savedProducts
+          : PRODUCTS.filter((p) => p.categoria === category);
+    const q = query.trim().toLowerCase();
+    if (!q) return base;
+    return base.filter((p) => p.nome.toLowerCase().includes(q));
+  }, [category, customProducts, savedProducts, query]);
 
   return (
-    <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
-
+    <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
       {/* Room canvas */}
-      <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="surface p-4 sm:p-6">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-2xl">Progettazione stanza</h2>
-            <p className="text-sm text-muted-foreground">
-              Trascina gli oggetti, seleziona per ruotarli o rimuoverli.
+            <p className="eyebrow">Passo 2 di 3</p>
+            <h2 className="mt-1.5 text-2xl sm:text-3xl">Progettazione stanza</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Trascina gli arredi, tocca un pezzo per ruotarlo o rimuoverlo.
             </p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={rotateSelected}
               disabled={!selectedUid}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-secondary disabled:opacity-40"
+              className="btn btn-secondary btn-sm"
             >
-              <RotateCw className="h-3.5 w-3.5" />
+              <RotateCw className="h-4 w-4" />
               Ruota 90°
             </button>
             <button
               onClick={() => selectedUid && removeItem(selectedUid)}
               disabled={!selectedUid}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-40"
+              className="btn btn-secondary btn-sm text-destructive"
             >
-              <Trash2 className="h-3.5 w-3.5" />
+              <Trash2 className="h-4 w-4" />
               Rimuovi
             </button>
           </div>
@@ -647,8 +655,9 @@ function Step2({
           onRemove={removeItem}
         />
 
-        <p className="mt-3 text-center text-[11px] uppercase tracking-widest text-muted-foreground">
-          {width} × {length} m — vista dall'alto in scala
+        <p className="mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+          {width} × {length} m — vista dall'alto in scala · {items.length}{" "}
+          {items.length === 1 ? "pezzo" : "pezzi"}
         </p>
 
         <Render3DPanel
@@ -661,25 +670,41 @@ function Step2({
       </div>
 
       {/* Product sidebar */}
-      <aside className="rounded-2xl border border-border bg-card p-4 sm:p-5">
-        <h3 className="text-lg">Catalogo</h3>
-        <p className="mb-3 text-xs text-muted-foreground">
-          Clicca un prodotto per aggiungerlo alla stanza.
-        </p>
+      <aside className="surface flex flex-col p-4 sm:p-5">
+        <div>
+          <p className="eyebrow">Catalogo</p>
+          <h3 className="mt-1 text-xl">Arredi e complementi</h3>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Tocca un prodotto per posizionarlo al centro della stanza.
+          </p>
+        </div>
+
+        <label className="sr-only" htmlFor="catalog-search">
+          Cerca prodotti
+        </label>
+        <input
+          id="catalog-search"
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Cerca per nome…"
+          className="field mt-4"
+        />
 
         {/* Category tabs */}
-        <div className="mb-4 flex flex-wrap gap-1.5">
+        <div className="-mx-1 mt-3 flex flex-wrap gap-1.5 px-1">
           {allCategories.map((c) => {
             const active = c === category;
             return (
               <button
                 key={c}
                 onClick={() => setCategory(c)}
+                aria-pressed={active}
                 className={
-                  "rounded-full border px-3 py-1 text-[11px] font-medium transition-colors " +
+                  "rounded-full border px-3 py-1.5 text-[11px] font-medium transition-colors " +
                   (active
                     ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-background text-muted-foreground hover:text-foreground")
+                    : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground")
                 }
               >
                 {c}
@@ -688,36 +713,39 @@ function Step2({
           })}
         </div>
 
-        {category === CUSTOM_CATEGORY && (
-          <CustomProductUploader
-            onAdd={(p, save) => {
-              setCustomProducts((prev) => [...prev, p]);
-              if (save) {
-                setSavedProducts((prev) => {
-                  // avoid duplicate ids
-                  if (prev.some((x) => x.id === p.id)) return prev;
-                  return [...prev, p];
-                });
-              }
-            }}
-          />
-        )}
+        <div className="mt-4">
+          {category === CUSTOM_CATEGORY && (
+            <CustomProductUploader
+              onAdd={(p, save) => {
+                setCustomProducts((prev) => [...prev, p]);
+                if (save) {
+                  setSavedProducts((prev) => {
+                    if (prev.some((x) => x.id === p.id)) return prev;
+                    return [...prev, p];
+                  });
+                }
+              }}
+            />
+          )}
 
-        {category === SAVED_CATEGORY && savedProducts.length > 0 && (
-          <p className="mb-3 text-[11px] leading-snug text-muted-foreground">
-            I prodotti salvati restano disponibili anche nei progetti futuri su
-            questo dispositivo.
-          </p>
-        )}
+          {category === SAVED_CATEGORY && savedProducts.length > 0 && (
+            <p className="mb-3 text-[11px] leading-snug text-muted-foreground">
+              I prodotti salvati restano disponibili anche nei progetti futuri su
+              questo dispositivo.
+            </p>
+          )}
+        </div>
 
-        <div className="max-h-[560px] space-y-2 overflow-y-auto pr-1">
+        <div className="max-h-[560px] space-y-1.5 overflow-y-auto pr-1">
           {filteredProducts.length === 0 && (
-            <p className="text-sm text-muted-foreground">
-              {category === CUSTOM_CATEGORY
-                ? "Nessun prodotto personale. Caricane uno qui sopra."
-                : category === SAVED_CATEGORY
-                  ? "Nessun prodotto salvato. Quando aggiungi un tuo prodotto, spunta la casella per salvarlo qui."
-                  : "Nessun prodotto in questa categoria."}
+            <p className="rounded-lg border border-dashed border-border px-3 py-6 text-center text-xs text-muted-foreground">
+              {query.trim()
+                ? "Nessun risultato per questa ricerca."
+                : category === CUSTOM_CATEGORY
+                  ? "Nessun prodotto personale. Caricane uno qui sopra."
+                  : category === SAVED_CATEGORY
+                    ? "Nessun prodotto salvato. Quando aggiungi un tuo prodotto, spunta la casella per salvarlo qui."
+                    : "Nessun prodotto in questa categoria."}
             </p>
           )}
           {filteredProducts.map((p: Product) => {
@@ -726,7 +754,7 @@ function Step2({
             return (
               <div
                 key={p.id}
-                className="group flex w-full items-center gap-3 rounded-xl border border-border bg-background p-2 text-left transition-colors hover:border-primary/50 hover:bg-secondary/40"
+                className="group flex w-full items-center gap-3 rounded-xl border border-transparent p-2 text-left transition-colors hover:border-border hover:bg-secondary/50"
               >
                 <button
                   onClick={() => addProduct(p)}
@@ -736,38 +764,31 @@ function Step2({
                     src={p.immagine_url}
                     alt={p.nome}
                     loading="lazy"
-                    className="h-14 w-14 flex-shrink-0 rounded-md object-cover"
+                    className="h-14 w-14 flex-shrink-0 rounded-lg border border-border/60 object-cover"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="line-clamp-2 text-xs leading-tight">
-                      {p.nome}
-                    </p>
-                    <p className="mt-1 text-xs font-semibold text-primary">
+                    <p className="line-clamp-2 text-xs leading-snug">{p.nome}</p>
+                    <p className="mt-1 text-xs font-semibold tabular-nums text-primary">
                       {p.prezzo > 0
                         ? `€ ${p.prezzo.toFixed(2)}`
                         : `${p.larghezza_cm ?? "?"}×${p.profondita_cm ?? "?"} cm`}
                     </p>
                   </div>
-                  <Plus className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary" />
+                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                    <Plus className="h-4 w-4" />
+                  </span>
                 </button>
-                {isCustom && (
+                {(isCustom || isSaved) && (
                   <button
-                    onClick={() => removeCustom(p.id)}
-                    className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                    aria-label="Elimina prodotto personale"
-                    title="Elimina dal catalogo personale"
+                    onClick={() => (isCustom ? removeCustom(p.id) : removeSaved(p.id))}
+                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    aria-label={
+                      isCustom
+                        ? "Elimina prodotto personale"
+                        : "Rimuovi dai prodotti salvati"
+                    }
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                )}
-                {isSaved && (
-                  <button
-                    onClick={() => removeSaved(p.id)}
-                    className="flex-shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                    aria-label="Rimuovi dai prodotti salvati"
-                    title="Rimuovi dai prodotti salvati"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 )}
               </div>
@@ -776,20 +797,13 @@ function Step2({
         </div>
       </aside>
 
-
       {/* Nav */}
-      <div className="col-span-full flex items-center justify-between pt-2">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
-        >
+      <div className="col-span-full flex flex-col-reverse gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
+        <button onClick={onBack} className="btn btn-secondary w-full sm:w-auto">
           <ArrowLeft className="h-4 w-4" />
           Indietro
         </button>
-        <button
-          onClick={onNext}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-        >
+        <button onClick={onNext} className="btn btn-primary w-full sm:w-auto">
           Vai al riepilogo
           <ArrowRight className="h-4 w-4" />
         </button>
@@ -797,6 +811,7 @@ function Step2({
     </section>
   );
 }
+
 
 /* ------------------------------------------------------------------ */
 /* Room canvas with drag & drop                                       */
