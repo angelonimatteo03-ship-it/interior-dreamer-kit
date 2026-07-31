@@ -1076,22 +1076,23 @@ function Step3({
 
   return (
     <section className="space-y-6">
-      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+      <div className="surface p-5 sm:p-8">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-3xl">Riepilogo shopping list</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="eyebrow">Passo 3 di 3</p>
+            <h2 className="mt-2 text-3xl sm:text-4xl">Shopping list</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
               {grouped.length === 0
                 ? "Nessun prodotto selezionato."
-                : `${grouped.length} prodotti · ${items.length} pezzi totali`}
+                : `${grouped.length} prodotti · ${items.length} pezzi · stanza ${width} × ${length} m`}
             </p>
           </div>
           <button
             onClick={() => window.print()}
-            className="no-print inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="no-print btn btn-secondary w-full sm:w-auto"
           >
             <Printer className="h-4 w-4" />
-            Esporta Shopping List
+            Esporta shopping list
           </button>
         </div>
 
@@ -1100,97 +1101,132 @@ function Step3({
             Torna indietro e aggiungi prodotti alla stanza.
           </div>
         ) : (
-          <div className="overflow-hidden rounded-xl border border-border">
-            <table className="w-full text-sm">
-              <thead className="bg-secondary/60 text-left text-xs uppercase tracking-widest text-muted-foreground">
-                <tr>
-                  <th className="p-3">Prodotto</th>
-                  <th className="p-3 text-center">Qtà</th>
-                  <th className="p-3 text-right">Prezzo</th>
-                  <th className="p-3 text-right">Subtotale</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {grouped.map(({ product, qty }) => (
-                  <tr key={product.id} className="bg-card">
-                    <td className="p-3">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={product.immagine_url}
-                          alt={product.nome}
-                          className="h-14 w-14 rounded-md object-cover"
-                        />
-                        <div className="min-w-0">
-                          <p className="line-clamp-2 leading-snug">
-                            {product.nome}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {product.categoria}
-                          </p>
-                          <a
-                            href={product.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="no-print text-xs text-primary underline-offset-2 hover:underline"
-                          >
-                            Scheda prodotto ↗
-                          </a>
+          <>
+            {/* Desktop table */}
+            <div className="hidden overflow-hidden rounded-xl border border-border sm:block">
+              <table className="w-full text-sm">
+                <thead className="bg-secondary/70 text-left text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                  <tr>
+                    <th className="p-3 font-medium">Prodotto</th>
+                    <th className="p-3 text-center font-medium">Qtà</th>
+                    <th className="p-3 text-right font-medium">Prezzo</th>
+                    <th className="p-3 text-right font-medium">Subtotale</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {grouped.map(({ product, qty }) => (
+                    <tr key={product.id} className="bg-card align-top">
+                      <td className="p-3">
+                        <div className="flex items-start gap-3">
+                          <img
+                            src={product.immagine_url}
+                            alt={product.nome}
+                            className="h-14 w-14 rounded-lg border border-border/60 object-cover"
+                          />
+                          <div className="min-w-0">
+                            <p className="line-clamp-2 leading-snug">{product.nome}</p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">
+                              {product.categoria}
+                            </p>
+                            {product.link && (
+                              <a
+                                href={product.link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="no-print text-xs text-primary underline-offset-2 hover:underline"
+                              >
+                                Scheda prodotto ↗
+                              </a>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      </td>
+                      <td className="p-3 text-center">
+                        <span className="inline-flex min-w-8 items-center justify-center rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold tabular-nums">
+                          {qty}
+                        </span>
+                      </td>
+                      <td className="p-3 text-right tabular-nums text-muted-foreground">
+                        € {product.prezzo.toFixed(2)}
+                      </td>
+                      <td className="p-3 text-right font-semibold tabular-nums">
+                        € {(product.prezzo * qty).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="bg-secondary/50">
+                    <td className="p-4 text-right font-medium" colSpan={3}>
+                      Totale indicativo
                     </td>
-                    <td className="p-3 text-center">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-xs font-semibold">
-                        <Minus className="h-3 w-3 opacity-0" />
-                        {qty}
-                      </span>
-                    </td>
-                    <td className="p-3 text-right tabular-nums">
-                      € {product.prezzo.toFixed(2)}
-                    </td>
-                    <td className="p-3 text-right font-semibold tabular-nums">
-                      € {(product.prezzo * qty).toFixed(2)}
+                    <td className="p-4 text-right text-xl font-semibold tabular-nums text-primary">
+                      € {total.toFixed(2)}
                     </td>
                   </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr className="bg-secondary/40">
-                  <td className="p-4 text-right font-medium" colSpan={3}>
-                    Totale
-                  </td>
-                  <td className="p-4 text-right text-xl font-semibold text-primary tabular-nums">
-                    € {total.toFixed(2)}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+                </tfoot>
+              </table>
+            </div>
+
+            {/* Mobile list */}
+            <div className="space-y-3 sm:hidden">
+              {grouped.map(({ product, qty }) => (
+                <div
+                  key={product.id}
+                  className="flex items-start gap-3 rounded-xl border border-border p-3"
+                >
+                  <img
+                    src={product.immagine_url}
+                    alt={product.nome}
+                    className="h-16 w-16 flex-shrink-0 rounded-lg border border-border/60 object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 text-sm leading-snug">{product.nome}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      {product.categoria} · qtà {qty}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold tabular-nums">
+                      € {(product.prezzo * qty).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-center justify-between rounded-xl bg-secondary/60 px-4 py-3">
+                <span className="text-sm font-medium">Totale indicativo</span>
+                <span className="text-lg font-semibold tabular-nums text-primary">
+                  € {total.toFixed(2)}
+                </span>
+              </div>
+            </div>
+          </>
         )}
       </div>
 
-      <div className="no-print rounded-2xl border border-border bg-card p-6 sm:p-8">
-        <h3 className="text-xl">Salva e condividi</h3>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Salva il progetto sul tuo account per modificarlo in seguito o condividilo con un link pubblico.
+      <div className="no-print surface p-5 sm:p-8">
+        <p className="eyebrow">Condivisione</p>
+        <h3 className="mt-2 text-2xl">Salva e condividi il progetto</h3>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Ritrovalo nel tuo account o invialo al cliente con un link pubblico.
         </p>
 
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end">
           <div className="flex-1">
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+            <label className="label" htmlFor="design-name">
               Nome del progetto
             </label>
             <input
+              id="design-name"
               type="text"
               value={designName}
               onChange={(e) => setDesignName(e.target.value)}
-              placeholder="es. Soggiorno moderno"
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              placeholder="es. Soggiorno mediterraneo"
+              className="field"
             />
           </div>
           <button
             onClick={handleSave}
             disabled={saving || !user}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+            className="btn btn-primary w-full sm:w-auto"
           >
             <Save className="h-4 w-4" />
             {saving ? "Salvataggio…" : "Salva progetto"}
@@ -1199,7 +1235,7 @@ function Step3({
 
         {!user && (
           <p className="mt-3 text-xs text-muted-foreground">
-            <Link to="/auth" className="text-primary underline-offset-2 hover:underline">
+            <Link to="/auth" className="font-medium text-primary underline-offset-2 hover:underline">
               Accedi
             </Link>{" "}
             per salvare e condividere il progetto.
@@ -1207,36 +1243,38 @@ function Step3({
         )}
 
         {saveError && (
-          <p className="mt-3 text-xs text-destructive">{saveError}</p>
+          <p className="mt-3 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive">
+            {saveError}
+          </p>
         )}
 
         {savedSlug && (
-          <div className="mt-4 rounded-xl border border-border bg-secondary/30 p-4">
-            <p className="text-sm font-medium">Progetto salvato!</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
+          <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-4">
+            <p className="text-sm font-medium">Progetto salvato</p>
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
               <input
                 type="text"
                 readOnly
+                aria-label="Link pubblico del progetto"
                 value={shareUrl}
                 onFocus={(e) => e.currentTarget.select()}
-                className="min-w-0 flex-1 rounded-md border border-input bg-background px-3 py-2 text-xs"
+                className="field min-w-0 flex-1 text-xs"
               />
-              <a
-                href={shareUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium transition-colors hover:bg-secondary"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-                Apri
-              </a>
-              <button
-                onClick={copyLink}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium transition-colors hover:bg-secondary"
-              >
-                <Share2 className="h-3.5 w-3.5" />
-                {copied ? "Copiato!" : "Copia link"}
-              </button>
+              <div className="flex gap-2">
+                <a
+                  href={shareUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-secondary btn-sm flex-1"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Apri
+                </a>
+                <button onClick={copyLink} className="btn btn-secondary btn-sm flex-1">
+                  <Share2 className="h-4 w-4" />
+                  {copied ? "Copiato!" : "Copia link"}
+                </button>
+              </div>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
               Chiunque abbia il link può visualizzare il progetto.
@@ -1245,24 +1283,19 @@ function Step3({
         )}
       </div>
 
-      <div className="no-print flex items-center justify-between">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
-        >
+      <div className="no-print flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <button onClick={onBack} className="btn btn-secondary w-full sm:w-auto">
           <ArrowLeft className="h-4 w-4" />
           Modifica stanza
         </button>
-        <button
-          onClick={onRestart}
-          className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-        >
+        <button onClick={onRestart} className="btn btn-ghost w-full sm:w-auto">
           Nuova configurazione
         </button>
       </div>
     </section>
   );
 }
+
 
 /* ------------------------------------------------------------------ */
 /* 3D Render panel — AI-generated interior visualization              */
