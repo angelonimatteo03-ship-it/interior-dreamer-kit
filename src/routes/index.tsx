@@ -1470,23 +1470,25 @@ function Render3DPanel({
   };
 
   return (
-    <div className="no-print mt-6 rounded-xl border border-border bg-secondary/30 p-4">
+    <div className="no-print mt-6 rounded-xl border border-border bg-secondary/45 p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-medium">Render 3D fotorealistico</p>
+          <p className="eyebrow">Visualizzazione AI</p>
+          <p className="mt-1 text-sm font-medium">Render fotorealistico</p>
           <p className="text-xs text-muted-foreground">
-            Genera un'anteprima realistica della stanza con l'AI.
+            Un'anteprima realistica della stanza in pochi secondi.
           </p>
         </div>
         <button
           onClick={generate}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+          className="btn btn-primary btn-sm w-full sm:w-auto"
         >
           <Sparkles className="h-4 w-4" />
-          {loading ? "Generazione…" : src ? "Rigenera" : "Genera Render 3D"}
+          {loading ? "Generazione…" : src ? "Rigenera" : "Genera render 3D"}
         </button>
       </div>
+
 
       {error && (
         <p className="mt-3 rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
@@ -1757,13 +1759,6 @@ function CustomProductUploader({
       />
 
 
-      <input
-        type="text"
-        placeholder="Nome prodotto"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
-      />
 
       <div className="grid grid-cols-2 gap-2">
         <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
