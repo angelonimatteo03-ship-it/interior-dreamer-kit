@@ -1739,7 +1739,7 @@ function CustomProductUploader({
         placeholder="Nome prodotto"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+        className="field text-xs"
       />
 
       <input
@@ -1747,7 +1747,7 @@ function CustomProductUploader({
         placeholder="Link scheda prodotto (opzionale)"
         value={link}
         onChange={(e) => setLink(e.target.value)}
-        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+        className="field text-xs"
       />
 
       <input
@@ -1755,7 +1755,7 @@ function CustomProductUploader({
         placeholder="Descrizione breve (materiale, colore…)"
         value={descrizione}
         onChange={(e) => setDescrizione(e.target.value)}
-        className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+        className="field text-xs"
       />
 
 
@@ -1769,7 +1769,7 @@ function CustomProductUploader({
             max={500}
             value={larghezza}
             onChange={(e) => setLarghezza(Number(e.target.value) || 0)}
-            className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
+            className="field text-xs"
           />
           cm
         </label>
@@ -1781,7 +1781,7 @@ function CustomProductUploader({
             max={500}
             value={profondita}
             onChange={(e) => setProfondita(Number(e.target.value) || 0)}
-            className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
+            className="field text-xs"
           />
           cm
         </label>
