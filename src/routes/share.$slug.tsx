@@ -118,8 +118,18 @@ function SharedDesignPage() {
                       src={p.immagine_url}
                       alt={p.nome}
                       draggable={false}
-                      className="pointer-events-none h-full w-full object-cover"
-                      style={{ transform: `rotate(${it.rotation}deg)` }}
+                      className="pointer-events-none absolute left-1/2 top-1/2 max-w-none object-cover"
+                      style={{
+                        width:
+                          it.rotation === 90 || it.rotation === 270
+                            ? `${(hCm / wCm) * 100}%`
+                            : "100%",
+                        height:
+                          it.rotation === 90 || it.rotation === 270
+                            ? `${(wCm / hCm) * 100}%`
+                            : "100%",
+                        transform: `translate(-50%, -50%) rotate(${it.rotation}deg)`,
+                      }}
                     />
                   </div>
                 );
