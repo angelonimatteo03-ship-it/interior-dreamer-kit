@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { getVercelOidcToken } from "@vercel/oidc";
 
 type GatewayImage = {
   type?: string;
@@ -48,7 +49,7 @@ export const Route = createFileRoute("/api/render-room")({
           }
 
           const token =
-            process.env.AI_GATEWAY_API_KEY ?? process.env.VERCEL_OIDC_TOKEN;
+            process.env.AI_GATEWAY_API_KEY ?? (await getVercelOidcToken());
           if (!token) {
             return new Response(
               "Il servizio di rendering non è disponibile in questo ambiente.",
