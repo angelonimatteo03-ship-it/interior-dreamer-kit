@@ -852,6 +852,28 @@ function Step2({
   const selectedItem = items.find((i) => i.uid === selectedUid) ?? null;
   const selectedProduct = selectedItem ? findProduct(selectedItem.productId) : null;
 
+  // Keep restored projects valid after room-size changes and repair older
+  // drafts that may contain furniture outside the room boundaries.
+  useEffect(() => {
+    setItems((prev) => {
+      let changed = false;
+      const next = prev.map((it) => {
+        const product = findProduct(it.productId);
+        if (!product) return it;
+        const fp = getFootprint(product);
+        const rotated = it.rotation === 90 || it.rotation === 270;
+        const itemWidth = rotated ? fp.d : fp.w;
+        const itemHeight = rotated ? fp.w : fp.d;
+        const x = clamp(it.x, 0, Math.max(0, roomWidthCm - itemWidth));
+        const y = clamp(it.y, 0, Math.max(0, roomLengthCm - itemHeight));
+        if (x === it.x && y === it.y) return it;
+        changed = true;
+        return { ...it, x, y };
+      });
+      return changed ? next : prev;
+    });
+  }, [findProduct, roomWidthCm, roomLengthCm, setItems]);
+
   const addProduct = useCallback(
     (p: Product) => {
       const fp = getFootprint(p);
@@ -875,11 +897,22 @@ function Step2({
   const rotateSelected = () => {
     if (!selectedUid) return;
     setItems((prev) =>
-      prev.map((it) =>
-        it.uid === selectedUid
-          ? { ...it, rotation: (((it.rotation + 90) % 360) as 0 | 90 | 180 | 270) }
-          : it,
-      ),
+      prev.map((it) => {
+        if (it.uid !== selectedUid) return it;
+        const product = findProduct(it.productId);
+        if (!product) return it;
+        const rotation = ((it.rotation + 90) % 360) as 0 | 90 | 180 | 270;
+        const fp = getFootprint(product);
+        const rotated = rotation === 90 || rotation === 270;
+        const itemWidth = rotated ? fp.d : fp.w;
+        const itemHeight = rotated ? fp.w : fp.d;
+        return {
+          ...it,
+          rotation,
+          x: clamp(it.x, 0, Math.max(0, roomWidthCm - itemWidth)),
+          y: clamp(it.y, 0, Math.max(0, roomLengthCm - itemHeight)),
+        };
+      }),
     );
     setAnnounce("Arredo ruotato di 90 gradi");
   };
@@ -887,13 +920,16 @@ function Step2({
   const recenterSelected = () => {
     if (!selectedItem || !selectedProduct) return;
     const fp = getFootprint(selectedProduct);
+    const rotated = selectedItem.rotation === 90 || selectedItem.rotation === 270;
+    const itemWidth = rotated ? fp.d : fp.w;
+    const itemHeight = rotated ? fp.w : fp.d;
     setItems((prev) =>
       prev.map((it) =>
         it.uid === selectedItem.uid
           ? {
               ...it,
-              x: Math.max(0, (roomWidthCm - fp.w) / 2),
-              y: Math.max(0, (roomLengthCm - fp.d) / 2),
+              x: Math.max(0, (roomWidthCm - itemWidth) / 2),
+              y: Math.max(0, (roomLengthCm - itemHeight) / 2),
             }
           : it,
       ),
