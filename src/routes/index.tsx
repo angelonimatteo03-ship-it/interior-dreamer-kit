@@ -2091,8 +2091,12 @@ function RoomCanvas({
                   src={p.immagine_url}
                   alt=""
                   draggable={false}
-                  className="pointer-events-none h-full w-full rounded-sm object-cover"
-                  style={{ transform: `rotate(${it.rotation}deg)` }}
+                  className="pointer-events-none absolute left-1/2 top-1/2 max-w-none rounded-sm object-cover"
+                  style={{
+                    width: rotated ? `${(hCm / wCm) * 100}%` : "100%",
+                    height: rotated ? `${(wCm / hCm) * 100}%` : "100%",
+                    transform: `translate(-50%, -50%) rotate(${it.rotation}deg)`,
+                  }}
                 />
                 {selected && (
                   <>
@@ -2194,8 +2198,38 @@ function Step3({
   const [copied, setCopied] = useState(false);
   const [confirmNew, setConfirmNew] = useState(false);
   const [origin, setOrigin] = useState("");
+  const confirmDialogRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => setOrigin(window.location.origin), []);
+
+  useEffect(() => {
+    if (!confirmNew) return;
+    const dialog = confirmDialogRef.current;
+    const focusable = dialog?.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    focusable?.[0]?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setConfirmNew(false);
+        return;
+      }
+      if (event.key !== "Tab" || !focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [confirmNew]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, { product: Product; qty: number }>();
@@ -2485,13 +2519,15 @@ function Step3({
             aria-hidden
           />
           <div
+            ref={confirmDialogRef}
             role="alertdialog"
             aria-modal="true"
-            aria-label="Nuova configurazione"
+            aria-labelledby="confirm-new-title"
+            aria-describedby="confirm-new-description"
             className="surface relative w-full max-w-sm p-5"
           >
-            <h3 className="text-xl">Creare una nuova configurazione?</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <h3 id="confirm-new-title" className="text-xl">Creare una nuova configurazione?</h3>
+            <p id="confirm-new-description" className="mt-2 text-sm text-muted-foreground">
               {saveState === "saved"
                 ? "Il progetto attuale resta salvato nel tuo account."
                 : "Le modifiche non salvate andranno perse."}
@@ -3056,5 +3092,3 @@ function CustomProductUploader({
     </div>
   );
 }
-
-
