@@ -1,14 +1,240 @@
-# Welcome to your Lovable project
+# MDM 2.0
+
+Crea una web app React + Tailwind CSS chiamata "Configuratore Stanze MDM" per venditori Maisons du Monde.
+
+
+
+**Stile:** Estetica calda e naturale Maisons du Monde (beige, terracotta, verde salvia, crema). Design pulito, elegante, molto spazio bianco, look interior design.
+
+
+
+**Flusso in 3 step con navigazione chiara (pulsanti Avanti/Indietro):**
+
+
+
+**Step 1 — Impostazione Stanza**
+
+- Slider o input numerici per Larghezza (2-8m) e Lunghezza (2-8m)
+
+- Palette di 8 colori pareti con nome + swatch (crema, beige, grigio chiaro, terracotta, salvia, azzurro chiaro, tortora, bianco)
+
+- Bottone "Continua"
+
+
+
+**Step 2 — Progettazione Stanza**
+
+- Area centrale: vista dall'alto (2D) della stanza in scala, rettangolo con bordi e pareti colorate secondo la scelta
+
+- Sidebar destra: Tabs per categorie (Divani, Tavoli da pranzo, Sedie, Poltrone, Tavolini, Tappeti, Decorazioni)
+
+- Ogni prodotto mostra: immagine piccola, nome, prezzo
+
+- Cliccando un prodotto lo aggiunge alla stanza come rettangolo/icona proporzionata
+
+- Funzionalità drag & drop per spostare gli oggetti + pulsante per ruotare di 90°
+
+- Clic su oggetto nella stanza per rimuoverlo
+
+
+
+**Step 3 — Riepilogo**
+
+- Lista dei prodotti selezionati (nome, prezzo, quantità)
+
+- Totale prezzo
+
+- Bottone "Esporta Shopping List" che mostra un riepilogo chiaro e stampabile
+
+
+
+**Dati prodotti (statici JSON):**
+
+
+
+[
+
+  {"nome": "Lilo - Divano nuvola 3/4 posti in tessuto bouclé azzurro", "categoria": "Divani", "prezzo": 1199.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253096/divano-nuvola-3-4-posti-in-tessuto-boucle-azzurro.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-nuvola-3-4-posti-in-tessuto-boucle-azzurro-lilo-253096.htm"},
+
+  {"nome": "Lilo - Divano nuvola a 2 posti in tessuto bouclé azzurro", "categoria": "Divani", "prezzo": 999.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253097/divano-nuvola-a-2-posti-in-tessuto-boucle-azzurro.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-nuvola-a-2-posti-in-tessuto-boucle-azzurro-lilo-253097.htm"},
+
+  {"nome": "Boogie - Poltrona girevole in tessuto bouclé azzurro", "categoria": "Poltrone", "prezzo": 349.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253095/poltrona-girevole-in-tessuto-boucle-azzurro.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-girevole-in-tessuto-boucle-azzurro-boogie-253095.htm"},
+
+  {"nome": "Davis - Poltrona vintage marrone", "categoria": "Poltrone", "prezzo": 169.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-vintage-marrone-1000-3-10-155400_2.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-vintage-marrone-davis-155400.htm"},
+
+  {"nome": "Requiem - Poltrona in velluto talpa con gambe in acciaio color ottone", "categoria": "Poltrone", "prezzo": 299.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-in-velluto-talpa-con-gambe-in-acciaio-color-ottone-1000-7-9-198941_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-in-velluto-talpa-con-gambe-in-acciaio-color-ottone-requiem-198941.htm"},
+
+  {"nome": "Joseph - Tavolino in argilla azzurro", "categoria": "Tavolini", "prezzo": 99.99, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253256/tavolino-in-argilla-azzurro.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-in-argilla-azzurro-joseph-253256.htm"},
+
+  {"nome": "Tarifa - Tavolo da pranzo vintage per 4/6 persone lung. 160 cm", "categoria": "Tavoli da pranzo", "larghezza_cm": 160, "prezzo": 379.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-vintage-per-4-6-persone-lung-160-cm-1000-14-37-217665_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-vintage-per-4-6-persone-lung-160-cm-tarifa-217665.htm"},
+
+  {"nome": "Stockholm - Tavolo alto per sala da pranzo in massello di legno di sheesham 150 cm", "categoria": "Tavoli da pranzo", "larghezza_cm": 150, "prezzo": 529.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-alto-per-sala-da-pranzo-in-massello-di-legno-di-sheesham-150-cm-1000-9-26-115728_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-alto-per-sala-da-pranzo-in-massello-di-legno-di-sheesham-150-cm-stockholm-115728.htm"},
+
+  {"nome": "Phea - Tavolo da pranzo in vetro effetto marmo bianco e metallo ottone/nero Ø 120 cm", "categoria": "Tavoli da pranzo", "larghezza_cm": 120, "prezzo": 259.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-in-vetro-effetto-marmo-bianco-e-metallo-color-ottone-e-nero-per-5-6-persone-oe-120-cm-1000-6-4-219969_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-in-vetro-effetto-marmo-bianco-e-metallo-color-ottone-e-nero-per-5-6-persone-oe-120-cm-phea-219969.htm"},
+
+  {"nome": "Boop - Tavolo da pranzo allungabile bianco 6 a 10 persone 150/220 cm", "categoria": "Tavoli da pranzo", "larghezza_cm": "150-220", "prezzo": 279.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-allungabile-bianco-6-a-10-persone-150-220-cm-1000-4-24-138809_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-allungabile-bianco-6-a-10-persone-150-220-cm-boop-138809.htm"},
+
+  {"nome": "Ice - Sedia in stile scandinavo grigio acciaio e legno di hevea", "categoria": "Sedie", "prezzo": 69.99, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedia-in-stile-scandinavo-grigio-acciaio-e-legno-di-hevea-1000-0-7-210460_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-in-stile-scandinavo-grigio-acciaio-e-legno-di-hevea-ice-210460.htm"},
+
+  {"nome": "Fiby - Sedie in polipropilene e acciaio beige (x2)", "categoria": "Sedie", "prezzo": 119.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedie-in-polipropilene-e-acciaio-beige-x2-1000-15-0-238661_5.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedie-in-polipropilene-e-acciaio-beige-x2-fiby-238661.htm"},
+
+  {"nome": "Jorari - Tappeto in lana tuftato con motivo astratto azzurro 160x230 cm", "categoria": "Tappeti", "larghezza_cm": 160, "profondita_cm": 230, "prezzo": 269.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253229/tappeto-in-lana-tuftato-con-motivo-astratto-azzurro-160x230-cm.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-in-lana-tuftato-con-motivo-astratto-azzurro-160x230-cm-jorari-253229.htm"},
+
+  {"nome": "Udupi - Plaid azzurro in cotone ricamato con motivo floreale 170x130 cm", "categoria": "Tessile", "larghezza_cm": 170, "profondita_cm": 130, "prezzo": 109.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253230/plaid-azzurro-in-cotone-ricamato-con-motivo-floreale-170x130-cm.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/plaid-azzurro-in-cotone-ricamato-con-motivo-floreale-170x130-cm-udupi-253230.htm"},
+
+  {"nome": "Omera - Specchio in legno di eucalipto con modanature blu 119x194 cm", "categoria": "Decorazioni", "larghezza_cm": 119, "profondita_cm": 194, "prezzo": 299.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253272/specchio-in-legno-di-eucalipto-con-modanature-blu-119x194-cm.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/specchio-in-legno-di-eucalipto-con-modanature-blu-119x194-cm-omera-253272.htm"},
+
+  {"nome": "Alma - Set di 2 bauli in acciaio blu", "categoria": "Decorazioni", "prezzo": 69.99, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/253231/set-di-2-bauli-in-acciaio-blu.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-2-bauli-in-acciaio-blu-alma-253231.htm"},
+
+
+
+  {"nome": "Hankies - Tavolo da pranzo estensibile in massello di mango e acciaio nero 170/250 cm", "categoria": "Tavoli da pranzo", "prezzo": 879.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-estensibile-in-massello-di-mango-e-acciaio-nero-per-8-10-persone-lung-170-250-cm-1000-4-10-219729_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-estensibile-in-massello-di-mango-e-acciaio-nero-per-8-10-persone-lung-170-250-cm-hankies-219729.htm"},
+
+  {"nome": "Alya - Tavolo da pranzo rettangolare in legno massello di acacia 240 cm", "categoria": "Tavoli da pranzo", "prezzo": 1199.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/238747_0/tavolo-da-pranzo-rettangolare-in-legno-massello-di-acacia-per-8-12-persone-lung-240-cm.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-rettangolare-in-legno-massello-di-acacia-per-8-12-persone-lung-240-cm-alya-238747.htm"},
+
+  {"nome": "Lourmarin - Tavolo per sala da pranzo in legno riciclato effetto anticato L 220 cm", "categoria": "Tavoli da pranzo", "prezzo": 1599.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-per-sala-da-pranzo-in-legno-riciclato-effetto-anticato-l-220-cm-1000-11-22-121833_3.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-per-sala-da-pranzo-in-legno-riciclato-effetto-anticato-l-220-cm-lourmarin-121833.htm"},
+
+  {"nome": "Kinfolk - Tavolo da pranzo in legno di pino riciclato 10 persone D 240", "categoria": "Tavoli da pranzo", "prezzo": 899.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-in-legno-di-pino-riciclato-10-persone-d-240-1000-13-19-199525_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-in-legno-di-pino-riciclato-10-persone-d-240-kinfolk-199525.htm"},
+
+  {"nome": "Palissandre - Tavolo da pranzo 8 persone in acacia e metallo nero 160 cm", "categoria": "Tavoli da pranzo", "prezzo": 629.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-8-persone-in-acacia-e-metallo-nero-160-cm-1000-14-38-197945_7.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-8-persone-in-acacia-e-metallo-nero-160-cm-palissandre-197945.htm"},
+
+  {"nome": "Rhea - Tavolo da pranzo in vetro temprato effetto marmo 4 persone L140", "categoria": "Tavoli da pranzo", "prezzo": 229.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/199656/tavolo-da-pranzo-in-vetro-temprato-effetto-marmo-4-persone-l140.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-in-vetro-temprato-effetto-marmo-4-persone-l140-rhea-199656.htm"},
+
+  {"nome": "Danube - Tavolo da pranzo allungabile 6 a 10 persone 160/240 cm", "categoria": "Tavoli da pranzo", "prezzo": 499.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-allungabile-6-a-10-persone-160-240-cm-1000-4-3-129850_4.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-allungabile-6-a-10-persone-160-240-cm-danube-129850.htm"},
+
+  {"nome": "Spring - Tavolo per sala da pranzo scandinavo bianco 4/5 persone 150 cm", "categoria": "Tavoli da pranzo", "prezzo": 159.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-per-sala-da-pranzo-scandinavo-bianco-4-5-persone-150-cm-1000-3-4-165685_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-per-sala-da-pranzo-scandinavo-bianco-4-5-persone-150-cm-spring-165685.htm"},
+
+  {"nome": "Montmorency - Tavolo per sala da pranzo in massello di pino L 250 cm", "categoria": "Tavoli da pranzo", "prezzo": 1199.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/229116/tavolo-per-sala-da-pranzo-in-massello-di-pino-l-250-cm.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-per-sala-da-pranzo-in-massello-di-pino-l-250-cm-montmorency-229116.htm"},
+
+  {"nome": "Louis - Tavolo da pranzo rotondo allungabile 4 a 14 persone in bianca betulla L 120/280 cm", "categoria": "Tavoli da pranzo", "prezzo": 1049.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolo-da-pranzo-rotondo-allungabile-4-a-14-persone-in-bianca-betulla-l-120-280-cm-1000-4-36-166332_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolo-da-pranzo-rotondo-allungabile-4-a-14-persone-in-bianca-betulla-l-120-280-cm-louis-166332.htm"},
+
+
+
+  {"nome": "Louis - Sedia medaglione in legno di frassino, paglia di Vienna e lino beige e blu-grigio", "categoria": "Sedie", "prezzo": 219.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedia-medaglione-in-legno-di-frassino-paglia-di-vienna-e-lino-beige-e-blu-grigio-1000-1-39-234805_6.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-medaglione-in-legno-di-frassino-paglia-di-vienna-e-lino-beige-e-blu-grigio-louis-234805.htm"},
+
+  {"nome": "Flemming - Sedia imbottita in pelle di bufalo marrone e acciaio nero", "categoria": "Sedie", "prezzo": 169.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedia-imbottita-in-pelle-di-bufalo-marrone-e-acciaio-nero-1000-0-25-199121_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-imbottita-in-pelle-di-bufalo-marrone-e-acciaio-nero-flemming-199121.htm"},
+
+  {"nome": "Sockette - Poltroncina da pranzo in velluto nero e paglia di Vienna", "categoria": "Sedie", "prezzo": 159.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltroncina-da-pranzo-in-velluto-nero-e-paglia-di-vienna-1000-7-22-219987_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltroncina-da-pranzo-in-velluto-nero-e-paglia-di-vienna-sockette-219987.htm"},
+
+  {"nome": "Mangrove - Sedia in legno di frassino medio e carta intrecciata", "categoria": "Sedie", "prezzo": 229.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedia-in-legno-di-frassino-medio-e-carta-intrecciata-1000-0-9-238629_15.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-in-legno-di-frassino-medio-e-carta-intrecciata-mangrove-238629.htm"},
+
+  {"nome": "Isys - Sedia in velluto di cotone beige cappuccino e acciaio nero", "categoria": "Sedie", "prezzo": 159.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedia-in-velluto-di-cotone-beige-cappuccino-e-acciaio-nero-1000-16-32-210034_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-in-velluto-di-cotone-beige-cappuccino-e-acciaio-nero-isys-210034.htm"},
+
+  {"nome": "Willem - Sedia con braccioli in pelle bovina marrone anticato", "categoria": "Sedie", "prezzo": 369.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedia-con-braccioli-in-pelle-bovina-marrone-anticato-1000-0-20-241961_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-con-braccioli-in-pelle-bovina-marrone-anticato-willem-241961.htm"},
+
+  {"nome": "Rafael - Poltrona da pranzo in legno di frassino e tessuto écru effetto lana bouclé", "categoria": "Sedie", "prezzo": 199.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-da-pranzo-in-legno-di-frassino-e-tessuto-ecru-effetto-lana-boucle-1000-4-9-234570_14.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-da-pranzo-in-legno-di-frassino-e-tessuto-ecru-effetto-lana-boucle-rafael-234570.htm"},
+
+  {"nome": "Sixtine - Sedia da pranzo in tessuto blu e legno di rovere", "categoria": "Sedie", "prezzo": 189.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/252602/sedia-da-pranzo-in-tessuto-blu-e-legno-di-rovere.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-da-pranzo-in-tessuto-blu-e-legno-di-rovere-sixtine-252602.htm"},
+
+  {"nome": "Sixtine - Sedia in tessuto beige crema e legno di rovere", "categoria": "Sedie", "prezzo": 139.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/252608_0/sedia-in-tessuto-beige-crema-e-legno-di-rovere.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-in-tessuto-beige-crema-e-legno-di-rovere-sixtine-252608.htm"},
+
+  {"nome": "Louis - Sedia a medaglione in lino grigio chiaro e massello di frassino", "categoria": "Sedie", "prezzo": 199.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/sedia-a-medaglione-in-lino-grigio-chiaro-e-massello-di-frassino-1000-9-6-234813_4.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/sedia-a-medaglione-in-lino-grigio-chiaro-e-massello-di-frassino-louis-234813.htm"},
+
+
+
+  {"nome": "Sinatra - Poltrona marrone in cuoio effetto anticato", "categoria": "Poltrone", "prezzo": 799.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-marrone-in-cuoio-effetto-anticato-1000-10-37-241937_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-marrone-in-cuoio-effetto-anticato-sinatra-241937.htm"},
+
+  {"nome": "Majestic - Poltrona in pelle nera", "categoria": "Poltrone", "prezzo": 899.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-in-pelle-nera-1000-9-29-232909_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-in-pelle-nera-majestic-232909.htm"},
+
+  {"nome": "Baltimore - Poltrona marrone in microfibra", "categoria": "Poltrone", "prezzo": 199.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-marrone-in-microfibra-1000-0-9-115957_2.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-marrone-in-microfibra-baltimore-115957.htm"},
+
+  {"nome": "Beaubourg - Poltrona in bouclé écru e acciaio cromato", "categoria": "Poltrone", "prezzo": 399.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-in-boucle-ecru-e-acciaio-cromato-1000-8-4-249653_2.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-in-boucle-ecru-e-acciaio-cromato-beaubourg-249653.htm"},
+
+  {"nome": "Coquille - Poltrona uovo stile industriale in pelle marrone", "categoria": "Poltrone", "prezzo": 1799.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/249654/poltrona-uovo-stile-industriale-in-pelle-marrone.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-uovo-stile-industriale-in-pelle-marrone-coquille-249654.htm"},
+
+  {"nome": "Chesterfield - Poltrona imbottita marrone in cuoio", "categoria": "Poltrone", "prezzo": 899.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/241941/poltrona-imbottita-marrone-in-cuoio.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-imbottita-marrone-in-cuoio-chesterfield-241941.htm"},
+
+  {"nome": "Cambridge - Poltrona marrone in cuoio effetto anticato", "categoria": "Poltrone", "prezzo": 599.00, "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/249719/poltrona-marrone-in-cuoio-effetto-anticato.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-marrone-in-cuoio-effetto-anticato-cambridge-249719.htm"},
+
+  {"nome": "Canyon - Poltrona cammello e acciaio nero", "categoria": "Poltrone", "prezzo": 269.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-cammello-e-acciaio-nero-1000-6-16-246098_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-cammello-e-acciaio-nero-canyon-246098.htm"},
+
+  {"nome": "Canyon - Poltrona in tessuto tramato écru e acciaio nero", "categoria": "Poltrone", "prezzo": 269.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-in-tessuto-tramato-ecru-e-acciaio-nero-1000-5-15-246097_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-in-tessuto-tramato-ecru-e-acciaio-nero-canyon-246097.htm"},
+
+  {"nome": "Arizona - Poltrona Club in suede marrone", "categoria": "Poltrone", "prezzo": 299.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/poltrona-club-in-suede-marrone-1000-1-11-50180567_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/poltrona-club-in-suede-marrone-arizona-50180567.htm"},
+
+
+
+  {"nome": "Loopa - Tavolini sovrapponibili rotondi", "categoria": "Tavolini da salotto", "prezzo": 199.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolini-sovrapponibili-rotondi-1000-6-34-229880_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolini-sovrapponibili-rotondi-loopa-229880.htm"},
+
+  {"nome": "Marble - Tavolino da salotto in marmo bianco e metallo color ottone lung. 110 cm", "categoria": "Tavolini da salotto", "prezzo": 529.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-in-marmo-bianco-e-metallo-color-ottone-lung-110-cm-1000-9-25-216997_2.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-in-marmo-bianco-e-metallo-color-ottone-lung-110-cm-marble-216997.htm"},
+
+  {"nome": "Gandhi - Tavolino da salotto indiano in massello di mango lung. 140 cm", "categoria": "Tavolini da salotto", "prezzo": 479.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-indiano-in-massello-di-mango-lung-140-cm-1000-5-4-110335_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-indiano-in-massello-di-mango-lung-140-cm-gandhi-110335.htm"},
+
+  {"nome": "Betsy - Tavolino da salotto in legno massello di rovere e vetro lung. 100 cm", "categoria": "Tavolini da salotto", "prezzo": 99.99, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-in-legno-massello-di-rovere-e-vetro-lung-100-cm-1000-11-35-187487_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-in-legno-massello-di-rovere-e-vetro-lung-100-cm-betsy-187487.htm"},
+
+  {"nome": "Stockholm - Tavolino da salotto in massello di legno di sheesham lung. 100 cm", "categoria": "Tavolini da salotto", "prezzo": 339.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-in-massello-di-legno-di-sheesham-lung-100-cm-1000-9-21-129991_4.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-in-massello-di-legno-di-sheesham-lung-100-cm-stockholm-129991.htm"},
+
+  {"nome": "Portobello - Tavolino da salotto rettangolare in legno massello di rovere lung. 130 cm", "categoria": "Tavolini da salotto", "prezzo": 149.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-rettangolare-in-legno-massello-di-rovere-lung-130-cm-1000-2-37-241691_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-rettangolare-in-legno-massello-di-rovere-lung-130-cm-portobello-241691.htm"},
+
+  {"nome": "Manilal - Tavolino da salotto rotondo in legno massello di mango scolpito Ø 90 cm", "categoria": "Tavolini da salotto", "prezzo": 419.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-rotondo-in-legno-massello-di-mango-scolpito-90-cm-1000-16-0-176136_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-rotondo-in-legno-massello-di-mango-scolpito-90-cm-manilal-176136.htm"},
+
+  {"nome": "Travertino - Tavolino da salotto in marmo bianco effetto travertino e mango lung. 120 cm", "categoria": "Tavolini da salotto", "prezzo": 419.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-in-marmo-bianco-effetto-travertino-e-legno-massello-di-mango-lung-120-cm-1000-14-0-220334_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-in-marmo-bianco-effetto-travertino-e-legno-massello-di-mango-lung-120-cm-travertino-220334.htm"},
+
+  {"nome": "Wonka - Tavolino da salotto rotondo bianco e nero Ø 100 cm", "categoria": "Tavolini da salotto", "prezzo": 899.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-rotondo-bianco-e-nero-oe-100-cm-1000-1-21-234295_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-rotondo-bianco-e-nero-oe-100-cm-wonka-234295.htm"},
+
+  {"nome": "Esfera - Tavolino da salotto rotondo in pietra e legno massello di mango Ø 100 cm", "categoria": "Tavolini da salotto", "prezzo": 549.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tavolino-da-salotto-rotondo-in-pietra-e-legno-massello-di-mango-oe-100-cm-1000-10-35-238860_8.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tavolino-da-salotto-rotondo-in-pietra-e-legno-massello-di-mango-oe-100-cm-esfera-238860.htm"},
+
+
+
+  {"nome": "Tappeto rotondo in iuta intrecciata Ø 90 cm", "categoria": "Tappeti", "prezzo": 39.99, "larghezza_cm": 90, "profondita_cm": 90, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tappeto-rotondo-in-iuta-intrecciata-oe-90-cm-1000-12-34-239474_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-rotondo-in-iuta-intrecciata-oe-90-cm-239474.htm"},
+
+  {"nome": "Tappeto in vinile con stampa volti in bianco e nero 50x80 cm", "categoria": "Tappeti", "prezzo": 39.99, "larghezza_cm": 50, "profondita_cm": 80, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tappeto-in-vinile-con-stampa-volti-in-bianco-e-nero-50x80-cm-1000-13-40-240546_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-in-vinile-con-stampa-volti-in-bianco-e-nero-50x80-cm-240546.htm"},
+
+  {"nome": "Tappeto in cotone riciclato taftato bianco 90x150 cm", "categoria": "Tappeti", "prezzo": 59.99, "larghezza_cm": 90, "profondita_cm": 150, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tappeto-in-cotone-riciclato-taftato-bianco-90x150cm-1000-5-18-234333_2.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-in-cotone-riciclato-taftato-bianco-90x150cm-234333.htm"},
+
+  {"nome": "Tappeto in pelliccia ecologica grigio 60x90 cm", "categoria": "Tappeti", "prezzo": 29.99, "larghezza_cm": 60, "profondita_cm": 90, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/tappeto-in-pelliccia-ecologica-grigio-60x90-cm-1000-1-31-186950_1.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-in-pelliccia-ecologica-grigio-60x90-cm-186950.htm"},
+
+
+
+  // Nuovi Divani (10)
+
+  {"nome": "Divano 3-4 posti in tessuto tramato beige", "categoria": "Divani", "prezzo": 899.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-3-4-posti-in-tessuto-tramato-beige-252820.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-3-4-posti-in-tessuto-tramato-beige-252820.htm"},
+
+  {"nome": "Elvis - Divano letto clic clac a 3 posti in velluto verde", "categoria": "Divani", "prezzo": 499.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-letto-clic-clac-a-3-posti-in-velluto-verde-elvis-198168.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-letto-clic-clac-a-3-posti-in-velluto-verde-elvis-198168.htm"},
+
+  {"nome": "Jules - Divano angolare antracite 3 posti", "categoria": "Divani", "prezzo": 1299.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-angolare-antracite-3-posti-jules-147593.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-angolare-antracite-3-posti-jules-147593.htm"},
+
+  {"nome": "Lise - Divano letto 3/4 posti in suede marrone", "categoria": "Divani", "prezzo": 699.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-letto-3-4-posti-in-suede-marrone-lise-230121.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-letto-3-4-posti-in-suede-marrone-lise-230121.htm"},
+
+  {"nome": "Divano letto 2/3 posti in tessuto riciclato beige", "categoria": "Divani", "prezzo": 449.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-letto-2-3-posti-in-tessuto-riciclato-beige-252907.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-letto-2-3-posti-in-tessuto-riciclato-beige-252907.htm"},
+
+  {"nome": "Arizona - Divano club 2 posti in microsuede marrone", "categoria": "Divani", "prezzo": 599.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-club-2-posti-in-microsuede-marrone-arizona-50180441.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-club-2-posti-in-microsuede-marrone-arizona-50180441.htm"},
+
+  {"nome": "Nia - Divano clic clac 2/3 posti beige", "categoria": "Divani", "prezzo": 399.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-clic-clac-2-3-posti-beige-nia-230153.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-clic-clac-2-3-posti-beige-nia-230153.htm"},
+
+  {"nome": "Divano 3 posti in tessuto tramato beige e legno di frassino color noce", "categoria": "Divani", "prezzo": 799.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-3-posti-in-tessuto-tramato-beige-e-legno-di-frassino-color-noce-252438.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-3-posti-in-tessuto-tramato-beige-e-legno-di-frassino-color-noce-252438.htm"},
+
+  {"nome": "Lilo - Divano a 3/4 posti beige sabbia", "categoria": "Divani", "prezzo": 1099.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-a-3-4-posti-beige-sabbia-lilo-223233.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-a-3-4-posti-beige-sabbia-lilo-223233.htm"},
+
+  {"nome": "Brooke - Divano scandinavo 3 posti grigio chiaro", "categoria": "Divani", "prezzo": 649.00, "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-scandinavo-3-posti-grigio-chiaro-brooke-166156.jpg", "link": "https://www.maisonsdumonde.com/IT/it/p/divano-scandinavo-3-posti-grigio-chiaro-brooke-166156.htm"}
+
+]
+
+
+
+
+
+**Requisiti tecnici:**
+
+- Usa React con useState + useEffect
+
+- Rendi l'app responsive (priorità desktop/tablet)
+
+- Immagini dei prodotti da URL forniti
+
+- Mantieni codice pulito e ben commentato
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://interior-dreamer-kit.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/1267b4a7-ae53-4f7e-8e55-dec15391ccc5).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +246,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
