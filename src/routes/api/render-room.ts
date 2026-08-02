@@ -1,70 +1,134 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+type GatewayImage = {
+  type?: string;
+  image_url?: { url?: string };
+};
+
+type GatewayResponse = {
+  choices?: Array<{
+    message?: {
+      images?: GatewayImage[];
+      content?: string | Array<GatewayImage>;
+    };
+  }>;
+  error?: { message?: string };
+};
+
+function completedImageEvent(base64: string) {
+  return `event: image_generation.completed\ndata: ${JSON.stringify({ b64_json: base64 })}\n\n`;
+}
+
+async function imageUrlToBase64(url: string) {
+  const dataUrl = url.match(/^data:image\/[a-zA-Z0-9.+-]+;base64,(.+)$/s);
+  if (dataUrl) return dataUrl[1];
+
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Impossibile scaricare il render generato");
+  return Buffer.from(await response.arrayBuffer()).toString("base64");
+}
+
 /**
- * Server route: streams an AI-generated interior render (PNG in base64)
- * from the Lovable AI Gateway using Nano Banana 2 (gemini-3.1-flash-image).
- *
- * Accepts:
- *   { prompt: string, images?: string[] }
- * where `images` are reference photos (https URLs or data:image/*;base64,...)
- * passed to the model to reproduce products more faithfully.
+ * Generates a photorealistic room render through Vercel AI Gateway.
+ * Production deployments authenticate automatically with Vercel OIDC, so
+ * this feature is independent from Lovable and does not expose credentials.
  */
 export const Route = createFileRoute("/api/render-room")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { prompt, images } = (await request.json()) as {
-          prompt: string;
-          images?: string[];
-        };
-        const key = process.env.LOVABLE_API_KEY;
-        if (!key) return new Response("Missing LOVABLE_API_KEY", { status: 500 });
-        if (!prompt || typeof prompt !== "string") {
-          return new Response("Missing prompt", { status: 400 });
-        }
+        try {
+          const { prompt, images } = (await request.json()) as {
+            prompt?: string;
+            images?: string[];
+          };
 
-        // Cap reference images to keep the request size reasonable
-        const refs = (Array.isArray(images) ? images : [])
-          .filter((u) => typeof u === "string" && u.length > 0)
-          .slice(0, 12);
+          if (!prompt || typeof prompt !== "string") {
+            return new Response("Descrizione della stanza mancante", { status: 400 });
+          }
 
-        // Gemini image models take messages + modalities. The text goes in a
-        // text block; each reference photo goes in its own image_url block.
-        const content: Array<
-          | { type: "text"; text: string }
-          | { type: "image_url"; image_url: { url: string } }
-        > = [{ type: "text", text: prompt }];
-        for (const url of refs) {
-          content.push({ type: "image_url", image_url: { url } });
-        }
+          const token =
+            process.env.AI_GATEWAY_API_KEY ?? process.env.VERCEL_OIDC_TOKEN;
+          if (!token) {
+            return new Response(
+              "Il servizio di rendering non è disponibile in questo ambiente.",
+              { status: 503 },
+            );
+          }
 
-        const upstream = await fetch(
-          "https://ai.gateway.lovable.dev/v1/images/generations",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${key}`,
-              "Content-Type": "application/json",
+          const references = (Array.isArray(images) ? images : [])
+            .filter((url) => typeof url === "string" && url.length > 0)
+            .slice(0, 12);
+
+          const content: Array<
+            | { type: "text"; text: string }
+            | { type: "image_url"; image_url: { url: string } }
+          > = [{ type: "text", text: prompt }];
+          for (const url of references) {
+            content.push({ type: "image_url", image_url: { url } });
+          }
+
+          const upstream = await fetch(
+            "https://ai-gateway.vercel.sh/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: "google/gemini-3.1-flash-image-preview",
+                messages: [{ role: "user", content }],
+                modalities: ["text", "image"],
+                stream: false,
+              }),
             },
-            body: JSON.stringify({
-              // Nano Banana 2 — high-quality, supports image references
-              model: "google/gemini-3.1-flash-image",
-              messages: [{ role: "user", content }],
-              modalities: ["image", "text"],
-              stream: true,
-            }),
-          },
-        );
+          );
 
-        if (!upstream.ok || !upstream.body) {
-          return new Response(await upstream.text(), { status: upstream.status });
+          const result = (await upstream.json().catch(() => null)) as
+            | GatewayResponse
+            | null;
+          if (!upstream.ok) {
+            console.error("AI Gateway render failed", {
+              status: upstream.status,
+              message: result?.error?.message,
+            });
+            return new Response(
+              "Non è stato possibile generare il render. Riprova tra poco.",
+              { status: 502 },
+            );
+          }
+
+          const message = result?.choices?.[0]?.message;
+          const contentImages = Array.isArray(message?.content)
+            ? message.content
+            : [];
+          const imageUrl = [...(message?.images ?? []), ...contentImages]
+            .find((image) => image?.image_url?.url)
+            ?.image_url?.url;
+
+          if (!imageUrl) {
+            console.error("AI Gateway returned no image");
+            return new Response(
+              "Il servizio non ha restituito un’immagine. Riprova.",
+              { status: 502 },
+            );
+          }
+
+          const base64 = await imageUrlToBase64(imageUrl);
+          return new Response(completedImageEvent(base64), {
+            headers: {
+              "Content-Type": "text/event-stream; charset=utf-8",
+              "Cache-Control": "no-cache, no-store",
+            },
+          });
+        } catch (error) {
+          console.error("Room render error", error);
+          return new Response(
+            "Errore durante la generazione del render. Riprova.",
+            { status: 500 },
+          );
         }
-        return new Response(upstream.body, {
-          headers: {
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache",
-          },
-        });
       },
     },
   },
