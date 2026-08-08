@@ -13,7 +13,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShareSlugRouteImport } from './routes/share.$slug'
-import { Route as ApiRenderRoomRouteImport } from './routes/api/render-room'
 import { Route as AuthenticatedMyDesignsRouteImport } from './routes/_authenticated/my-designs'
 
 const AuthRoute = AuthRouteImport.update({
@@ -35,11 +34,6 @@ const ShareSlugRoute = ShareSlugRouteImport.update({
   path: '/share/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiRenderRoomRoute = ApiRenderRoomRouteImport.update({
-  id: '/api/render-room',
-  path: '/api/render-room',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedMyDesignsRoute = AuthenticatedMyDesignsRouteImport.update({
   id: '/my-designs',
   path: '/my-designs',
@@ -50,14 +44,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/my-designs': typeof AuthenticatedMyDesignsRoute
-  '/api/render-room': typeof ApiRenderRoomRoute
   '/share/$slug': typeof ShareSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/my-designs': typeof AuthenticatedMyDesignsRoute
-  '/api/render-room': typeof ApiRenderRoomRoute
   '/share/$slug': typeof ShareSlugRoute
 }
 export interface FileRoutesById {
@@ -66,21 +58,19 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/my-designs': typeof AuthenticatedMyDesignsRoute
-  '/api/render-room': typeof ApiRenderRoomRoute
   '/share/$slug': typeof ShareSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/my-designs' | '/api/render-room' | '/share/$slug'
+  fullPaths: '/' | '/auth' | '/my-designs' | '/share/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/my-designs' | '/api/render-room' | '/share/$slug'
+  to: '/' | '/auth' | '/my-designs' | '/share/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/my-designs'
-    | '/api/render-room'
     | '/share/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -88,7 +78,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  ApiRenderRoomRoute: typeof ApiRenderRoomRoute
   ShareSlugRoute: typeof ShareSlugRoute
 }
 
@@ -122,13 +111,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShareSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/render-room': {
-      id: '/api/render-room'
-      path: '/api/render-room'
-      fullPath: '/api/render-room'
-      preLoaderRoute: typeof ApiRenderRoomRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/my-designs': {
       id: '/_authenticated/my-designs'
       path: '/my-designs'
@@ -154,9 +136,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  ApiRenderRoomRoute: ApiRenderRoomRoute,
   ShareSlugRoute: ShareSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
