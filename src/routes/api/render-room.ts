@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getVercelOidcToken } from "@vercel/oidc";
 
 type GatewayImage = {
   type?: string;
@@ -30,9 +29,8 @@ async function imageUrlToBase64(url: string) {
 }
 
 /**
- * Generates a photorealistic room render through Vercel AI Gateway.
- * Production deployments authenticate automatically with Vercel OIDC, so
- * this feature is independent from Lovable and does not expose credentials.
+ * Generates a photorealistic room render through the Lovable AI Gateway,
+ * so each generation consumes the project's Lovable credits.
  */
 export const Route = createFileRoute("/api/render-room")({
   server: {
@@ -48,9 +46,8 @@ export const Route = createFileRoute("/api/render-room")({
             return new Response("Descrizione della stanza mancante", { status: 400 });
           }
 
-          const token =
-            process.env.AI_GATEWAY_API_KEY ?? (await getVercelOidcToken());
-          if (!token) {
+          const apiKey = process.env["LOVABLE_API_KEY"];
+          if (!apiKey) {
             return new Response(
               "Il servizio di rendering non è disponibile in questo ambiente.",
               { status: 503 },
@@ -70,27 +67,40 @@ export const Route = createFileRoute("/api/render-room")({
           }
 
           const upstream = await fetch(
-            "https://ai-gateway.vercel.sh/v1/chat/completions",
+            "https://ai.gateway.lovable.dev/v1/chat/completions",
             {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${apiKey}`,
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                model: "google/gemini-3.1-flash-image-preview",
+                model: "google/gemini-2.5-flash-image",
                 messages: [{ role: "user", content }],
-                modalities: ["text", "image"],
+                modalities: ["image", "text"],
                 stream: false,
               }),
             },
           );
 
+          if (upstream.status === 429) {
+            return new Response(
+              "Troppe richieste di render in poco tempo. Attendi qualche istante e riprova.",
+              { status: 429 },
+            );
+          }
+          if (upstream.status === 402) {
+            return new Response(
+              "Crediti AI esauriti: ricarica il credito del progetto per generare nuovi render.",
+              { status: 402 },
+            );
+          }
+
           const result = (await upstream.json().catch(() => null)) as
             | GatewayResponse
             | null;
           if (!upstream.ok) {
-            console.error("AI Gateway render failed", {
+            console.error("Lovable AI render failed", {
               status: upstream.status,
               message: result?.error?.message,
             });
@@ -109,7 +119,7 @@ export const Route = createFileRoute("/api/render-room")({
             ?.image_url?.url;
 
           if (!imageUrl) {
-            console.error("AI Gateway returned no image");
+            console.error("Lovable AI returned no image");
             return new Response(
               "Il servizio non ha restituito un’immagine. Riprova.",
               { status: 502 },
