@@ -2591,6 +2591,24 @@ function Step3({
     </section>
   );
 }
+
+const RENDER_API_PATH = "/api/public/render-room";
+// Il render è servito dal backend Lovable, dove LOVABLE_API_KEY è gestita
+// automaticamente. Da altri host (es. Vercel) si chiama lo stesso endpoint
+// in cross-origin, così la chiave non esiste mai fuori dal backend Lovable.
+const RENDER_API_HOST = "https://interior-dreamer-kit.lovable.app";
+
+function renderRoomEndpoint() {
+  if (typeof window === "undefined") return RENDER_API_PATH;
+  const host = window.location.hostname;
+  const isLovableHost =
+    host.endsWith(".lovable.app") ||
+    host.endsWith(".lovableproject.com") ||
+    host === "localhost" ||
+    host === "127.0.0.1";
+  return isLovableHost ? RENDER_API_PATH : `${RENDER_API_HOST}${RENDER_API_PATH}`;
+}
+
 function buildRenderPrompt(
   width: number,
   length: number,
