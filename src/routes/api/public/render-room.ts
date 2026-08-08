@@ -15,8 +15,54 @@ type GatewayResponse = {
   error?: { message?: string };
 };
 
+const ALLOWED_ORIGINS = [
+  "https://interior-dreamer-kit.vercel.app",
+  "https://interior-dreamer-kit.lovable.app",
+];
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  try {
+    const { hostname, protocol } = new URL(origin);
+    if (protocol !== "https:" && hostname !== "localhost" && hostname !== "127.0.0.1") {
+      return false;
+    }
+    return (
+      hostname.endsWith(".lovable.app") ||
+      hostname.endsWith(".lovableproject.com") ||
+      hostname.endsWith(".vercel.app") ||
+      hostname === "localhost" ||
+      hostname === "127.0.0.1"
+    );
+  } catch {
+    return false;
+  }
+}
+
+function corsHeaders(origin: string | null): Record<string, string> {
+  return {
+    "Access-Control-Allow-Origin": isAllowedOrigin(origin)
+      ? (origin as string)
+      : ALLOWED_ORIGINS[1],
+    "Access-Control-Allow-Headers": "content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Max-Age": "86400",
+    Vary: "Origin",
+  };
+}
+
 function completedImageEvent(base64: string) {
   return `event: image_generation.completed\ndata: ${JSON.stringify({ b64_json: base64 })}\n\n`;
+}
+
+function toBase64(bytes: Uint8Array) {
+  let binary = "";
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...Array.from(bytes.subarray(i, i + chunk)));
+  }
+  return btoa(binary);
 }
 
 async function imageUrlToBase64(url: string) {
@@ -25,32 +71,40 @@ async function imageUrlToBase64(url: string) {
 
   const response = await fetch(url);
   if (!response.ok) throw new Error("Impossibile scaricare il render generato");
-  return Buffer.from(await response.arrayBuffer()).toString("base64");
+  return toBase64(new Uint8Array(await response.arrayBuffer()));
 }
 
 /**
- * Generates a photorealistic room render through the Lovable AI Gateway,
- * so each generation consumes the project's Lovable credits.
+ * Render fotorealistico via Lovable AI Gateway.
+ * Ospitata sul backend Lovable (dove LOVABLE_API_KEY è gestita
+ * automaticamente); il frontend, anche su Vercel, chiama questo endpoint
+ * in cross-origin, così nessun runtime esterno legge la chiave.
  */
-export const Route = createFileRoute("/api/render-room")({
+export const Route = createFileRoute("/api/public/render-room")({
   server: {
     handlers: {
+      OPTIONS: async ({ request }) =>
+        new Response(null, { status: 204, headers: corsHeaders(request.headers.get("origin")) }),
       POST: async ({ request }) => {
+        const cors = corsHeaders(request.headers.get("origin"));
         try {
-          const { prompt, images } = (await request.json()) as {
+          const { prompt, images } = (await request.json().catch(() => ({}))) as {
             prompt?: string;
             images?: string[];
           };
 
           if (!prompt || typeof prompt !== "string") {
-            return new Response("Descrizione della stanza mancante", { status: 400 });
+            return new Response("Descrizione della stanza mancante", {
+              status: 400,
+              headers: cors,
+            });
           }
 
           const apiKey = process.env["LOVABLE_API_KEY"];
           if (!apiKey) {
             return new Response(
               "Il servizio di rendering non è disponibile in questo ambiente.",
-              { status: 503 },
+              { status: 503, headers: cors },
             );
           }
 
@@ -86,13 +140,13 @@ export const Route = createFileRoute("/api/render-room")({
           if (upstream.status === 429) {
             return new Response(
               "Troppe richieste di render in poco tempo. Attendi qualche istante e riprova.",
-              { status: 429 },
+              { status: 429, headers: cors },
             );
           }
           if (upstream.status === 402) {
             return new Response(
               "Crediti AI esauriti: ricarica il credito del progetto per generare nuovi render.",
-              { status: 402 },
+              { status: 402, headers: cors },
             );
           }
 
@@ -106,7 +160,7 @@ export const Route = createFileRoute("/api/render-room")({
             });
             return new Response(
               "Non è stato possibile generare il render. Riprova tra poco.",
-              { status: 502 },
+              { status: 502, headers: cors },
             );
           }
 
@@ -122,13 +176,14 @@ export const Route = createFileRoute("/api/render-room")({
             console.error("Lovable AI returned no image");
             return new Response(
               "Il servizio non ha restituito un’immagine. Riprova.",
-              { status: 502 },
+              { status: 502, headers: cors },
             );
           }
 
           const base64 = await imageUrlToBase64(imageUrl);
           return new Response(completedImageEvent(base64), {
             headers: {
+              ...cors,
               "Content-Type": "text/event-stream; charset=utf-8",
               "Cache-Control": "no-cache, no-store",
             },
@@ -137,7 +192,7 @@ export const Route = createFileRoute("/api/render-room")({
           console.error("Room render error", error);
           return new Response(
             "Errore durante la generazione del render. Riprova.",
-            { status: 500 },
+            { status: 500, headers: cors },
           );
         }
       },
