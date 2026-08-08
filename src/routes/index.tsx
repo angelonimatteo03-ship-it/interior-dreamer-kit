@@ -2709,7 +2709,7 @@ function Render3DPanel({
       feedbackStats,
     );
     try {
-      const res = await fetch("/api/render-room", {
+      const res = await fetch(renderRoomEndpoint(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, images }),
