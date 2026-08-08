@@ -44,7 +44,7 @@ type SharedDesign = Awaited<ReturnType<typeof loadDesign>>;
 
 function SharedDesignPage() {
   const { options } = Route.useLoaderData();
-  const { data: design } = useSuspenseQuery({ ...options, queryKey: [...options.queryKey] as unknown[] }) as { data: SharedDesign };
+  const { data: design } = useSuspenseQuery({ ...options, queryKey: [...(options.queryKey as readonly string[])] as string[] }) as { data: SharedDesign };
 
   const roomWidthCm = design.width * 100;
   const roomLengthCm = design.length * 100;
