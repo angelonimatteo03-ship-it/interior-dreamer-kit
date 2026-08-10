@@ -1450,7 +1450,23 @@ function CatalogPanel({
               )}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-center gap-2">
+              <label className="sr-only" htmlFor="catalog-category">
+                Categoria
+              </label>
+              <select
+                id="catalog-category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="field h-9 min-h-9 min-w-0 py-0 text-xs"
+                aria-label="Filtra per categoria"
+              >
+                {allCategories.map((c) => (
+                  <option key={c} value={c}>
+                    {c} ({counts.get(c) ?? 0})
+                  </option>
+                ))}
+              </select>
               <label className="sr-only" htmlFor="catalog-sort">
                 Ordina prodotti
               </label>
@@ -1458,7 +1474,7 @@ function CatalogPanel({
                 id="catalog-sort"
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
-                className="field h-9 min-h-9 flex-1 py-0 text-xs"
+                className="field h-9 min-h-9 min-w-0 py-0 text-xs"
               >
                 {(Object.keys(SORT_LABELS) as SortKey[]).map((k) => (
                   <option key={k} value={k}>
@@ -1470,29 +1486,6 @@ function CatalogPanel({
                 {filteredProducts.length}{" "}
                 {filteredProducts.length === 1 ? "risultato" : "risultati"}
               </span>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5">
-              {allCategories.map((c) => {
-                const active = c === category;
-                const n = counts.get(c) ?? 0;
-                return (
-                  <button
-                    key={c}
-                    onClick={() => setCategory(c)}
-                    aria-pressed={active}
-                    className={
-                      "rounded-full border px-3 py-1.5 text-[11px] font-medium transition-colors " +
-                      (active
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground")
-                    }
-                  >
-                    {c}
-                    {n > 0 && <span className="ml-1 tabular-nums opacity-70">{n}</span>}
-                  </button>
-                );
-              })}
             </div>
 
             {query.trim() && (
@@ -1533,7 +1526,7 @@ function CatalogPanel({
             </p>
           )}
 
-          <div className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-1 lg:max-h-none max-h-[52vh]">
+          <div className="min-h-0 flex-1 overflow-y-auto pr-1 lg:max-h-none max-h-[52vh]">
             {filteredProducts.length === 0 && (
               <div className="rounded-xl border border-dashed border-border px-3 py-8 text-center">
                 <p className="text-xs text-muted-foreground">
@@ -1551,28 +1544,30 @@ function CatalogPanel({
               </div>
             )}
 
-            {filteredProducts.map((p) => (
-              <ProductCard
-                key={p.id}
-                product={p}
-                qty={qtyOf(p.id)}
-                onAdd={() => onAdd(p)}
-                onRemoveOne={() => onRemoveOne(p.id)}
-                onDetail={() => setDetail(p)}
-                onDeleteProduct={
-                  category === CUSTOM_CATEGORY
-                    ? () => onRemoveCustom(p.id)
-                    : category === SAVED_CATEGORY
-                      ? () => onRemoveSaved(p.id)
-                      : undefined
-                }
-                deleteLabel={
-                  category === CUSTOM_CATEGORY
-                    ? "Elimina prodotto personale"
-                    : "Rimuovi dai prodotti salvati"
-                }
-              />
-            ))}
+            <div className="grid grid-cols-1 gap-2">
+              {filteredProducts.map((p) => (
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  qty={qtyOf(p.id)}
+                  onAdd={() => onAdd(p)}
+                  onRemoveOne={() => onRemoveOne(p.id)}
+                  onDetail={() => setDetail(p)}
+                  onDeleteProduct={
+                    category === CUSTOM_CATEGORY
+                      ? () => onRemoveCustom(p.id)
+                      : category === SAVED_CATEGORY
+                        ? () => onRemoveSaved(p.id)
+                        : undefined
+                  }
+                  deleteLabel={
+                    category === CUSTOM_CATEGORY
+                      ? "Elimina prodotto personale"
+                      : "Rimuovi dai prodotti salvati"
+                  }
+                />
+              ))}
+            </div>
           </div>
         </>
       )}
@@ -1691,21 +1686,21 @@ function ProductCard({
   return (
     <article
       className={
-        "flex gap-3 rounded-xl border p-2.5 transition-colors " +
+        "flex gap-2.5 rounded-xl border p-2 transition-colors " +
         (qty > 0 ? "border-accent/60 bg-accent/5" : "border-border bg-card hover:bg-secondary/40")
       }
     >
       <button onClick={onDetail} className="flex-shrink-0" aria-label={`Dettagli ${product.nome}`}>
-        <ProductThumb src={product.immagine_url} alt={product.nome} />
+        <ProductThumb src={product.immagine_url} alt={product.nome} className="h-16 w-16" />
       </button>
       <div className="flex min-w-0 flex-1 flex-col">
         <button onClick={onDetail} className="text-left">
-          <h4 className="line-clamp-3 text-xs font-medium leading-snug">{product.nome}</h4>
+          <h4 className="line-clamp-2 text-xs font-medium leading-snug">{product.nome}</h4>
         </button>
         <p className="mt-0.5 text-[11px] text-muted-foreground">
           {product.categoria} · {fp.w}×{fp.d} cm
         </p>
-        <div className="mt-1 flex items-center gap-2">
+        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="text-sm font-semibold tabular-nums text-primary">
             {product.prezzo > 0 ? formatPrice(product.prezzo) : "Prodotto personale"}
           </span>
@@ -1716,7 +1711,7 @@ function ProductCard({
             </span>
           )}
         </div>
-        <div className="mt-2 flex items-center justify-between gap-2">
+        <div className="mt-auto flex items-center justify-between gap-2 pt-1.5">
           <QtyControl qty={qty} onAdd={onAdd} onRemoveOne={onRemoveOne} name={product.nome} />
           {onDeleteProduct && (
             <button
