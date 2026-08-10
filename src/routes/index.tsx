@@ -1964,7 +1964,7 @@ function RoomCanvas({
 
     const rect = viewport.getBoundingClientRect();
     const availableHeight = Math.max(
-      280,
+      180,
       window.innerHeight - Math.max(rect.top, 80) - 20,
     );
     const heightAtFullWidth =
@@ -2101,7 +2101,7 @@ function RoomCanvas({
       ref={scrollRef}
       className="w-full max-h-[calc(100svh-13rem)] overflow-auto overscroll-contain"
     >
-      <div style={{ width: `${zoom}%` }} className="min-w-full">
+      <div style={{ width: `${zoom}%` }} className="mx-auto">
         <div
           ref={containerRef}
           className="relative mx-auto w-full touch-none select-none overflow-hidden rounded-md border-[6px] shadow-inner"
