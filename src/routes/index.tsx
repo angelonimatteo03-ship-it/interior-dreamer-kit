@@ -799,9 +799,9 @@ const SORT_LABELS: Record<SortKey, string> = {
   name: "Nome A-Z",
 };
 
-const ZOOM_MIN = 50;
+const ZOOM_MIN = 10;
 const ZOOM_MAX = 200;
-const ZOOM_STEP = 25;
+const ZOOM_STEP = 10;
 const SNAP_CM = 5;
 
 function Step2({
@@ -839,6 +839,7 @@ function Step2({
   const [tab, setTab] = useState<"catalog" | "project">("catalog");
   const [announce, setAnnounce] = useState("");
   const [centerRequest, setCenterRequest] = useState(0);
+  const [fitRequest, setFitRequest] = useState(0);
 
   const roomWidthCm = width * 100;
   const roomLengthCm = length * 100;
@@ -1113,7 +1114,10 @@ function Step2({
               <ZoomIn className="h-4 w-4" aria-hidden />
             </button>
           </div>
-          <button onClick={() => setZoom(100)} className="btn btn-secondary btn-sm">
+          <button
+            onClick={() => setFitRequest((n) => n + 1)}
+            className="btn btn-secondary btn-sm"
+          >
             <Maximize2 className="h-4 w-4" aria-hidden />
             Adatta alla vista
           </button>
@@ -1142,6 +1146,8 @@ function Step2({
           onRemove={removeItem}
           onRotate={rotateSelected}
           zoom={zoom}
+          onFitZoom={setZoom}
+          fitRequest={fitRequest}
           showGrid={showGrid}
           centerRequest={centerRequest}
           onOpenCatalog={() => {
@@ -1922,6 +1928,8 @@ function RoomCanvas({
   onRemove,
   onRotate,
   zoom,
+  onFitZoom,
+  fitRequest,
   showGrid,
   centerRequest,
   onOpenCatalog,
@@ -1937,6 +1945,8 @@ function RoomCanvas({
   onRemove: (u: string) => void;
   onRotate: () => void;
   zoom: number;
+  onFitZoom: (zoom: number) => void;
+  fitRequest: number;
   showGrid: boolean;
   centerRequest: number;
   onOpenCatalog: () => void;
@@ -1947,6 +1957,55 @@ function RoomCanvas({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const selectedRef = useRef<HTMLDivElement | null>(null);
   const [dragging, setDragging] = useState(false);
+
+  const fitToViewport = useCallback(() => {
+    const viewport = scrollRef.current;
+    if (!viewport || typeof window === "undefined") return;
+
+    const rect = viewport.getBoundingClientRect();
+    const availableHeight = Math.max(
+      280,
+      window.innerHeight - Math.max(rect.top, 80) - 20,
+    );
+    const heightAtFullWidth =
+      viewport.clientWidth * (roomLengthCm / roomWidthCm);
+    if (!Number.isFinite(heightAtFullWidth) || heightAtFullWidth <= 0) return;
+
+    const fittedZoom = Math.floor(
+      clamp((availableHeight / heightAtFullWidth) * 100, ZOOM_MIN, 100),
+    );
+    onFitZoom(fittedZoom);
+
+    requestAnimationFrame(() => {
+      viewport.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    });
+  }, [onFitZoom, roomLengthCm, roomWidthCm]);
+
+  // Keep the complete room visible on first render, when its dimensions
+  // change, and whenever the available column width changes.
+  useEffect(() => {
+    const viewport = scrollRef.current;
+    if (!viewport) return;
+
+    const frame = requestAnimationFrame(fitToViewport);
+    const observer =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver(() => fitToViewport());
+    observer?.observe(viewport);
+    window.addEventListener("resize", fitToViewport);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+      window.removeEventListener("resize", fitToViewport);
+    };
+  }, [fitToViewport]);
+
+  useEffect(() => {
+    if (fitRequest === 0) return;
+    fitToViewport();
+  }, [fitRequest, fitToViewport]);
 
   const dragState = useRef<{
     uid: string;
@@ -2038,7 +2097,10 @@ function RoomCanvas({
   };
 
   return (
-    <div ref={scrollRef} className="w-full overflow-auto">
+    <div
+      ref={scrollRef}
+      className="w-full max-h-[calc(100svh-13rem)] overflow-auto overscroll-contain"
+    >
       <div style={{ width: `${zoom}%` }} className="min-w-full">
         <div
           ref={containerRef}
