@@ -1,4 +1,4 @@
-// Catalogo importato da Google Sheets: solo prodotti con larghezza e profondità ufficiali.
+// Catalogo importato da Google Sheets: solo prodotti con larghezza e profondit? ufficiali.
 import type { Product } from "./products";
 
 export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
@@ -103,26 +103,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divanetto da giardino 2 posti in legno massello di acacia e cuscini écru"
   },
   {
-    "nome": "Tela di lino stampata con motivi floreali, 152x122 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 149,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/201261_0/tela-di-lino-stampata-con-motivi-floreali-152x122-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-di-lino-stampata-con-motivi-floreali-152x122-cm-201261.htm",
-    "larghezza_cm": 152,
-    "profondita_cm": 4,
-    "descrizione": "Tela di lino stampata con motivi floreali, 152x122 cm"
-  },
-  {
-    "nome": "Orologio da parete in acciaio dorato con cerchi Ø 60 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 29.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/215208_0/orologio-da-parete-in-acciaio-dorato-con-cerchi-oe-60-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-da-parete-in-acciaio-dorato-con-cerchi-oe-60-cm-215208.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 3,
-    "descrizione": "Orologio da parete in acciaio dorato con cerchi Ø 60 cm"
-  },
-  {
     "nome": "Lampada in ceramica striato beige con paralume in poliestere riciclato",
     "categoria": "Lampade",
     "prezzo": 39.99,
@@ -173,16 +153,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Vaso in terracotta grigio chiné alt. 25cm"
   },
   {
-    "nome": "Candela profumata tortora alt. 10 cm, 330g",
-    "categoria": "Decorazioni",
-    "prezzo": 4.15,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-tortora-alt-10-cm-330g-1000-0-4-246619_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-tortora-alt-10-cm-330g-246619.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata tortora alt. 10 cm, 330g"
-  },
-  {
     "nome": "Cuscino ricamati écru, giallo, terracotta 30x50",
     "categoria": "Tappeti",
     "prezzo": 19.99,
@@ -201,16 +171,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 104,
     "profondita_cm": 49.5,
     "descrizione": "Armadio a 2 ante e 1 cassetto verde kaki 104 cm"
-  },
-  {
-    "nome": "Portasapone in terracotta bianca con decoro in rilievo",
-    "categoria": "Bagno",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/portasapone-in-terracotta-bianca-con-decoro-in-rilievo-1000-0-6-246908_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/portasapone-in-terracotta-bianca-con-decoro-in-rilievo-246908.htm",
-    "larghezza_cm": 12.8,
-    "profondita_cm": 8.5,
-    "descrizione": "Portasapone in terracotta bianca con decoro in rilievo"
   },
   {
     "nome": "Cucina giocattolo multicolore",
@@ -343,26 +303,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Modulo chaise longue da giardino in poliestere reciclato grigio perlato"
   },
   {
-    "nome": "Trittico su tele con rilievi bianchi, 104x70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 99.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/trittico-su-tele-con-rilievi-bianchi-104x70-cm-1000-6-35-249889_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/trittico-su-tele-con-rilievi-bianchi-104x70-cm-249889.htm",
-    "larghezza_cm": 103.5,
-    "profondita_cm": 3,
-    "descrizione": "Trittico su tele con rilievi bianchi, 104x70 cm"
-  },
-  {
-    "nome": "Orologio da parete in legno traforato Ø 50 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 22.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-da-parete-in-legno-traforato-oe-50-cm-1000-1-35-194498_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-da-parete-in-legno-traforato-oe-50-cm-194498.htm",
-    "larghezza_cm": 50,
-    "profondita_cm": 2.5,
-    "descrizione": "Orologio da parete in legno traforato Ø 50 cm"
-  },
-  {
     "nome": "Lampada in ceramica con paralume in poliestere riciclato color crema",
     "categoria": "Lampade",
     "prezzo": 29.99,
@@ -371,16 +311,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 23,
     "profondita_cm": 23,
     "descrizione": "Lampada in ceramica con paralume in poliestere riciclato color crema"
-  },
-  {
-    "nome": "Decorazioni da parete: fiori e cerchi in ghisa dorata (x2)",
-    "categoria": "Decorazioni",
-    "prezzo": 29.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazioni-da-parete-fiori-e-cerchi-in-ghisa-dorata-x2-1000-13-8-247074_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazioni-da-parete-fiori-e-cerchi-in-ghisa-dorata-x2-247074.htm",
-    "larghezza_cm": 50,
-    "profondita_cm": 2.5,
-    "descrizione": "Decorazioni da parete: fiori e cerchi in ghisa dorata (x2)"
   },
   {
     "nome": "Bouquet di fiori essiccati verdi",
@@ -553,26 +483,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Comodino vintage a 1 cassetto in massello di quercia"
   },
   {
-    "nome": "Tela stampata e dipinta nei toni del beige e dell'oro, 132x67 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 99.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-stampata-e-dipinta-nei-toni-del-beige-e-dell-oro-132x67-cm-1000-16-20-243150_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-stampata-e-dipinta-nei-toni-del-beige-e-dell-oro-132x67-cm-243150.htm",
-    "larghezza_cm": 132,
-    "profondita_cm": 4.5,
-    "descrizione": "Tela stampata e dipinta nei toni del beige e dell'oro, 132x67 cm"
-  },
-  {
-    "nome": "Orologio da parete beige e bianco, diametro 70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 59.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/204974_0/orologio-da-parete-beige-e-bianco-diametro-70-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-da-parete-beige-e-bianco-diametro-70-cm-204974.htm",
-    "larghezza_cm": 70,
-    "profondita_cm": 4.5,
-    "descrizione": "Orologio da parete beige e bianco, diametro 70 cm"
-  },
-  {
     "nome": "Lampada in legno di mango con paralume in lino beige",
     "categoria": "Lampade",
     "prezzo": 149,
@@ -583,16 +493,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada in legno di mango con paralume in lino beige"
   },
   {
-    "nome": "Decorazione da parete in juta intrecciata 144x115 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 109,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-da-parete-in-juta-intrecciata-144x115-cm-1000-5-4-248341_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-in-juta-intrecciata-144x115-cm-248341.htm",
-    "larghezza_cm": 144,
-    "profondita_cm": 2,
-    "descrizione": "Decorazione da parete in juta intrecciata 144x115 cm"
-  },
-  {
     "nome": "Bouquet di fiori essiccati écru",
     "categoria": "Decorazioni",
     "prezzo": 14.99,
@@ -601,26 +501,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 20,
     "profondita_cm": 20,
     "descrizione": "Bouquet di fiori essiccati écru"
-  },
-  {
-    "nome": "Lotto di 2 - Vaso in vetro striato marrone con bordo dorato alt. 10 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 7.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-vetro-striato-marrone-con-bordo-dorato-alt-10-cm-1000-10-26-236514_4.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-vetro-striato-marrone-con-bordo-dorato-alt-10-cm-236514.htm",
-    "larghezza_cm": 6,
-    "profondita_cm": 6,
-    "descrizione": "Vaso in vetro striato marrone con bordo dorato alt. 10 cm"
-  },
-  {
-    "nome": "Set di 3 lumini in vetro profumati, in diverse tonalità di colore, fragranza \"Vanille orientale\"",
-    "categoria": "Decorazioni",
-    "prezzo": 8.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254812/set-di-3-lumini-in-vetro-profumati-in-diverse-tonalita-di-colore-fragranza-vanille-orientale.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-3-lumini-in-vetro-profumati-in-diverse-tonalita-di-colore-fragranza-vanille-orientale-254812.htm",
-    "larghezza_cm": 16,
-    "profondita_cm": 5,
-    "descrizione": "Set di 3 lumini in vetro profumati, in diverse tonalità di colore, fragranza \"Vanille orientale\""
   },
   {
     "nome": "Mobiletto contenitore 1 cassetto 1 anta in legno di mango",
@@ -643,16 +523,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Armadio a 2 ante, colore écru, lung. 110 cm"
   },
   {
-    "nome": "Dispenser per sapone liquido in effetto travertino beige",
-    "categoria": "Bagno",
-    "prezzo": 22.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252552/dispenser-per-sapone-liquido-in-effetto-travertino-beige.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dispenser-per-sapone-liquido-in-effetto-travertino-beige-252552.htm",
-    "larghezza_cm": 7.5,
-    "profondita_cm": 7.5,
-    "descrizione": "Dispenser per sapone liquido in effetto travertino beige"
-  },
-  {
     "nome": "Cestello in acciaio nero",
     "categoria": "Cucina",
     "prezzo": 19.99,
@@ -661,16 +531,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 28,
     "profondita_cm": 12,
     "descrizione": "Cestello in acciaio nero"
-  },
-  {
-    "nome": "Tazza da tè e piattino in porcellana bianca e dorata",
-    "categoria": "Cucina",
-    "prezzo": 7.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazza-da-te-e-piattino-in-porcellana-bianca-e-dorata-1000-14-19-217155_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazza-da-te-e-piattino-in-porcellana-bianca-e-dorata-217155.htm",
-    "larghezza_cm": 11,
-    "profondita_cm": 8.5,
-    "descrizione": "Tazza da tè e piattino in porcellana bianca e dorata"
   },
   {
     "nome": "Modjo - Divano angolare con penisola a sinistra 3/4 posti effetto velluto color bronzo",
@@ -773,26 +633,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divanetto 2 posti in bambù con cuscini bianchi"
   },
   {
-    "nome": "Tela dipinta astratta color bianco sporco, 80x110 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 119,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/248560_251824_239804/tela-dipinta-astratta-color-bianco-sporco-80x110-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-dipinta-astratta-color-bianco-sporco-80x110-cm-239804.htm",
-    "larghezza_cm": 80,
-    "profondita_cm": 3,
-    "descrizione": "Tela dipinta astratta color bianco sporco, 80x110 cm"
-  },
-  {
-    "nome": "Orologio da parete in acciaio nero, diametro 90 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 59.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-da-parete-in-acciaio-nero-diametro-90-cm-1000-9-19-172219_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-da-parete-in-acciaio-nero-diametro-90-cm-172219.htm",
-    "larghezza_cm": 90,
-    "profondita_cm": 4,
-    "descrizione": "Orologio da parete in acciaio nero, diametro 90 cm"
-  },
-  {
     "nome": "Lampada in ceramica con paralume beige rosato",
     "categoria": "Lampade",
     "prezzo": 12.99,
@@ -801,16 +641,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 14,
     "profondita_cm": 14,
     "descrizione": "Lampada in ceramica con paralume beige rosato"
-  },
-  {
-    "nome": "Decorazione da parete a forma di ramo in ferro battuto color oro e bronzo, 47x78 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 49.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-da-parete-a-forma-di-ramo-in-ferro-battuto-color-oro-e-bronzo-47x78-cm-1000-16-25-203795_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-a-forma-di-ramo-in-ferro-battuto-color-oro-e-bronzo-47x78-cm-203795.htm",
-    "larghezza_cm": 47,
-    "profondita_cm": 2,
-    "descrizione": "Decorazione da parete a forma di ramo in ferro battuto color oro e bronzo, 47x78 cm"
   },
   {
     "nome": "Bouquet di fiori secchi beige, bianchi e arancioni",
@@ -843,16 +673,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Vaso in vetro multicolore alt. 31 cm"
   },
   {
-    "nome": "Candela profumata con portacandela in ceramica beige",
-    "categoria": "Decorazioni",
-    "prezzo": 9.05,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251660/candela-profumata-con-portacandela-in-ceramica-beige.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-con-portacandela-in-ceramica-beige-251660.htm",
-    "larghezza_cm": 7.2,
-    "profondita_cm": 7.2,
-    "descrizione": "Candela profumata con portacandela in ceramica beige"
-  },
-  {
     "nome": "Mobile contenitore multi-cassetto in legno di salvia",
     "categoria": "Mobili",
     "prezzo": 104.3,
@@ -881,16 +701,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 11.5,
     "profondita_cm": 11.5,
     "descrizione": "Portasapone in vetro ambrato"
-  },
-  {
-    "nome": "Mensola da cucina in ferro nero",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/mensola-da-cucina-in-ferro-nero-1000-3-7-230591_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/mensola-da-cucina-in-ferro-nero-230591.htm",
-    "larghezza_cm": 30,
-    "profondita_cm": 8,
-    "descrizione": "Mensola da cucina in ferro nero"
   },
   {
     "nome": "Insalatiera in gres marrone",
@@ -1013,26 +823,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Modulo centrale da giardino in legno di eucalipto e poliestere écru"
   },
   {
-    "nome": "Trittico astratto su tela, stampato e dipinto 40 × 40 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 79.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254671/trittico-astratto-su-tela-stampato-e-dipinto-40-40-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/trittico-astratto-su-tela-stampato-e-dipinto-40-40-cm-254671.htm",
-    "larghezza_cm": 40,
-    "profondita_cm": 3,
-    "descrizione": "Trittico astratto su tela, stampato e dipinto 40 × 40 cm"
-  },
-  {
-    "nome": "Orologio da parete bianco e beige, D50 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 39.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-da-parete-bianco-e-beige-d50-cm-1000-4-11-183281_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-da-parete-bianco-e-beige-d50-cm-183281.htm",
-    "larghezza_cm": 50,
-    "profondita_cm": 4.5,
-    "descrizione": "Orologio da parete bianco e beige, D50 cm"
-  },
-  {
     "nome": "Lampada effetto legno fluitato e abat-jour bianco",
     "categoria": "Lampade",
     "prezzo": 39.99,
@@ -1113,16 +903,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Armadio a 2 ante e 2 cassetti in mango bianco patinato 108 cm"
   },
   {
-    "nome": "Dispenser per sapone in gres bianco e verde",
-    "categoria": "Bagno",
-    "prezzo": 9.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/dispenser-per-sapone-in-gres-bianco-e-verde-1000-7-32-247918_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dispenser-per-sapone-in-gres-bianco-e-verde-247918.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Dispenser per sapone in gres bianco e verde"
-  },
-  {
     "nome": "Cesto in ferro traforato nero e oro",
     "categoria": "Cucina",
     "prezzo": 32.99,
@@ -1131,16 +911,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 30,
     "profondita_cm": 25,
     "descrizione": "Cesto in ferro traforato nero e oro"
-  },
-  {
-    "nome": "Tazze in ceramica nera e bianco grafico (x4) con supporto in metallo nero",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazze-in-ceramica-nera-e-bianco-grafico-x4-con-supporto-in-metallo-nero-1000-0-0-215373_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazze-in-ceramica-nera-e-bianco-grafico-x4-con-supporto-in-metallo-nero-215373.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 6.5,
-    "descrizione": "Tazze in ceramica nera e bianco grafico (x4) con supporto in metallo nero"
   },
   {
     "nome": "Elvis - Divano letto clic clac a 3 posti in velluto verde",
@@ -1231,26 +1001,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 65,
     "profondita_cm": 75,
     "descrizione": "Modulo centrale da giardino in legno di acacia e poliestere riciclato color écru"
-  },
-  {
-    "nome": "Tela dipinta in verde e oro, 70x70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 64.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-dipinta-in-verde-e-oro-70x70-cm-1000-13-21-222118_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-dipinta-in-verde-e-oro-70x70-cm-222118.htm",
-    "larghezza_cm": 70,
-    "profondita_cm": 3.2,
-    "descrizione": "Tela dipinta in verde e oro, 70x70 cm"
-  },
-  {
-    "nome": "Orologio in metallo nero 60 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 29.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-in-metallo-nero-60-cm-1000-12-10-157942_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-in-metallo-nero-60-cm-157942.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 3.5,
-    "descrizione": "Orologio in metallo nero 60 cm"
   },
   {
     "nome": "Vaso in maiolica marrone, beige e rosa, alt. 16 cm",
@@ -1373,16 +1123,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divanetto professionale da esterno a 2 posti in resina intrecciata riciclata beige"
   },
   {
-    "nome": "Dittico astratto su tele nei toni del beige e del nero, 84x60 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 34.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/dittico-astratto-su-tele-nei-toni-del-beige-e-del-nero-84x60-cm-1000-1-12-222888_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dittico-astratto-su-tele-nei-toni-del-beige-e-del-nero-84x60-cm-222888.htm",
-    "larghezza_cm": 84,
-    "profondita_cm": 2,
-    "descrizione": "Dittico astratto su tele nei toni del beige e del nero, 84x60 cm"
-  },
-  {
     "nome": "Vaso striato in gres dorato alt. 16 cm",
     "categoria": "Decorazioni",
     "prezzo": 9.99,
@@ -1493,26 +1233,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Chauffeuse da giardino professionali modulari in legno di eucalipto e poliestere écru (x2)"
   },
   {
-    "nome": "Quadro su tela con dipinto astratto verde, beige e nero 120x120 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 169,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254328_0/quadro-su-tela-con-dipinto-astratto-verde-beige-e-nero-120x120-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-su-tela-con-dipinto-astratto-verde-beige-e-nero-120x120-cm-254328.htm",
-    "larghezza_cm": 120,
-    "profondita_cm": 4.5,
-    "descrizione": "Quadro su tela con dipinto astratto verde, beige e nero 120x120 cm"
-  },
-  {
-    "nome": "Orologio in metallo dorato e vetro stampato effetto marmo Ø 90 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-in-metallo-dorato-e-vetro-stampato-effetto-marmo-oe-90-cm-1000-15-12-210424_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-in-metallo-dorato-e-vetro-stampato-effetto-marmo-oe-90-cm-210424.htm",
-    "larghezza_cm": 90,
-    "profondita_cm": 5,
-    "descrizione": "Orologio in metallo dorato e vetro stampato effetto marmo Ø 90 cm"
-  },
-  {
     "nome": "Lampada in ceramica dorata con paralume in poliestere riciclato bianco",
     "categoria": "Lampade",
     "prezzo": 39.99,
@@ -1521,16 +1241,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 32,
     "profondita_cm": 18,
     "descrizione": "Lampada in ceramica dorata con paralume in poliestere riciclato bianco"
-  },
-  {
-    "nome": "Decorazione da parete astratta bianca in rilievo 92×120 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254074_0/decorazione-da-parete-astratta-bianca-in-rilievo-92-120-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-astratta-bianca-in-rilievo-92-120-cm-254074.htm",
-    "larghezza_cm": 92,
-    "profondita_cm": 4,
-    "descrizione": "Decorazione da parete astratta bianca in rilievo 92×120 cm"
   },
   {
     "nome": "Steli di fiori secchi rossi",
@@ -1593,26 +1303,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Mobile TV con tondelli bianchi lung. 160 cm"
   },
   {
-    "nome": "Quadro ovale con ritratto di cane 53×64 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 69.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/quadro-ovale-con-ritratto-di-cane-53-64-cm-1000-13-4-249981_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-ovale-con-ritratto-di-cane-53-64-cm-249981.htm",
-    "larghezza_cm": 53,
-    "profondita_cm": 3.5,
-    "descrizione": "Quadro ovale con ritratto di cane 53×64 cm"
-  },
-  {
-    "nome": "Orologio da parete con ingranaggi in metallo nero Ø 70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 79.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-da-parete-con-ingranaggi-in-metallo-nero-oe-70-cm-1000-15-0-192659_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-da-parete-con-ingranaggi-in-metallo-nero-oe-70-cm-192659.htm",
-    "larghezza_cm": 70,
-    "profondita_cm": 5,
-    "descrizione": "Orologio da parete con ingranaggi in metallo nero Ø 70 cm"
-  },
-  {
     "nome": "Pianta verde artificiale con vaso in fibre vegetali beige",
     "categoria": "Decorazioni",
     "prezzo": 14.99,
@@ -1631,16 +1321,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 45,
     "profondita_cm": 10,
     "descrizione": "Cuscino in lino lavato verde giada 45x45cm"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro FLORAL",
-    "categoria": "Cucina",
-    "prezzo": 17.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-floral-1000-15-9-139942_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-floral-139942.htm",
-    "larghezza_cm": 5.5,
-    "profondita_cm": 29.5,
-    "descrizione": "Bicchiere in vetro FLORAL"
   },
   {
     "nome": "Barack - Divano 4 posti in tessuto tramato avorio",
@@ -1703,16 +1383,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano da giardino 2 posti in resina riciclata beige e acciaio nero"
   },
   {
-    "nome": "Tela dipinta nei toni del beige e del marrone, 150x50 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 89.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-dipinta-nei-toni-del-beige-e-del-marrone-150x50-cm-1000-5-7-221940_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-dipinta-nei-toni-del-beige-e-del-marrone-150x50-cm-221940.htm",
-    "larghezza_cm": 149.5,
-    "profondita_cm": 3,
-    "descrizione": "Tela dipinta nei toni del beige e del marrone, 150x50 cm"
-  },
-  {
     "nome": "Lampada bianca e abat-jour beige",
     "categoria": "Lampade",
     "prezzo": 17.99,
@@ -1721,16 +1391,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 20,
     "profondita_cm": 20,
     "descrizione": "Lampada bianca e abat-jour beige"
-  },
-  {
-    "nome": "Decorazione da parete a forma di ramo tricolore in acciaio, 40x94 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 46.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-da-parete-a-forma-di-ramo-tricolore-in-acciaio-40x94-cm-1000-11-35-194457_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-a-forma-di-ramo-tricolore-in-acciaio-40x94-cm-194457.htm",
-    "larghezza_cm": 40,
-    "profondita_cm": 6,
-    "descrizione": "Decorazione da parete a forma di ramo tricolore in acciaio, 40x94 cm"
   },
   {
     "nome": "Bouquet di fiori secchi rosa",
@@ -1883,26 +1543,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Libreria multicolore con ripiani e 2 ante lung. 112 cm"
   },
   {
-    "nome": "Trittico astratto ricamato beige e bianco 180 × 120 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 169,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254676/trittico-astratto-ricamato-beige-e-bianco-180-120-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/trittico-astratto-ricamato-beige-e-bianco-180-120-cm-254676.htm",
-    "larghezza_cm": 180,
-    "profondita_cm": 4,
-    "descrizione": "Trittico astratto ricamato beige e bianco 180 × 120 cm"
-  },
-  {
-    "nome": "Bouquet di erba di pampa essiccata",
-    "categoria": "Decorazioni",
-    "prezzo": 12.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bouquet-di-erba-di-pampa-essiccata-1000-5-31-217741_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bouquet-di-erba-di-pampa-essiccata-217741.htm",
-    "larghezza_cm": 10,
-    "profondita_cm": 8,
-    "descrizione": "Bouquet di erba di pampa essiccata"
-  },
-  {
     "nome": "Pianta artificiale con vaso in rattan",
     "categoria": "Decorazioni",
     "prezzo": 19.99,
@@ -2023,16 +1663,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Portasapone in vetro trasparente, bianco e oro"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere in vetro striato trasparente",
-    "categoria": "Cucina",
-    "prezzo": 17.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-striato-trasparente-1000-10-19-241427_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-striato-trasparente-241427.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Bicchiere in vetro striato trasparente"
-  },
-  {
     "nome": "Nio - Divano letto pieghevole 2 posti verde acqua",
     "categoria": "Divani",
     "prezzo": 339,
@@ -2071,16 +1701,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 78,
     "profondita_cm": 40,
     "descrizione": "Biblioteca con 2 ante e 2 ripiani bianco crema 78cm"
-  },
-  {
-    "nome": "Vaso in gres écru screziato alt. 19 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 8.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-gres-ecru-screziato-alt-19-cm-1000-13-33-216185_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-gres-ecru-screziato-alt-19-cm-216185.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Vaso in gres écru screziato alt. 19 cm"
   },
   {
     "nome": "Servizio piatti 12 pezzi in porcellana bianca e dorata",
@@ -2183,26 +1803,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto 90x200 cm con rete a doghe"
   },
   {
-    "nome": "Set di 3 decorazioni da parete uccelli in porcellana bianco sporco",
-    "categoria": "Decorazioni",
-    "prezzo": 39.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-3-decorazioni-da-parete-uccelli-in-porcellana-bianco-sporco-1000-16-35-249848_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-3-decorazioni-da-parete-uccelli-in-porcellana-bianco-sporco-249848.htm",
-    "larghezza_cm": 30,
-    "profondita_cm": 2,
-    "descrizione": "Set di 3 decorazioni da parete uccelli in porcellana bianco sporco"
-  },
-  {
-    "nome": "Vaso destrutturato in gres beige alt. 16 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 7.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-destrutturato-in-gres-beige-alt-16-cm-1000-5-40-248664_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-destrutturato-in-gres-beige-alt-16-cm-248664.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 5.5,
-    "descrizione": "Vaso destrutturato in gres beige alt. 16 cm"
-  },
-  {
     "nome": "Sinbad - Armadio bianco in mango L 102 cm",
     "categoria": "Armadi",
     "prezzo": 999,
@@ -2211,16 +1811,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 102,
     "profondita_cm": 48,
     "descrizione": "Armadio bianco in mango L 102 cm"
-  },
-  {
-    "nome": "Lotto di 6 - Calice in vetro striato trasparente",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/calice-in-vetro-striato-trasparente-1000-13-22-241430_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/calice-in-vetro-striato-trasparente-241430.htm",
-    "larghezza_cm": 8.9,
-    "profondita_cm": 8.9,
-    "descrizione": "Calice in vetro striato trasparente"
   },
   {
     "nome": "Servizio di 12 piatti in ceramica beige",
@@ -2343,16 +1933,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Pianta artificiale verde e vaso nero"
   },
   {
-    "nome": "Vaso in dolomite verde acqua alt. 14cm",
-    "categoria": "Decorazioni",
-    "prezzo": 4.85,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-dolomite-verde-acqua-alt-14cm-1000-0-4-233376_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-dolomite-verde-acqua-alt-14cm-233376.htm",
-    "larghezza_cm": 13.5,
-    "profondita_cm": 6,
-    "descrizione": "Vaso in dolomite verde acqua alt. 14cm"
-  },
-  {
     "nome": "Mobile contenitore multicassetto in legno di mango",
     "categoria": "Altri mobili",
     "prezzo": 249,
@@ -2413,26 +1993,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada da tavolo in acciaio dorato con paralume rosa a forma di corolla"
   },
   {
-    "nome": "Decorazione murale composta da cerchi in ferro battuto, alluminio dorato e specchi, 139x71 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 119,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-murale-composta-da-cerchi-in-ferro-battuto-alluminio-dorato-e-specchi-139x71-cm-1000-13-19-249709_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-murale-composta-da-cerchi-in-ferro-battuto-alluminio-dorato-e-specchi-139x71-cm-249709.htm",
-    "larghezza_cm": 139,
-    "profondita_cm": 4.5,
-    "descrizione": "Decorazione murale composta da cerchi in ferro battuto, alluminio dorato e specchi, 139x71 cm"
-  },
-  {
-    "nome": "Vaso in gres beige alt. 12 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 5.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-gres-beige-alt-12-cm-1000-12-29-248858_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-gres-beige-alt-12-cm-248858.htm",
-    "larghezza_cm": 6.8,
-    "profondita_cm": 6.8,
-    "descrizione": "Vaso in gres beige alt. 12 cm"
-  },
-  {
     "nome": "Portobello - Armadio vintage a 2 ante e 3 cassetti lung. 120 cm",
     "categoria": "Armadi",
     "prezzo": 1199,
@@ -2451,16 +2011,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 116,
     "profondita_cm": 35,
     "descrizione": "Libreria de 4 puertas y 2 cajones, verde grigio e verde cedro e écru"
-  },
-  {
-    "nome": "Quadro su tela dipinto a mano con motivi vegetali multicolore 50x70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 49.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251932/quadro-su-tela-dipinto-a-mano-con-motivi-vegetali-multicolore-50x70-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-su-tela-dipinto-a-mano-con-motivi-vegetali-multicolore-50x70-cm-251932.htm",
-    "larghezza_cm": 51,
-    "profondita_cm": 3,
-    "descrizione": "Quadro su tela dipinto a mano con motivi vegetali multicolore 50x70 cm"
   },
   {
     "nome": "Lampada in ceramica nera e paralume in poliestere riciclato ecrù",
@@ -2493,16 +2043,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Vaso in gres bianco e grigio chiaro alt. 25cm"
   },
   {
-    "nome": "Candela profumata rossa alt. 10 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 4.15,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-rossa-alt-10-cm-1000-2-6-246621_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-rossa-alt-10-cm-246621.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata rossa alt. 10 cm"
-  },
-  {
     "nome": "Célestine - Mobiletto bianco sporco a 12 cassetti",
     "categoria": "Altri mobili",
     "prezzo": 399,
@@ -2521,16 +2061,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 104,
     "profondita_cm": 50,
     "descrizione": "Guardaroba a 2 ante e 1 cassetto bianco 104 cm"
-  },
-  {
-    "nome": "Dispenser per sapone in vetro con supporto in acciaio nero",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254000/dispenser-per-sapone-in-vetro-con-supporto-in-acciaio-nero.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dispenser-per-sapone-in-vetro-con-supporto-in-acciaio-nero-254000.htm",
-    "larghezza_cm": 26.4,
-    "profondita_cm": 9.6,
-    "descrizione": "Dispenser per sapone in vetro con supporto in acciaio nero"
   },
   {
     "nome": "Chesterfield - Divano 3/4 posti in velluto beige rosato",
@@ -2653,16 +2183,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Vaso in porcellana striata bianca, 25 cm"
   },
   {
-    "nome": "Lotto di 6 - Candela profumata gialla alt. 6 cm, 75g",
-    "categoria": "Decorazioni",
-    "prezzo": 9.54,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-gialla-alt-6-cm-75g-1000-16-20-246635_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-gialla-alt-6-cm-75g-246635.htm",
-    "larghezza_cm": 4.5,
-    "profondita_cm": 4.5,
-    "descrizione": "Candela profumata gialla alt. 6 cm, 75g"
-  },
-  {
     "nome": "Dispenser di bevande in vetro striato verde oliva con tappo in bambù 5,5 l",
     "categoria": "Cucina",
     "prezzo": 19.99,
@@ -2711,16 +2231,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 60,
     "profondita_cm": 30,
     "descrizione": "Libreria per bambini verde chiaro"
-  },
-  {
-    "nome": "Orologio a reticolo in metallo nero, 60x60 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 34.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-a-reticolo-in-metallo-nero-60x60-cm-1000-4-35-195810_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-a-reticolo-in-metallo-nero-60x60-cm-195810.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 5.5,
-    "descrizione": "Orologio a reticolo in metallo nero, 60x60 cm"
   },
   {
     "nome": "Vaso in gres bianco alt. 35 cm",
@@ -2853,16 +2363,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Comodino con 1 cassetto in rattan beige"
   },
   {
-    "nome": "Candela profumata in ceramica blu",
-    "categoria": "Decorazioni",
-    "prezzo": 16.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-in-ceramica-blu-1000-13-21-249301_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-in-ceramica-blu-249301.htm",
-    "larghezza_cm": 31,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata in ceramica blu"
-  },
-  {
     "nome": "Lotto di 6 - 6 piatti da dessert in ceramica verde",
     "categoria": "Cucina",
     "prezzo": 41.94,
@@ -2931,26 +2431,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 45.8,
     "profondita_cm": 35,
     "descrizione": "Comodino con 1 cassetto e 1 nicchia"
-  },
-  {
-    "nome": "Tavola cartografica del mondo nera illuminata, 180x120 cm",
-    "categoria": "Lampade",
-    "prezzo": 249,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tavola-cartografica-del-mondo-nera-illuminata-180x120-cm-1000-16-39-236486_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tavola-cartografica-del-mondo-nera-illuminata-180x120-cm-236486.htm",
-    "larghezza_cm": 180,
-    "profondita_cm": 5.5,
-    "descrizione": "Tavola cartografica del mondo nera illuminata, 180x120 cm"
-  },
-  {
-    "nome": "Candela LED bianca 7x10 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-led-bianca-7x10-cm-1000-16-38-247145_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-led-bianca-7x10-cm-247145.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela LED bianca 7x10 cm"
   },
   {
     "nome": "Loreto - Mobiletto portaoggetti a 2 ante nero in paglia di Vienna",
@@ -3103,16 +2583,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Vaso in vetro azzurro alt. 25 cm"
   },
   {
-    "nome": "Lotto di 6 - Candela profumata rosa alt. 6 cm, 75g",
-    "categoria": "Decorazioni",
-    "prezzo": 6.6,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-rosa-alt-6-cm-75g-1000-1-22-246637_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-rosa-alt-6-cm-75g-246637.htm",
-    "larghezza_cm": 4.5,
-    "profondita_cm": 4.5,
-    "descrizione": "Candela profumata rosa alt. 6 cm, 75g"
-  },
-  {
     "nome": "Olympea - Mobiletto portaoggetti a 2 ante effetto resina e madreperla 80cm",
     "categoria": "Altri mobili",
     "prezzo": 899,
@@ -3221,26 +2691,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 40,
     "profondita_cm": 30,
     "descrizione": "Comodino con vano a giorno e 1 cassetto color crema"
-  },
-  {
-    "nome": "Tela astratta dipinta in bianco e nero, 100x141 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 139,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-astratta-dipinta-in-bianco-e-nero-100x141-cm-1000-15-38-246940_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-astratta-dipinta-in-bianco-e-nero-100x141-cm-246940.htm",
-    "larghezza_cm": 100,
-    "profondita_cm": 3.5,
-    "descrizione": "Tela astratta dipinta in bianco e nero, 100x141 cm"
-  },
-  {
-    "nome": "Orologio quadrato nero e dorato 30x30 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 19.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-quadrato-nero-e-dorato-30x30-cm-1000-0-13-241298_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-quadrato-nero-e-dorato-30x30-cm-241298.htm",
-    "larghezza_cm": 30,
-    "profondita_cm": 4.5,
-    "descrizione": "Orologio quadrato nero e dorato 30x30 cm"
   },
   {
     "nome": "Lampada da terra a fungo in metallo laccato bianco alt. 145 cm",
@@ -3453,16 +2903,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada a sospensione in alluminio nero e dorato"
   },
   {
-    "nome": "Vaso in vetro nero e trasparente",
-    "categoria": "Decorazioni",
-    "prezzo": 79.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-vetro-nero-e-trasparente-1000-12-26-220196_10.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-vetro-nero-e-trasparente-220196.htm",
-    "larghezza_cm": 23,
-    "profondita_cm": 9,
-    "descrizione": "Vaso in vetro nero e trasparente"
-  },
-  {
     "nome": "Suzelle - Armadio a 2 ante in paglia di Vienna e 2 cassetti grigio-blu lung. 105 cm",
     "categoria": "Armadi",
     "prezzo": 599,
@@ -3533,16 +2973,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Comodino vintage a 1 cassetto bianco"
   },
   {
-    "nome": "Quadro bicolore 53x70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 19.95,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/quadro-bicolore-53x70-cm-1000-9-20-240321_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-bicolore-53x70-cm-240321.htm",
-    "larghezza_cm": 52.5,
-    "profondita_cm": 2.5,
-    "descrizione": "Quadro bicolore 53x70 cm"
-  },
-  {
     "nome": "Vaso in gres beige alt. 22 cm",
     "categoria": "Decorazioni",
     "prezzo": 19.99,
@@ -3591,16 +3021,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 160,
     "profondita_cm": 45.5,
     "descrizione": "Cassettiera doppia con 6 cassetti beige e dettagli in acciaio color ottone lung. 160 cm"
-  },
-  {
-    "nome": "Vaso in dolomite nera alt. 12 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 5.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-dolomite-nera-alt-12-cm-1000-2-20-222158_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-dolomite-nera-alt-12-cm-222158.htm",
-    "larghezza_cm": 6.7,
-    "profondita_cm": 6.7,
-    "descrizione": "Vaso in dolomite nera alt. 12 cm"
   },
   {
     "nome": "Neo - Mobiletto portaoggetti a 2 ante intarsiato in osso nero ed écru 79cm",
@@ -3703,16 +3123,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Cuscino in lino lavato verde basilico 45x45cm"
   },
   {
-    "nome": "Distributore detersivo per i piatti e portaspugna in ceramica beige e nera",
-    "categoria": "Cucina",
-    "prezzo": 15.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/distributore-detersivo-per-i-piatti-e-portaspugna-in-ceramica-beige-e-nera-1000-5-20-218591_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/distributore-detersivo-per-i-piatti-e-portaspugna-in-ceramica-beige-e-nera-218591.htm",
-    "larghezza_cm": 18,
-    "profondita_cm": 6.5,
-    "descrizione": "Distributore detersivo per i piatti e portaspugna in ceramica beige e nera"
-  },
-  {
     "nome": "Vassoio ovale in acacia",
     "categoria": "Cucina",
     "prezzo": 10.99,
@@ -3761,16 +3171,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 90,
     "profondita_cm": 190,
     "descrizione": "Letto vintage 90x190 cm con rete a doghe"
-  },
-  {
-    "nome": "Tela dipinta, marrone, oro e nero, 80x100 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 109,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-dipinta-marrone-oro-e-nero-80x100-cm-1000-3-8-228993_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-dipinta-marrone-oro-e-nero-80x100-cm-228993.htm",
-    "larghezza_cm": 80,
-    "profondita_cm": 3,
-    "descrizione": "Tela dipinta, marrone, oro e nero, 80x100 cm"
   },
   {
     "nome": "Monstera artificiale in vaso",
@@ -3851,16 +3251,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 150,
     "profondita_cm": 47,
     "descrizione": "Comò doppio con 6 cassetti in paglia di Vienna 150 cm"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro a bolle verde",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-a-bolle-verde-1000-1-6-201111_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-a-bolle-verde-201111.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Bicchiere in vetro a bolle verde"
   },
   {
     "nome": "Cestino a due piani in metallo color crema e legno di faggio",
@@ -4063,16 +3453,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano nuvola a 2 posti in velluto color caffellatte con effetto anticato"
   },
   {
-    "nome": "Quadro in lino con ricamo a rilievo beige e bianco 60x80 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 41.95,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251459/quadro-in-lino-con-ricamo-a-rilievo-beige-e-bianco-60x80-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-in-lino-con-ricamo-a-rilievo-beige-e-bianco-60x80-cm-251459.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 2.8,
-    "descrizione": "Quadro in lino con ricamo a rilievo beige e bianco 60x80 cm"
-  },
-  {
     "nome": "Lampada da terra a fungo in metallo laccato nero alt. 145 cm",
     "categoria": "Lampade",
     "prezzo": 34.95,
@@ -4101,16 +3481,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 130,
     "profondita_cm": 60,
     "descrizione": "Guardaroba a 3 ante bianco opaco 130 cm"
-  },
-  {
-    "nome": "Lotto di 4 - Bicchiere in vetro con fondo grigio fumé",
-    "categoria": "Cucina",
-    "prezzo": 19.96,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-con-fondo-grigio-fume-1000-10-2-217015_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-con-fondo-grigio-fume-217015.htm",
-    "larghezza_cm": 5.5,
-    "profondita_cm": 5.5,
-    "descrizione": "Bicchiere in vetro con fondo grigio fumé"
   },
   {
     "nome": "Portaburro in vetro e vassoio in legno di acacia",
@@ -4183,16 +3553,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto regolabile neonato in legno di pino, L.70x140 cm"
   },
   {
-    "nome": "Orologio da parete industriale bicolore, 145x110 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 169,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-da-parete-industriale-bicolore-145x110-cm-1000-10-11-164995_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-da-parete-industriale-bicolore-145x110-cm-164995.htm",
-    "larghezza_cm": 145,
-    "profondita_cm": 3,
-    "descrizione": "Orologio da parete industriale bicolore, 145x110 cm"
-  },
-  {
     "nome": "Vaso in gres marrone e nero alt. 20cm",
     "categoria": "Decorazioni",
     "prezzo": 22.99,
@@ -4201,16 +3561,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 15.5,
     "profondita_cm": 15.5,
     "descrizione": "Vaso in gres marrone e nero alt. 20cm"
-  },
-  {
-    "nome": "Tazze in ceramica nera, crema e beige (x4) e supporto in metallo",
-    "categoria": "Cucina",
-    "prezzo": 24.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazze-in-ceramica-nera-crema-e-beige-x4-e-supporto-in-metallo-1000-6-38-207457_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazze-in-ceramica-nera-crema-e-beige-x4-e-supporto-in-metallo-207457.htm",
-    "larghezza_cm": 11.5,
-    "profondita_cm": 9,
-    "descrizione": "Tazze in ceramica nera, crema e beige (x4) e supporto in metallo"
   },
   {
     "nome": "Anvers - Divano 3 posti in tessuto fiammato giallo ocra",
@@ -4301,26 +3651,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 203,
     "profondita_cm": 98,
     "descrizione": "Divano a 3/4 posti in tessuto beige effetto lino"
-  },
-  {
-    "nome": "Tela stampata e dipinta, pavone multicolore, 110x110 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-stampata-e-dipinta-pavone-multicolore-110x110-cm-1000-6-3-235507_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-stampata-e-dipinta-pavone-multicolore-110x110-cm-235507.htm",
-    "larghezza_cm": 110,
-    "profondita_cm": 2.8,
-    "descrizione": "Tela stampata e dipinta, pavone multicolore, 110x110 cm"
-  },
-  {
-    "nome": "Orologio in metallo nero Ø 105 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 119,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/orologio-in-metallo-nero-oe-105-cm-1000-6-0-233331_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/orologio-in-metallo-nero-oe-105-cm-233331.htm",
-    "larghezza_cm": 105,
-    "profondita_cm": 4.5,
-    "descrizione": "Orologio in metallo nero Ø 105 cm"
   },
   {
     "nome": "Lampada a sospensione con 6 globi in vetro opalino e metallo dorato",
@@ -4433,16 +3763,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Materasso in memory foam 90x200"
   },
   {
-    "nome": "Tela astratta beige, 90x120 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 139,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-astratta-beige-90x120-cm-1000-8-40-247188_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-astratta-beige-90x120-cm-247188.htm",
-    "larghezza_cm": 90,
-    "profondita_cm": 4.5,
-    "descrizione": "Tela astratta beige, 90x120 cm"
-  },
-  {
     "nome": "Lampada a sospensione in vetro rigato trasparente e metallo dorato",
     "categoria": "Lampade",
     "prezzo": 39.99,
@@ -4453,16 +3773,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada a sospensione in vetro rigato trasparente e metallo dorato"
   },
   {
-    "nome": "Vaso in gres bianco con motivi grafici alt.18 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 8.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-gres-bianco-con-motivi-grafici-alt-18-cm-1000-12-29-200068_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-gres-bianco-con-motivi-grafici-alt-18-cm-200068.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 8.5,
-    "descrizione": "Vaso in gres bianco con motivi grafici alt.18 cm"
-  },
-  {
     "nome": "Chamarel - Armadio a 2 ante a battente in paglia di Vienna beige",
     "categoria": "Armadi",
     "prezzo": 899,
@@ -4471,16 +3781,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 90,
     "profondita_cm": 50,
     "descrizione": "Armadio a 2 ante a battente in paglia di Vienna beige"
-  },
-  {
-    "nome": "Vasetto per il miele in vetro con coperchio e cucchiaio in legno di acacia",
-    "categoria": "Cucina",
-    "prezzo": 10.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vasetto-per-il-miele-in-vetro-con-coperchio-e-cucchiaio-in-legno-di-acacia-1000-11-29-222864_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vasetto-per-il-miele-in-vetro-con-coperchio-e-cucchiaio-in-legno-di-acacia-222864.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Vasetto per il miele in vetro con coperchio e cucchiaio in legno di acacia"
   },
   {
     "nome": "Barnaby - Divano letto ad angolo destro 3/4 posti grigio chiaro screziato",
@@ -4573,16 +3873,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano nuvola a 3/4 posti in velluto color caffellatte con effetto anticato"
   },
   {
-    "nome": "Quadro su tela con pappagalli multicolori, 70x200 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 169,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/quadro-su-tela-con-pappagalli-multicolori-70x200-cm-1000-5-19-236220_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-su-tela-con-pappagalli-multicolori-70x200-cm-236220.htm",
-    "larghezza_cm": 200,
-    "profondita_cm": 3.5,
-    "descrizione": "Quadro su tela con pappagalli multicolori, 70x200 cm"
-  },
-  {
     "nome": "Lampada in paraplume in cotone avorio 169 cm",
     "categoria": "Lampade",
     "prezzo": 249,
@@ -4591,16 +3881,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 48,
     "profondita_cm": 48,
     "descrizione": "Lampada in paraplume in cotone avorio 169 cm"
-  },
-  {
-    "nome": "Stelo di magnolia artificiale",
-    "categoria": "Altri mobili",
-    "prezzo": 19.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/stelo-di-magnolia-artificiale-1000-8-3-247766_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/stelo-di-magnolia-artificiale-247766.htm",
-    "larghezza_cm": 1,
-    "profondita_cm": 47,
-    "descrizione": "Stelo di magnolia artificiale"
   },
   {
     "nome": "Vaso in gres bianco e blu alt. 51 cm",
@@ -4713,16 +3993,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada da terra 5 bracci in metallo cromato alt.198 cm"
   },
   {
-    "nome": "Lotto di 3 - Bottoniera con fiori secchi terracotta e beige",
-    "categoria": "Decorazioni",
-    "prezzo": 8.97,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251481/bottoniera-con-fiori-secchi-terracotta-e-beige.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bottoniera-con-fiori-secchi-terracotta-e-beige-251481.htm",
-    "larghezza_cm": 10,
-    "profondita_cm": 9,
-    "descrizione": "Bottoniera con fiori secchi terracotta e beige"
-  },
-  {
     "nome": "Vaso in gres beige, alt. 20 cm",
     "categoria": "Decorazioni",
     "prezzo": 19.99,
@@ -4741,16 +4011,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 90,
     "profondita_cm": 50,
     "descrizione": "Armadio a 2 ante color albicocca"
-  },
-  {
-    "nome": "Lotto di 2 - Tazza da viaggio in vetro trasparente con cannuccia e coperchio in bambù",
-    "categoria": "Cucina",
-    "prezzo": 11.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazza-da-viaggio-in-vetro-trasparente-con-cannuccia-e-coperchio-in-bambu-1000-0-26-248404_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazza-da-viaggio-in-vetro-trasparente-con-cannuccia-e-coperchio-in-bambu-248404.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Tazza da viaggio in vetro trasparente con cannuccia e coperchio in bambù"
   },
   {
     "nome": "Vassoio rettangolare in mango",
@@ -4803,16 +4063,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Comò doppio 6 cassetti in massello di legno di sheesham 165 cm"
   },
   {
-    "nome": "Versailles - Scala per libreria decorativa in legno massello di frassino",
-    "categoria": "Librerie",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/scala-per-libreria-decorativa-in-legno-massello-di-frassino-1000-13-9-175079_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/scala-per-libreria-decorativa-in-legno-massello-di-frassino-versailles-175079.htm",
-    "larghezza_cm": 34,
-    "profondita_cm": 7,
-    "descrizione": "Scala per libreria decorativa in legno massello di frassino"
-  },
-  {
     "nome": "Axelle - Madia vintage a 2 ante e 3 cassetti 160,6 cm",
     "categoria": "Credenze",
     "prezzo": 449,
@@ -4841,16 +4091,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 230,
     "profondita_cm": 98,
     "descrizione": "Divano trasformabile a 3/4 posti in tessuto beige effetto lino, materasso 10 cm"
-  },
-  {
-    "nome": "Tela dipinta di bianco, 100x100 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-dipinta-di-bianco-100x100-cm-1000-13-30-211221_5.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-dipinta-di-bianco-100x100-cm-211221.htm",
-    "larghezza_cm": 100,
-    "profondita_cm": 4.4,
-    "descrizione": "Tela dipinta di bianco, 100x100 cm"
   },
   {
     "nome": "Lampada a sospensione ariosa in ferro dorato",
@@ -4933,16 +4173,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano bianco in lino slavato 3/4 posti"
   },
   {
-    "nome": "Decorazione murale a forma di bicicletta, realizzata in legno di abete e acciaio nero, 76x50 cm.",
-    "categoria": "Decorazioni",
-    "prezzo": 39.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-murale-a-forma-di-bicicletta-realizzata-in-legno-di-abete-e-acciaio-nero-76x50-cm-1000-8-18-185461_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-murale-a-forma-di-bicicletta-realizzata-in-legno-di-abete-e-acciaio-nero-76x50-cm-185461.htm",
-    "larghezza_cm": 75.5,
-    "profondita_cm": 9.2,
-    "descrizione": "Decorazione murale a forma di bicicletta, realizzata in legno di abete e acciaio nero, 76x50 cm."
-  },
-  {
     "nome": "Stelo foglie artificiali dorate alt. 91cm",
     "categoria": "Altri mobili",
     "prezzo": 9.99,
@@ -4963,16 +4193,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Armadio bianco a 1 anta lung. 70 cm"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere in vetro sfumato trasparente e color ambra brillante",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-sfumato-trasparente-e-color-ambra-brillante-1000-12-10-238794_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-sfumato-trasparente-e-color-ambra-brillante-238794.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Bicchiere in vetro sfumato trasparente e color ambra brillante"
-  },
-  {
     "nome": "Hana - Tavolo da pranzo ovale listelli in legno di mango 8/10 persone, L.220",
     "categoria": "Tavoli da pranzo",
     "prezzo": 879,
@@ -4991,16 +4211,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 140,
     "profondita_cm": 45,
     "descrizione": "Cassettiera doppia con 6 cassetti in legno di mango e alluminio color ottone, L140"
-  },
-  {
-    "nome": "Quadro su tela verde con ricamo bianco 130x70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 149,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254912/quadro-su-tela-verde-con-ricamo-bianco-130x70-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-su-tela-verde-con-ricamo-bianco-130x70-cm-254912.htm",
-    "larghezza_cm": 130,
-    "profondita_cm": 2.5,
-    "descrizione": "Quadro su tela verde con ricamo bianco 130x70 cm"
   },
   {
     "nome": "Lampada a sospensione 15 globi in vetro borosilicato ambra",
@@ -5073,16 +4283,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Comò con 4 cassetti verde kaki e metallo dorato 100 cm"
   },
   {
-    "nome": "Portacandela in vetro e fiori secchi",
-    "categoria": "Decorazioni",
-    "prezzo": 7.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/portacandela-in-vetro-e-fiori-secchi-1000-11-11-225142_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/portacandela-in-vetro-e-fiori-secchi-225142.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Portacandela in vetro e fiori secchi"
-  },
-  {
     "nome": "Malaga - Armadio a 2 ante in rattan",
     "categoria": "Armadi",
     "prezzo": 799,
@@ -5091,16 +4291,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 93,
     "profondita_cm": 50,
     "descrizione": "Armadio a 2 ante in rattan"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro cromato e trasparente",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-cromato-e-trasparente-1000-0-32-146115_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-cromato-e-trasparente-146115.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Bicchiere in vetro cromato e trasparente"
   },
   {
     "nome": "Chesterfield - Divano trasformabile 3 posti in pelle marrone",
@@ -5303,16 +4493,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano 4 posti in velluto verde scuro"
   },
   {
-    "nome": "Bouquet di rami secchi marroni",
-    "categoria": "Decorazioni",
-    "prezzo": 8.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251488/bouquet-di-rami-secchi-marroni.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bouquet-di-rami-secchi-marroni-251488.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Bouquet di rami secchi marroni"
-  },
-  {
     "nome": "Sanary - Armadio a 3 ante a battente e 4 cassetti bianco e paglia di Vienna lung. 140 cm",
     "categoria": "Armadi",
     "prezzo": 1899,
@@ -5463,16 +4643,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Armadio 3 ante a battente nero, paglia di Vienna e metallo color ottone 129 cm"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere in vetro grigio CASSIOPEA",
-    "categoria": "Cucina",
-    "prezzo": 23.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-grigio-cassiopea-1000-10-5-154370_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-grigio-cassiopea-154370.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 8.5,
-    "descrizione": "Bicchiere in vetro grigio CASSIOPEA"
-  },
-  {
     "nome": "Poltrona in tessuto jacquard con motivo zebrato bianco e nero e gambe in legno massello di hevea",
     "categoria": "Divani",
     "prezzo": 279,
@@ -5553,26 +4723,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Guardaroba a 2 ante battenti in metallo grigio antracite"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere d'acqua in vetro cromato e trasparente",
-    "categoria": "Cucina",
-    "prezzo": 41.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-d-acqua-in-vetro-cromato-e-trasparente-1000-15-30-146113_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-d-acqua-in-vetro-cromato-e-trasparente-146113.htm",
-    "larghezza_cm": 6.6,
-    "profondita_cm": 6.6,
-    "descrizione": "Bicchiere d'acqua in vetro cromato e trasparente"
-  },
-  {
-    "nome": "Lotto di 6 - Tazzina doppio vetro trasparente con manico",
-    "categoria": "Cucina",
-    "prezzo": 23.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazzina-doppio-vetro-trasparente-con-manico-1000-1-24-245532_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazzina-doppio-vetro-trasparente-con-manico-245532.htm",
-    "larghezza_cm": 10.5,
-    "profondita_cm": 7.5,
-    "descrizione": "Tazzina doppio vetro trasparente con manico"
-  },
-  {
     "nome": "Jared - Poltrona Club in pelle marrone effetto anticato",
     "categoria": "Divani",
     "prezzo": 799,
@@ -5623,26 +4773,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Testiera reversibile in legno e poliestere riciclato a righe ocra ed écru per letto da 160 cm"
   },
   {
-    "nome": "Tappeto grande in lana e cotone beige 160cm x 230cm",
-    "categoria": "Tappeti",
-    "prezzo": 329,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tappeto-grande-in-lana-e-cotone-beige-160cm-x-230cm-1000-0-27-214047_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-grande-in-lana-e-cotone-beige-160cm-x-230cm-214047.htm",
-    "larghezza_cm": 160,
-    "profondita_cm": 2,
-    "descrizione": "Tappeto grande in lana e cotone beige 160cm x 230cm"
-  },
-  {
-    "nome": "Bouquet di fiori rotondi essiccati beige",
-    "categoria": "Decorazioni",
-    "prezzo": 12.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bouquet-di-fiori-rotondi-essiccati-beige-1000-10-24-226467_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bouquet-di-fiori-rotondi-essiccati-beige-226467.htm",
-    "larghezza_cm": 25,
-    "profondita_cm": 3,
-    "descrizione": "Bouquet di fiori rotondi essiccati beige"
-  },
-  {
     "nome": "Vaso grande in gres verde alt. 82 cm",
     "categoria": "Decorazioni",
     "prezzo": 349,
@@ -5661,16 +4791,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 100,
     "profondita_cm": 45,
     "descrizione": "Armadio a 2 ante inciso 100 cm"
-  },
-  {
-    "nome": "Tazza in gres con motivo tigre bianco, grigio, nero e verde",
-    "categoria": "Cucina",
-    "prezzo": 4.45,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazza-in-gres-con-motivo-tigre-bianco-grigio-nero-e-verde-1000-10-32-246442_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazza-in-gres-con-motivo-tigre-bianco-grigio-nero-e-verde-246442.htm",
-    "larghezza_cm": 14.2,
-    "profondita_cm": 9.3,
-    "descrizione": "Tazza in gres con motivo tigre bianco, grigio, nero e verde"
   },
   {
     "nome": "Olivia - Divano angolare trasformabile 4/5 posti in velluto blu notte",
@@ -5723,16 +4843,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Madia a 3 ante in metallo ondulato color ottone e marmo bianco 185 cm"
   },
   {
-    "nome": "Morphee - Testata del letto rivestibile L 160 cm",
-    "categoria": "Letti",
-    "prezzo": 179,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-rivestibile-l-160-cm-1000-14-20-147251_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-rivestibile-l-160-cm-morphee-147251.htm",
-    "larghezza_cm": 170,
-    "profondita_cm": 8,
-    "descrizione": "Testata del letto rivestibile L 160 cm"
-  },
-  {
     "nome": "Brooke - Divano scandinavo 3/4 posti blu ghiaccio",
     "categoria": "Divani",
     "prezzo": 599,
@@ -5781,16 +4891,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 55,
     "profondita_cm": 54,
     "descrizione": "Sedia in velluto ocra e acciaio nero"
-  },
-  {
-    "nome": "Bouquet di fiori essiccati bianchi",
-    "categoria": "Decorazioni",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bouquet-di-fiori-essiccati-bianchi-1000-11-1-226485_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bouquet-di-fiori-essiccati-bianchi-226485.htm",
-    "larghezza_cm": 15,
-    "profondita_cm": 6,
-    "descrizione": "Bouquet di fiori essiccati bianchi"
   },
   {
     "nome": "Bouquet di fiori artificiali blu e vaso in gres",
@@ -5951,16 +5051,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 191,
     "profondita_cm": 213.5,
     "descrizione": "Letto in legno di mango e acacia tinto 180x200 cm con rete a doghe"
-  },
-  {
-    "nome": "Stampa su tela astratta multicolore 80×120 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/255344/stampa-su-tela-astratta-multicolore-80-120-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/stampa-su-tela-astratta-multicolore-80-120-cm-255344.htm",
-    "larghezza_cm": 79,
-    "profondita_cm": 3,
-    "descrizione": "Stampa su tela astratta multicolore 80×120 cm"
   },
   {
     "nome": "Cuscino in lino lavato terracotta 60x60cm",
@@ -6133,16 +5223,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada sferica a sospensione con pendenti e metallo"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere da whisky in vetro",
-    "categoria": "Cucina",
-    "prezzo": 16.74,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-da-whisky-in-vetro-1000-11-33-206714_3.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-da-whisky-in-vetro-206714.htm",
-    "larghezza_cm": 8.4,
-    "profondita_cm": 8.4,
-    "descrizione": "Bicchiere da whisky in vetro"
-  },
-  {
     "nome": "Divano 2 posti in tessuto tramato beige con poggiatesta regolabili",
     "categoria": "Divani",
     "prezzo": 999,
@@ -6203,16 +5283,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Armadietto a 2 ante e 2 cassetti in legno massello di mango 100 cm"
   },
   {
-    "nome": "Dispenser per sapone e porta spugna in ceramica verde",
-    "categoria": "Cucina",
-    "prezzo": 19.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/dispenser-per-sapone-e-porta-spugna-in-ceramica-verde-1000-16-34-233324_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dispenser-per-sapone-e-porta-spugna-in-ceramica-verde-233324.htm",
-    "larghezza_cm": 19,
-    "profondita_cm": 7,
-    "descrizione": "Dispenser per sapone e porta spugna in ceramica verde"
-  },
-  {
     "nome": "Divano angolare con penisola a destra 4/5 posti e poggiatesta reclinabili in tessuto tramato grigio",
     "categoria": "Divani",
     "prezzo": 1199,
@@ -6243,16 +5313,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Madia a 2 ante e 3 cassetti blu scuro 145 cm"
   },
   {
-    "nome": "Morphee - Testata del letto rivestibile in legno 180 cm",
-    "categoria": "Letti",
-    "prezzo": 159.2,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-rivestibile-in-legno-180-cm-1000-12-20-157296_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-rivestibile-in-legno-180-cm-morphee-157296.htm",
-    "larghezza_cm": 190,
-    "profondita_cm": 8,
-    "descrizione": "Testata del letto rivestibile in legno 180 cm"
-  },
-  {
     "nome": "Sunset - Divano angolare con penisola a destra 5/6 posti in tessuto di ciniglia verde",
     "categoria": "Divani",
     "prezzo": 1599,
@@ -6263,16 +5323,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano angolare con penisola a destra 5/6 posti in tessuto di ciniglia verde"
   },
   {
-    "nome": "Trittico di tele dipinte in beige e bianco, 170x112 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 199,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/trittico-di-tele-dipinte-in-beige-e-bianco-170x112-cm-1000-5-26-243156_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/trittico-di-tele-dipinte-in-beige-e-bianco-170x112-cm-243156.htm",
-    "larghezza_cm": 169.5,
-    "profondita_cm": 4,
-    "descrizione": "Trittico di tele dipinte in beige e bianco, 170x112 cm"
-  },
-  {
     "nome": "Lampada da terra in acciaio nero e paralume in vetro maculato marrone e nero alt.150 cm",
     "categoria": "Lampade",
     "prezzo": 69.99,
@@ -6281,16 +5331,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 24,
     "profondita_cm": 24,
     "descrizione": "Lampada da terra in acciaio nero e paralume in vetro maculato marrone e nero alt.150 cm"
-  },
-  {
-    "nome": "Candela profumata in vetro grigio e metallo dorato 350g",
-    "categoria": "Decorazioni",
-    "prezzo": 19.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-in-vetro-grigio-e-metallo-dorato-350g-1000-10-12-245643_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-in-vetro-grigio-e-metallo-dorato-350g-245643.htm",
-    "larghezza_cm": 10,
-    "profondita_cm": 6.7,
-    "descrizione": "Candela profumata in vetro grigio e metallo dorato 350g"
   },
   {
     "nome": "Portaburro in vetro e ceramica bianca",
@@ -6463,16 +5503,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano angolare con penisola a sinistra 5/6 posti in tessuto di ciniglia verde"
   },
   {
-    "nome": "Tabella stampata dei tappi di bottiglia, 16x21 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 11.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tabella-stampata-dei-tappi-di-bottiglia-16x21-cm-1000-9-26-208429_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tabella-stampata-dei-tappi-di-bottiglia-16x21-cm-208429.htm",
-    "larghezza_cm": 15.5,
-    "profondita_cm": 7,
-    "descrizione": "Tabella stampata dei tappi di bottiglia, 16x21 cm"
-  },
-  {
     "nome": "Lampada a sospensione non elettrificata in rattan Ø 60 cm",
     "categoria": "Lampade",
     "prezzo": 59.99,
@@ -6491,16 +5521,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 120,
     "profondita_cm": 55,
     "descrizione": "Armadio a 2 ante in legno di mango e alluminio color oro, largo 120 cm."
-  },
-  {
-    "nome": "Caraffa in vetro con coperchio in bambù, 1,2 l",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/caraffa-in-vetro-con-coperchio-in-bambu-1-2-l-1000-16-24-195635_3.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/caraffa-in-vetro-con-coperchio-in-bambu-1-2-l-195635.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 14,
-    "descrizione": "Caraffa in vetro con coperchio in bambù, 1,2 l"
   },
   {
     "nome": "Espositore girevole in acacia",
@@ -6553,16 +5573,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Madia vintage a 3 ante e 3 cassetti bianca 220 cm"
   },
   {
-    "nome": "Decorazione da parete in acciaio placcato oro, 80x80 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 119,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-da-parete-in-acciaio-placcato-oro-80x80-cm-1000-4-34-232955_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-in-acciaio-placcato-oro-80x80-cm-232955.htm",
-    "larghezza_cm": 80,
-    "profondita_cm": 3,
-    "descrizione": "Decorazione da parete in acciaio placcato oro, 80x80 cm"
-  },
-  {
     "nome": "Lampada da sospensione a petali in rattan intrecciato",
     "categoria": "Lampade",
     "prezzo": 89.99,
@@ -6611,16 +5621,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 140,
     "profondita_cm": 200,
     "descrizione": "Letto vintage in legno 140x200 cm con rete a doghe"
-  },
-  {
-    "nome": "Dittico ricamato con motivi astratti 160x121 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 179,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254327_0/dittico-ricamato-con-motivi-astratti-160x121-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dittico-ricamato-con-motivi-astratti-160x121-cm-254327.htm",
-    "larghezza_cm": 160,
-    "profondita_cm": 4,
-    "descrizione": "Dittico ricamato con motivi astratti 160x121 cm"
   },
   {
     "nome": "Lampada da terra in bambù intrecciato e acciaio beige, H168",
@@ -6681,16 +5681,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 120,
     "profondita_cm": 54,
     "descrizione": "Armadio a 3 ante verde chiaro"
-  },
-  {
-    "nome": "Calice in vetro sfumato trasparente e color ambra brillante",
-    "categoria": "Cucina",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/calice-in-vetro-sfumato-trasparente-e-color-ambra-brillante-1000-11-9-238793_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/calice-in-vetro-sfumato-trasparente-e-color-ambra-brillante-238793.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 8.5,
-    "descrizione": "Calice in vetro sfumato trasparente e color ambra brillante"
   },
   {
     "nome": "Ice - Sedia in stile scandinavo nero ebano e legno di hevea",
@@ -6923,16 +5913,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada a sospensione in poliestere riciclato plissettato bianco sporco e globo in vetro opaco"
   },
   {
-    "nome": "Decorazione murale composta da cerchi in ghisa, alluminio dorato e specchi, 104x50 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 64.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-murale-composta-da-cerchi-in-ghisa-alluminio-dorato-e-specchi-104x50-cm-1000-11-6-247072_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-murale-composta-da-cerchi-in-ghisa-alluminio-dorato-e-specchi-104x50-cm-247072.htm",
-    "larghezza_cm": 104,
-    "profondita_cm": 4,
-    "descrizione": "Decorazione murale composta da cerchi in ghisa, alluminio dorato e specchi, 104x50 cm"
-  },
-  {
     "nome": "Caldera - Armadio con 2 ante battenti scolpite e 2 cassetti 93 cm",
     "categoria": "Armadi",
     "prezzo": 899,
@@ -7073,16 +6053,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto 160x200 cm in acciaio e legno di pioppo con rete a doghe"
   },
   {
-    "nome": "Vaso in gres grigio alt. 19cm",
-    "categoria": "Decorazioni",
-    "prezzo": 10.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-gres-grigio-alt-19cm-1000-15-24-228189_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-gres-grigio-alt-19cm-228189.htm",
-    "larghezza_cm": 18,
-    "profondita_cm": 7.5,
-    "descrizione": "Vaso in gres grigio alt. 19cm"
-  },
-  {
     "nome": "Newport - Guardaroba a 2 cassetti bianca 114 cm",
     "categoria": "Armadi",
     "prezzo": 699,
@@ -7183,16 +6153,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Materasso a molle insacchettate 180x200 cm"
   },
   {
-    "nome": "Tela stampata astratta nei colori oro, rosa, écru e grigio, 41x60",
-    "categoria": "Decorazioni",
-    "prezzo": 29.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-stampata-astratta-nei-colori-oro-rosa-ecru-e-grigio-41x60-1000-2-38-225456_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-stampata-astratta-nei-colori-oro-rosa-ecru-e-grigio-41x60-225456.htm",
-    "larghezza_cm": 41,
-    "profondita_cm": 2,
-    "descrizione": "Tela stampata astratta nei colori oro, rosa, écru e grigio, 41x60"
-  },
-  {
     "nome": "Naturaliste - Armadio in mango 130 cm",
     "categoria": "Armadi",
     "prezzo": 1299,
@@ -7201,16 +6161,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 130,
     "profondita_cm": 60,
     "descrizione": "Armadio in mango 130 cm"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere da cocktail in vetro inciso con motivo palme",
-    "categoria": "Cucina",
-    "prezzo": 17.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-da-cocktail-in-vetro-inciso-con-motivo-palme-1000-13-13-236993_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-da-cocktail-in-vetro-inciso-con-motivo-palme-236993.htm",
-    "larghezza_cm": 8.4,
-    "profondita_cm": 8.4,
-    "descrizione": "Bicchiere da cocktail in vetro inciso con motivo palme"
   },
   {
     "nome": "Pitaya - Poltrona in rattan e in acciaio nero",
@@ -7243,16 +6193,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto contenitore in velluto blu 160x200 cm con rete a doghe"
   },
   {
-    "nome": "Quadro astratto bianco con motivi in rilievo 53x70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 27.45,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/quadro-astratto-bianco-con-motivi-in-rilievo-53x70-cm-1000-9-38-249892_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-astratto-bianco-con-motivi-in-rilievo-53x70-cm-249892.htm",
-    "larghezza_cm": 52.5,
-    "profondita_cm": 4,
-    "descrizione": "Quadro astratto bianco con motivi in rilievo 53x70 cm"
-  },
-  {
     "nome": "Vaso in vetro con striature nere alt. 30 cm",
     "categoria": "Decorazioni",
     "prezzo": 11.85,
@@ -7271,16 +6211,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 86,
     "profondita_cm": 57,
     "descrizione": "Guardaroba 2 ante blanco 86 cm"
-  },
-  {
-    "nome": "Bicchiere in vetro verde",
-    "categoria": "Cucina",
-    "prezzo": 3.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254301/bicchiere-in-vetro-verde.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-verde-254301.htm",
-    "larghezza_cm": 8.4,
-    "profondita_cm": 8.4,
-    "descrizione": "Bicchiere in vetro verde"
   },
   {
     "nome": "Tokyo - Divano angolare con penisola a sinistra 5 posti grigio chiaro screziato",
@@ -7443,26 +6373,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto con 4 cassetti in legno di pino e metallo 160x200 cm con rete a doghe"
   },
   {
-    "nome": "Quadri neri, beige ed ecrù (x3) 32x40",
-    "categoria": "Decorazioni",
-    "prezzo": 49.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/quadri-neri-beige-ed-ecru-x3-32x40-1000-0-14-237609_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadri-neri-beige-ed-ecru-x3-32x40-237609.htm",
-    "larghezza_cm": 31.5,
-    "profondita_cm": 2.5,
-    "descrizione": "Quadri neri, beige ed ecrù (x3) 32x40"
-  },
-  {
-    "nome": "Decorazioni murali a forma di rondine in dolomite bianca (x3)",
-    "categoria": "Decorazioni",
-    "prezzo": 19.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazioni-murali-a-forma-di-rondine-in-dolomite-bianca-x3-1000-2-8-218333_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazioni-murali-a-forma-di-rondine-in-dolomite-bianca-x3-218333.htm",
-    "larghezza_cm": 15.5,
-    "profondita_cm": 9,
-    "descrizione": "Decorazioni murali a forma di rondine in dolomite bianca (x3)"
-  },
-  {
     "nome": "Cambronne - Armadio a 3 ante nero 179 cm",
     "categoria": "Armadi",
     "prezzo": 1179,
@@ -7491,16 +6401,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 83,
     "profondita_cm": 81,
     "descrizione": "Poltrona girevole in velluto verde kaki"
-  },
-  {
-    "nome": "Tela color oro, bianco e rosa antico, 60x60 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 42.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-color-oro-bianco-e-rosa-antico-60x60-cm-1000-15-30-222086_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-color-oro-bianco-e-rosa-antico-60x60-cm-222086.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 2.7,
-    "descrizione": "Tela color oro, bianco e rosa antico, 60x60 cm"
   },
   {
     "nome": "Vaso in dolomite bianco inciso",
@@ -7563,16 +6463,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Pouf in velluto effetto invecchiato verde kaki"
   },
   {
-    "nome": "Tela stampata e dipinta raffigurante barche, 90x45 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 49.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-stampata-e-dipinta-raffigurante-barche-90x45-cm-1000-0-27-213350_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-stampata-e-dipinta-raffigurante-barche-90x45-cm-213350.htm",
-    "larghezza_cm": 90,
-    "profondita_cm": 3,
-    "descrizione": "Tela stampata e dipinta raffigurante barche, 90x45 cm"
-  },
-  {
     "nome": "Pianta artificiale a grandi foglie con vaso dorato",
     "categoria": "Decorazioni",
     "prezzo": 29.99,
@@ -7581,16 +6471,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 14,
     "profondita_cm": 14,
     "descrizione": "Pianta artificiale a grandi foglie con vaso dorato"
-  },
-  {
-    "nome": "Candela profumata rossa alt. 15 cm 490g",
-    "categoria": "Decorazioni",
-    "prezzo": 8.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-rossa-alt-15-cm-490g-1000-9-37-246611_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-rossa-alt-15-cm-490g-246611.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata rossa alt. 15 cm 490g"
   },
   {
     "nome": "Mudo - Guardaroba a 2 ante in metallo nero 94 cm",
@@ -7661,16 +6541,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 67,
     "profondita_cm": 61.5,
     "descrizione": "Poltrona a tre gambe verde"
-  },
-  {
-    "nome": "Tela dipinta nei toni del grigio, blu e oro, 45x90 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 42.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-dipinta-nei-toni-del-grigio-blu-e-oro-45x90-cm-1000-5-16-204073_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-dipinta-nei-toni-del-grigio-blu-e-oro-45x90-cm-204073.htm",
-    "larghezza_cm": 45,
-    "profondita_cm": 2.7,
-    "descrizione": "Tela dipinta nei toni del grigio, blu e oro, 45x90 cm"
   },
   {
     "nome": "Pianta grassa artificiale con vaso bianco",
@@ -7753,16 +6623,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Poltrona marrone in microfibra"
   },
   {
-    "nome": "Candela verde da appoggio, alt. 31 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 9.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/253959/candela-verde-da-appoggio-alt-31-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-verde-da-appoggio-alt-31-cm-253959.htm",
-    "larghezza_cm": 7.8,
-    "profondita_cm": 7.8,
-    "descrizione": "Candela verde da appoggio, alt. 31 cm"
-  },
-  {
     "nome": "Saint Rémy - Armadietto grigia perla in mango 130 cm",
     "categoria": "Armadi",
     "prezzo": 909.3,
@@ -7811,16 +6671,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 28,
     "profondita_cm": 11,
     "descrizione": "Vaso conchiglia in gres argentato, Alt. 27 cm"
-  },
-  {
-    "nome": "Tenda bianca in lino slavato con occhielli, al pezzo, 130x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-bianca-in-lino-slavato-con-occhielli-al-pezzo-130x300-cm-1000-16-13-147695_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-bianca-in-lino-slavato-con-occhielli-al-pezzo-130x300-cm-147695.htm",
-    "larghezza_cm": 130,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda bianca in lino slavato con occhielli, al pezzo, 130x300 cm"
   },
   {
     "nome": "Scolapiatti rettangolare bianco sporco et verde",
@@ -7873,16 +6723,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Poltrona girevole beige in tessuto tramato"
   },
   {
-    "nome": "Tela stampata bianca, beige e oro 60x90",
-    "categoria": "Decorazioni",
-    "prezzo": 58.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-stampata-bianca-beige-e-oro-60x90-1000-3-24-227820_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-stampata-bianca-beige-e-oro-60x90-227820.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 3,
-    "descrizione": "Tela stampata bianca, beige e oro 60x90"
-  },
-  {
     "nome": "Cuscino in lino lavato beige 60x60cm",
     "categoria": "Tessile",
     "prezzo": 35.99,
@@ -7913,26 +6753,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Comò vintage con 3 cassetti 91 cm"
   },
   {
-    "nome": "Origami BUSINESS - Pannello effetto patchwork per testata da letto da comporre, 60x120 cm",
-    "categoria": "Letti",
-    "prezzo": 139,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/pannello-effetto-patchwork-per-testata-da-letto-da-comporre-60x120-cm-1000-7-0-200080_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/pannello-effetto-patchwork-per-testata-da-letto-da-comporre-60x120-cm-origami-business-200080.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 8,
-    "descrizione": "Pannello effetto patchwork per testata da letto da comporre, 60x120 cm"
-  },
-  {
-    "nome": "Quadro astratto su tela bianca con rilievo e cornice in legno di pino, 56x70 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 29.95,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/quadro-astratto-su-tela-bianca-con-rilievo-e-cornice-in-legno-di-pino-56x70-cm-1000-0-5-249900_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-astratto-su-tela-bianca-con-rilievo-e-cornice-in-legno-di-pino-56x70-cm-249900.htm",
-    "larghezza_cm": 56,
-    "profondita_cm": 4.5,
-    "descrizione": "Quadro astratto su tela bianca con rilievo e cornice in legno di pino, 56x70 cm"
-  },
-  {
     "nome": "Lampada a sospensione in rattan intrecciato 60 cm",
     "categoria": "Lampade",
     "prezzo": 179,
@@ -7941,16 +6761,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 60,
     "profondita_cm": 60,
     "descrizione": "Lampada a sospensione in rattan intrecciato 60 cm"
-  },
-  {
-    "nome": "Set di 4 tazze in vetro trasparente, giallo, blu e grigio",
-    "categoria": "Cucina",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-4-tazze-in-vetro-trasparente-giallo-blu-e-grigio-1000-14-31-248163_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-4-tazze-in-vetro-trasparente-giallo-blu-e-grigio-248163.htm",
-    "larghezza_cm": 33,
-    "profondita_cm": 6,
-    "descrizione": "Set di 4 tazze in vetro trasparente, giallo, blu e grigio"
   },
   {
     "nome": "Divano letto 3 posti con rivestimento sfoderabile in tessuto tramato beige, materasso da 10 cm",
@@ -7983,16 +6793,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Sedia scandinava in velluto blu"
   },
   {
-    "nome": "Tela astratta in rilievo color terracotta 55x75 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 32.45,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-astratta-in-rilievo-color-terracotta-55x75-cm-1000-14-4-236246_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-astratta-in-rilievo-color-terracotta-55x75-cm-236246.htm",
-    "larghezza_cm": 55,
-    "profondita_cm": 4,
-    "descrizione": "Tela astratta in rilievo color terracotta 55x75 cm"
-  },
-  {
     "nome": "Lampada a sospensione in vetro rigato e top dorato",
     "categoria": "Lampade",
     "prezzo": 299,
@@ -8001,26 +6801,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 50,
     "profondita_cm": 50,
     "descrizione": "Lampada a sospensione in vetro rigato e top dorato"
-  },
-  {
-    "nome": "Decorazioni murali a forma di uccello dorato (x3)",
-    "categoria": "Decorazioni",
-    "prezzo": 22.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazioni-murali-a-forma-di-uccello-dorato-x3-1000-4-13-204480_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazioni-murali-a-forma-di-uccello-dorato-x3-204480.htm",
-    "larghezza_cm": 16,
-    "profondita_cm": 5,
-    "descrizione": "Decorazioni murali a forma di uccello dorato (x3)"
-  },
-  {
-    "nome": "Vaso in terracotta écru alt. 34cm",
-    "categoria": "Decorazioni",
-    "prezzo": 18.45,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vaso-in-terracotta-ecru-alt-34cm-1000-10-37-241240_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vaso-in-terracotta-ecru-alt-34cm-241240.htm",
-    "larghezza_cm": 25,
-    "profondita_cm": 9,
-    "descrizione": "Vaso in terracotta écru alt. 34cm"
   },
   {
     "nome": "Barattolo quadrato in vetro e bambù, Alt.19 cm",
@@ -8061,26 +6841,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 125,
     "profondita_cm": 45,
     "descrizione": "Madia a 2 ante con impiallacciatura in rovere effetto scacchi 125 cm"
-  },
-  {
-    "nome": "Tappeto in juta intrecciata con bordo smerlato verde, 70x120 cm",
-    "categoria": "Tappeti",
-    "prezzo": 35.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254354/tappeto-in-juta-intrecciata-con-bordo-smerlato-verde-70x120-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-in-juta-intrecciata-con-bordo-smerlato-verde-70x120-cm-254354.htm",
-    "larghezza_cm": 70,
-    "profondita_cm": 1,
-    "descrizione": "Tappeto in juta intrecciata con bordo smerlato verde, 70x120 cm"
-  },
-  {
-    "nome": "Decorazioni murali floreali in poliresina dorata (x2)",
-    "categoria": "Decorazioni",
-    "prezzo": 9.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazioni-murali-floreali-in-poliresina-dorata-x2-1000-7-30-241356_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazioni-murali-floreali-in-poliresina-dorata-x2-241356.htm",
-    "larghezza_cm": 13,
-    "profondita_cm": 1,
-    "descrizione": "Decorazioni murali floreali in poliresina dorata (x2)"
   },
   {
     "nome": "Candela profumata in ceramica bianca, grigia e avorio 350g",
@@ -8143,16 +6903,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Candela profumata in ceramica grigia con coperchio 180g"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere in vetro trasparente con linea blu",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-trasparente-con-linea-blu-1000-16-6-250188_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-trasparente-con-linea-blu-250188.htm",
-    "larghezza_cm": 7.9,
-    "profondita_cm": 7.9,
-    "descrizione": "Bicchiere in vetro trasparente con linea blu"
-  },
-  {
     "nome": "Julian - Divano letto 3/4 posti giallo ocra, materasso 10 cm",
     "categoria": "Divani",
     "prezzo": 999,
@@ -8191,16 +6941,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 65,
     "profondita_cm": 45,
     "descrizione": "Comò alto vintage con 3 cassetti in legno di mango e bambù 65 cm"
-  },
-  {
-    "nome": "Parure da letto in lino lavato beige, 220x240",
-    "categoria": "Letti",
-    "prezzo": 159,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/parure-da-letto-in-lino-lavato-beige-220x240-1000-7-34-235661_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/parure-da-letto-in-lino-lavato-beige-220x240-235661.htm",
-    "larghezza_cm": 240,
-    "profondita_cm": 0.5,
-    "descrizione": "Parure da letto in lino lavato beige, 220x240"
   },
   {
     "nome": "Scolapiatti in metallo bianco sporco",
@@ -8293,26 +7033,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divanetto da giardino componibile 3 posti in legno di acacia e cuscini in tessuto riciclato grigio antracite"
   },
   {
-    "nome": "Tappeto stampato multicolore su base jacquard 140x200",
-    "categoria": "Tappeti",
-    "prezzo": 199,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tappeto-stampato-multicolore-su-base-jacquard-140x200-1000-0-21-189482_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-stampato-multicolore-su-base-jacquard-140x200-189482.htm",
-    "larghezza_cm": 140,
-    "profondita_cm": 0.6,
-    "descrizione": "Tappeto stampato multicolore su base jacquard 140x200"
-  },
-  {
-    "nome": "Quadro vasi e fiori essiccati écru, beige, grigio e verde 35x50 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 52.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/quadro-vasi-e-fiori-essiccati-ecru-beige-grigio-e-verde-35x50-cm-1000-0-36-217090_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-vasi-e-fiori-essiccati-ecru-beige-grigio-e-verde-35x50-cm-217090.htm",
-    "larghezza_cm": 34.5,
-    "profondita_cm": 8,
-    "descrizione": "Quadro vasi e fiori essiccati écru, beige, grigio e verde 35x50 cm"
-  },
-  {
     "nome": "Trofeo da parete a forma di testa di bufalo intagliata, marrone, 73x73 cm",
     "categoria": "Decorazioni",
     "prezzo": 139,
@@ -8333,16 +7053,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Pianta artificiale a sospensione con vaso in canapa"
   },
   {
-    "nome": "Lotto di 2 - Dispenser di sapone in vetro trasparente e grigio",
-    "categoria": "Cucina",
-    "prezzo": 7.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/dispenser-di-sapone-in-vetro-trasparente-e-grigio-1000-4-13-223996_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dispenser-di-sapone-in-vetro-trasparente-e-grigio-223996.htm",
-    "larghezza_cm": 10,
-    "profondita_cm": 6.2,
-    "descrizione": "Dispenser di sapone in vetro trasparente e grigio"
-  },
-  {
     "nome": "Snoop - Divano a 3/4 posti in pelle color caramello",
     "categoria": "Divani",
     "prezzo": 1999,
@@ -8361,16 +7071,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 109,
     "profondita_cm": 87,
     "descrizione": "Poltrona letto pieghevole grigio antracite"
-  },
-  {
-    "nome": "Hackney Business - Testata da letto modulabile professionale in velluto verde, 60x140,5 cm",
-    "categoria": "Letti",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-da-letto-modulabile-professionale-in-velluto-verde-60x140-5-cm-1000-4-21-230031_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-da-letto-modulabile-professionale-in-velluto-verde-60x140-5-cm-hackney-business-230031.htm",
-    "larghezza_cm": 60,
-    "profondita_cm": 9.5,
-    "descrizione": "Testata da letto modulabile professionale in velluto verde, 60x140,5 cm"
   },
   {
     "nome": "Teiera in vetro e bambù 0,9 L",
@@ -8441,16 +7141,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 202,
     "profondita_cm": 88,
     "descrizione": "Divano stile scandinavo 3 posti in velluto a coste marrone"
-  },
-  {
-    "nome": "Caraffa in vetro blu e trasparente 1L",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/caraffa-in-vetro-blu-e-trasparente-1l-1000-3-4-250022_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/caraffa-in-vetro-blu-e-trasparente-1l-250022.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 5,
-    "descrizione": "Caraffa in vetro blu e trasparente 1L"
   },
   {
     "nome": "Anaelle - Divano 2 posti in lino blu celadon",
@@ -8531,16 +7221,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 33.5,
     "profondita_cm": 33.5,
     "descrizione": "Lampada a sospensione in vetro rigato ambrate"
-  },
-  {
-    "nome": "Decorazioni murali ovali a forma di insetti in resina oro e nera (x2)",
-    "categoria": "Decorazioni",
-    "prezzo": 32.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazioni-murali-ovali-a-forma-di-insetti-in-resina-oro-e-nera-x2-1000-15-7-236536_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazioni-murali-ovali-a-forma-di-insetti-in-resina-oro-e-nera-x2-236536.htm",
-    "larghezza_cm": 18.5,
-    "profondita_cm": 4.8,
-    "descrizione": "Decorazioni murali ovali a forma di insetti in resina oro e nera (x2)"
   },
   {
     "nome": "Vaso in vetro blu alt. 26 cm",
@@ -8803,16 +7483,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Poltrona in tessuto bouclé bianco e legno massello di betulla"
   },
   {
-    "nome": "Quadro su tela con arance stampato e dipinto a mano 37x52 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 29.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251777/quadro-su-tela-con-arance-stampato-e-dipinto-a-mano-37x52-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-su-tela-con-arance-stampato-e-dipinto-a-mano-37x52-cm-251777.htm",
-    "larghezza_cm": 37,
-    "profondita_cm": 3.5,
-    "descrizione": "Quadro su tela con arance stampato e dipinto a mano 37x52 cm"
-  },
-  {
     "nome": "Lilo - Divano nuvola 3/4 posti in pelle color cammello",
     "categoria": "Divani",
     "prezzo": 2499,
@@ -8853,16 +7523,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Testata da letto 160 cm in metallo nero"
   },
   {
-    "nome": "Malaga - Testata del letto 90 cm in rattan",
-    "categoria": "Letti",
-    "prezzo": 159,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-90-cm-in-rattan-1000-11-26-248568_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-90-cm-in-rattan-malaga-248568.htm",
-    "larghezza_cm": 105,
-    "profondita_cm": 3,
-    "descrizione": "Testata del letto 90 cm in rattan"
-  },
-  {
     "nome": "Candela profumata in vetro colorato blu chiaro e metallo dorato 350g",
     "categoria": "Decorazioni",
     "prezzo": 18.99,
@@ -8871,16 +7531,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 10,
     "profondita_cm": 10,
     "descrizione": "Candela profumata in vetro colorato blu chiaro e metallo dorato 350g"
-  },
-  {
-    "nome": "Lotto di 2 - Piatto piano in gres bianco e terracotta",
-    "categoria": "Cucina",
-    "prezzo": 12.5,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251935/piatto-piano-in-gres-bianco-e-terracotta.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/piatto-piano-in-gres-bianco-e-terracotta-251935.htm",
-    "larghezza_cm": 26.8,
-    "profondita_cm": 3,
-    "descrizione": "Piatto piano in gres bianco e terracotta"
   },
   {
     "nome": "Divano da giardino a 2 posti in alluminio, textilene e cuscini in poliestere riciclato color argilla",
@@ -8951,16 +7601,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 100,
     "profondita_cm": 17,
     "descrizione": "Tappeto per bambini cervo taftato beige 90x100 cm"
-  },
-  {
-    "nome": "Decorazione murale con elementi periodici in acciaio nero, 120x80 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 119,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-murale-con-elementi-periodici-in-acciaio-nero-120x80-cm-1000-11-6-245678_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-murale-con-elementi-periodici-in-acciaio-nero-120x80-cm-245678.htm",
-    "larghezza_cm": 120,
-    "profondita_cm": 3.5,
-    "descrizione": "Decorazione murale con elementi periodici in acciaio nero, 120x80 cm"
   },
   {
     "nome": "Fiore di ortensia artificiale color crema H 73 cm",
@@ -9073,16 +7713,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Rete a doghe 70x190 cm"
   },
   {
-    "nome": "Parure da letto in lino lavato verde giada, 220x240 cm",
-    "categoria": "Letti",
-    "prezzo": 159,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/parure-da-letto-in-lino-lavato-verde-giada-220x240-cm-1000-5-39-235625_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/parure-da-letto-in-lino-lavato-verde-giada-220x240-cm-235625.htm",
-    "larghezza_cm": 240,
-    "profondita_cm": 0.5,
-    "descrizione": "Parure da letto in lino lavato verde giada, 220x240 cm"
-  },
-  {
     "nome": "Pouf beige e dorato",
     "categoria": "Divani",
     "prezzo": 69.99,
@@ -9193,26 +7823,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Tavolo per sala da pranzo in legno riciclato effetto anticato L 220 cm"
   },
   {
-    "nome": "Tappeto per bambini volpe taftato arancione, écru, grigio antracite 90x100 cm",
-    "categoria": "Tappeti",
-    "prezzo": 39.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tappeto-per-bambini-volpe-taftato-arancione-ecru-grigio-antracite-90x100-cm-1000-3-22-235198_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-per-bambini-volpe-taftato-arancione-ecru-grigio-antracite-90x100-cm-235198.htm",
-    "larghezza_cm": 90,
-    "profondita_cm": 2,
-    "descrizione": "Tappeto per bambini volpe taftato arancione, écru, grigio antracite 90x100 cm"
-  },
-  {
-    "nome": "Decorazioni murali rotonde ricamate multicolore (x3)",
-    "categoria": "Decorazioni",
-    "prezzo": 24.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/243522_0/decorazioni-murali-rotonde-ricamate-multicolore-x3.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazioni-murali-rotonde-ricamate-multicolore-x3-243522.htm",
-    "larghezza_cm": 21.2,
-    "profondita_cm": 1.5,
-    "descrizione": "Decorazioni murali rotonde ricamate multicolore (x3)"
-  },
-  {
     "nome": "Cuscino in velluto écru 60x60cm",
     "categoria": "Tessile",
     "prezzo": 29.99,
@@ -9263,16 +7873,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Comodino con 2 cassetti"
   },
   {
-    "nome": "Tenda grafica giallo senape e bianca con occhielli, al pezzo, 140x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-grafica-giallo-senape-e-bianca-con-occhielli-al-pezzo-140x300-cm-1000-14-37-167481_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-grafica-giallo-senape-e-bianca-con-occhielli-al-pezzo-140x300-cm-167481.htm",
-    "larghezza_cm": 140,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda grafica giallo senape e bianca con occhielli, al pezzo, 140x300 cm"
-  },
-  {
     "nome": "Amelya - Divano 3/4 posti in velluto color bronzo",
     "categoria": "Divani",
     "prezzo": 1199,
@@ -9301,16 +7901,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 110,
     "profondita_cm": 48,
     "descrizione": "Cassettone nero in acacia e mango 110 cm"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere con cannuccia in vetro e coperchio in bambù",
-    "categoria": "Cucina",
-    "prezzo": 35.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-con-cannuccia-in-vetro-e-coperchio-in-bambu-1000-9-15-241341_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-con-cannuccia-in-vetro-e-coperchio-in-bambu-241341.htm",
-    "larghezza_cm": 7.5,
-    "profondita_cm": 7.5,
-    "descrizione": "Bicchiere con cannuccia in vetro e coperchio in bambù"
   },
   {
     "nome": "Poltrona da giardino in resina riciclata intrecciata che imita il rattan e cuscini in poliestere riciclato écru",
@@ -9381,16 +7971,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 270,
     "profondita_cm": 163,
     "descrizione": "Divano angolare 4/5 posti con penisola destra e poggiatesta in velluto color mattone"
-  },
-  {
-    "nome": "Set di 10 candele sottili marroni, gialle e rosa",
-    "categoria": "Decorazioni",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251923/set-di-10-candele-sottili-marroni-gialle-e-rosa.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-10-candele-sottili-marroni-gialle-e-rosa-251923.htm",
-    "larghezza_cm": 1,
-    "profondita_cm": 1,
-    "descrizione": "Set di 10 candele sottili marroni, gialle e rosa"
   },
   {
     "nome": "Ciotola in ceramica dorata",
@@ -9473,16 +8053,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Materasso a molle insacchettate 140x190 cm"
   },
   {
-    "nome": "Quadro astratto beige 120x151 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 269,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/254687/quadro-astratto-beige-120x151-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-astratto-beige-120x151-cm-254687.htm",
-    "larghezza_cm": 120,
-    "profondita_cm": 3,
-    "descrizione": "Quadro astratto beige 120x151 cm"
-  },
-  {
     "nome": "Lampada a sospensione arrotondata in rattan intrecciato",
     "categoria": "Lampade",
     "prezzo": 64.99,
@@ -9491,16 +8061,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 50,
     "profondita_cm": 28,
     "descrizione": "Lampada a sospensione arrotondata in rattan intrecciato"
-  },
-  {
-    "nome": "Set di 3 candele profumate in vasetti di terracotta",
-    "categoria": "Decorazioni",
-    "prezzo": 6.45,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-3-candele-profumate-in-vasetti-di-terracotta-1000-2-15-246876_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-3-candele-profumate-in-vasetti-di-terracotta-246876.htm",
-    "larghezza_cm": 6,
-    "profondita_cm": 6,
-    "descrizione": "Set di 3 candele profumate in vasetti di terracotta"
   },
   {
     "nome": "Divano ad angolo destro 4/5 posti effetto velluto riciclato verderame",
@@ -9541,16 +8101,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 223,
     "profondita_cm": 97,
     "descrizione": "Divano 3 posti in tessuto testurizzato beige"
-  },
-  {
-    "nome": "Porta oggetti per lavello in ceramica nera",
-    "categoria": "Cucina",
-    "prezzo": 19.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/porta-oggetti-per-lavello-in-ceramica-nera-1000-4-19-194892_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/porta-oggetti-per-lavello-in-ceramica-nera-194892.htm",
-    "larghezza_cm": 18,
-    "profondita_cm": 7,
-    "descrizione": "Porta oggetti per lavello in ceramica nera"
   },
   {
     "nome": "Tokyo - Divano a 3/4 posti grigio antracite chiné",
@@ -9621,16 +8171,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 43,
     "profondita_cm": 35,
     "descrizione": "Comodino a 1 anta verde kaki"
-  },
-  {
-    "nome": "Tela astratta dipinta in nero, beige e bianco, 98x130 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 149,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tela-astratta-dipinta-in-nero-beige-e-bianco-98x130-cm-1000-3-5-247727_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tela-astratta-dipinta-in-nero-beige-e-bianco-98x130-cm-247727.htm",
-    "larghezza_cm": 97.5,
-    "profondita_cm": 4.5,
-    "descrizione": "Tela astratta dipinta in nero, beige e bianco, 98x130 cm"
   },
   {
     "nome": "Contenitore in vetro con coperchio beige larg. 21 cm",
@@ -9743,16 +8283,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto in lino beige 160x200 cm"
   },
   {
-    "nome": "Quadro astratto su tela in rilievo bianco e nero 103x153 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 159,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251173/quadro-astratto-su-tela-in-rilievo-bianco-e-nero-103x153-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/quadro-astratto-su-tela-in-rilievo-bianco-e-nero-103x153-cm-251173.htm",
-    "larghezza_cm": 102.5,
-    "profondita_cm": 3.5,
-    "descrizione": "Quadro astratto su tela in rilievo bianco e nero 103x153 cm"
-  },
-  {
     "nome": "Lampada a sospensione verde kaki",
     "categoria": "Lampade",
     "prezzo": 49.99,
@@ -9761,16 +8291,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 38,
     "profondita_cm": 38,
     "descrizione": "Lampada a sospensione verde kaki"
-  },
-  {
-    "nome": "Kerala - Testata del letto 180 cm in legno massello di mango scolpito bianco",
-    "categoria": "Letti",
-    "prezzo": 649,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-180-cm-in-legno-massello-di-mango-scolpito-bianco-1000-14-5-186555_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-180-cm-in-legno-massello-di-mango-scolpito-bianco-kerala-186555.htm",
-    "larghezza_cm": 180,
-    "profondita_cm": 5,
-    "descrizione": "Testata del letto 180 cm in legno massello di mango scolpito bianco"
   },
   {
     "nome": "Tavolo da pranzo rotondo in noce impiallacciato e acciaio nero per 4/5 persone Ø 100 cm",
@@ -9801,26 +8321,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 30,
     "profondita_cm": 30,
     "descrizione": "Eucalipto artificiale con vaso in vetro"
-  },
-  {
-    "nome": "Lotto di 6 - Set di 2 candele lunghe gialle a coste",
-    "categoria": "Decorazioni",
-    "prezzo": 17.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251920/set-di-2-candele-lunghe-gialle-a-coste.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-2-candele-lunghe-gialle-a-coste-251920.htm",
-    "larghezza_cm": 2,
-    "profondita_cm": 2,
-    "descrizione": "Set di 2 candele lunghe gialle a coste"
-  },
-  {
-    "nome": "Infusiera in vetro, acciaio inox e bambù",
-    "categoria": "Cucina",
-    "prezzo": 9.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/infusiera-in-vetro-acciaio-inox-e-bambu-1000-11-39-234764_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/infusiera-in-vetro-acciaio-inox-e-bambu-234764.htm",
-    "larghezza_cm": 13.5,
-    "profondita_cm": 9,
-    "descrizione": "Infusiera in vetro, acciaio inox e bambù"
   },
   {
     "nome": "Nemo - Divano angolare con penisola a sinistra in velluto a coste grigio chiaro",
@@ -9883,16 +8383,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada da terra in rattran intrecciato alt. 150 cm"
   },
   {
-    "nome": "Tenda con occhielli in velluto écru, al pezzo, 140x300",
-    "categoria": "Tessile",
-    "prezzo": 99.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-con-occhielli-in-velluto-ecru-al-pezzo-140x300-1000-4-40-235216_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-con-occhielli-in-velluto-ecru-al-pezzo-140x300-235216.htm",
-    "larghezza_cm": 140,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda con occhielli in velluto écru, al pezzo, 140x300"
-  },
-  {
     "nome": "Kyoto - Divano 3 posti in tessuto tramato greige",
     "categoria": "Divani",
     "prezzo": 1199,
@@ -9943,16 +8433,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano a 3/4 posti in tessuto bianco effetto lino"
   },
   {
-    "nome": "Decorazione da parete con specchio in acciaio dorato Ø 35 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 17.45,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/251663/decorazione-da-parete-con-specchio-in-acciaio-dorato-oe-35-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-con-specchio-in-acciaio-dorato-oe-35-cm-251663.htm",
-    "larghezza_cm": 35,
-    "profondita_cm": 0.5,
-    "descrizione": "Decorazione da parete con specchio in acciaio dorato Ø 35 cm"
-  },
-  {
     "nome": "Mikado - Divano imbottito in cuoio marrone 3 posti",
     "categoria": "Divani",
     "prezzo": 1699,
@@ -9973,16 +8453,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Armadio bicolore a 2 ante"
   },
   {
-    "nome": "Parure da letto in lino lavato bianca, 240x260",
-    "categoria": "Letti",
-    "prezzo": 179,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/parure-da-letto-in-lino-lavato-bianca-240x260-1000-16-33-235619_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/parure-da-letto-in-lino-lavato-bianca-240x260-235619.htm",
-    "larghezza_cm": 260,
-    "profondita_cm": 0.5,
-    "descrizione": "Parure da letto in lino lavato bianca, 240x260"
-  },
-  {
     "nome": "Modjo - Divano angolare con penisola a sinistra 3/4 posti effetto velluto verde kaki",
     "categoria": "Divani",
     "prezzo": 1499,
@@ -9991,16 +8461,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 258,
     "profondita_cm": 146,
     "descrizione": "Divano angolare con penisola a sinistra 3/4 posti effetto velluto verde kaki"
-  },
-  {
-    "nome": "Dittico stampato raffigurante un paesaggio tropicale, 160x100 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 139,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/dittico-stampato-raffigurante-un-paesaggio-tropicale-160x100-cm-1000-1-0-202335_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/dittico-stampato-raffigurante-un-paesaggio-tropicale-160x100-cm-202335.htm",
-    "larghezza_cm": 160,
-    "profondita_cm": 3,
-    "descrizione": "Dittico stampato raffigurante un paesaggio tropicale, 160x100 cm"
   },
   {
     "nome": "Lampada a sospensione conica in rattan",
@@ -10083,36 +8543,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Tavolo da pranzo rotondo allungabile 5/6 persone 120 cm"
   },
   {
-    "nome": "Axelle - Testata del letto vintage 170 cm",
-    "categoria": "Letti",
-    "prezzo": 249,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-vintage-170-cm-1000-7-30-209294_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-vintage-170-cm-axelle-209294.htm",
-    "larghezza_cm": 170,
-    "profondita_cm": 3,
-    "descrizione": "Testata del letto vintage 170 cm"
-  },
-  {
-    "nome": "Lommel - Paesaggio urbano astratto in bianco e nero a rilievo, 110x110 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 169,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/paesaggio-urbano-astratto-in-bianco-e-nero-a-rilievo-110x110-cm-1000-2-14-249868_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/paesaggio-urbano-astratto-in-bianco-e-nero-a-rilievo-110x110-cm-lommel-249868.htm",
-    "larghezza_cm": 110,
-    "profondita_cm": 4.5,
-    "descrizione": "Paesaggio urbano astratto in bianco e nero a rilievo, 110x110 cm"
-  },
-  {
-    "nome": "Decorazione da parete composta da cerchi in acciaio placcato oro, 90x48 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 54.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-da-parete-composta-da-cerchi-in-acciaio-placcato-oro-90x48-cm-1000-10-12-240764_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-composta-da-cerchi-in-acciaio-placcato-oro-90x48-cm-240764.htm",
-    "larghezza_cm": 90,
-    "profondita_cm": 6,
-    "descrizione": "Decorazione da parete composta da cerchi in acciaio placcato oro, 90x48 cm"
-  },
-  {
     "nome": "Candela cilindrica bianca alt. 20 cm",
     "categoria": "Decorazioni",
     "prezzo": 24.99,
@@ -10183,16 +8613,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada da scrivania articolata in acciaio spazzolato verde"
   },
   {
-    "nome": "Candela profumata in vetro rosa 7x7",
-    "categoria": "Decorazioni",
-    "prezzo": 5.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-in-vetro-rosa-7x7-1000-0-7-220218_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-in-vetro-rosa-7x7-220218.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata in vetro rosa 7x7"
-  },
-  {
     "nome": "Nemo - Divano angolare con penisola a sinistra 4/5 posti in tessuto tramato grigio chiaro chiné",
     "categoria": "Divani",
     "prezzo": 1199,
@@ -10221,16 +8641,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 220,
     "profondita_cm": 90,
     "descrizione": "Tavolo da pranzo in legno di mango riciclato 10 persone, L.220"
-  },
-  {
-    "nome": "Morphee - Fodera per testiera del letto 160 in lino lavato bianco - Morphée",
-    "categoria": "Letti",
-    "prezzo": 85.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/fodera-per-testiera-del-letto-160-in-lino-lavato-bianco-morphee-1000-12-18-147249_0.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/fodera-per-testiera-del-letto-160-in-lino-lavato-bianco-morphee-morphee-147249.htm",
-    "larghezza_cm": 177,
-    "profondita_cm": 8,
-    "descrizione": "Fodera per testiera del letto 160 in lino lavato bianco - Morphée"
   },
   {
     "nome": "Lilo - Divano nuvola 3/4 posti in bouclé arancione",
@@ -10373,16 +8783,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada da terra intrecciata beige e marrone con paralume in cotone e lino color crema alt. 143 cm"
   },
   {
-    "nome": "Candela profumata verde alt. 15 cm 490g",
-    "categoria": "Decorazioni",
-    "prezzo": 6.25,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-verde-alt-15-cm-490g-1000-11-39-246613_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-verde-alt-15-cm-490g-246613.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata verde alt. 15 cm 490g"
-  },
-  {
     "nome": "Cobie - Poltrona da giardino in acciaio nero e resina intrecciata rosa e beige",
     "categoria": "Poltrone",
     "prezzo": 99.99,
@@ -10431,16 +8831,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 160,
     "profondita_cm": 200,
     "descrizione": "Materasso a molle insacchettate 160x200 cm"
-  },
-  {
-    "nome": "Morphee - Fodera per testiera del letto 140 in lino lavato - Morphée",
-    "categoria": "Letti",
-    "prezzo": 85.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/fodera-per-testiera-del-letto-140-in-lino-lavato-morphee-1000-5-31-147344_0.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/fodera-per-testiera-del-letto-140-in-lino-lavato-morphee-morphee-147344.htm",
-    "larghezza_cm": 154,
-    "profondita_cm": 8,
-    "descrizione": "Fodera per testiera del letto 140 in lino lavato - Morphée"
   },
   {
     "nome": "Lampada a fungo in vetro viola",
@@ -10511,16 +8901,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 210,
     "profondita_cm": 145,
     "descrizione": "Divano angolare con penisola a sinistra in tessuto grigio chiné 3/4 posti"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro multicolore 0,25L",
-    "categoria": "Cucina",
-    "prezzo": 15.54,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-multicolore-0-25l-1000-0-28-245208_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-multicolore-0-25l-245208.htm",
-    "larghezza_cm": 8.6,
-    "profondita_cm": 8.6,
-    "descrizione": "Bicchiere in vetro multicolore 0,25L"
   },
   {
     "nome": "Timber Business - Divano professionale in poliestere riciclato 3/4 posti beige",
@@ -10923,16 +9303,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Credenza con vetrine a 8 ante bianco patinato in pino riciclato 190cm"
   },
   {
-    "nome": "Chesterfield - Testata del letto imbottita in lino L 160 cm",
-    "categoria": "Letti",
-    "prezzo": 279,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-imbottita-in-lino-l-160-cm-1000-10-38-110697_8.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-imbottita-in-lino-l-160-cm-chesterfield-110697.htm",
-    "larghezza_cm": 160,
-    "profondita_cm": 9,
-    "descrizione": "Testata del letto imbottita in lino L 160 cm"
-  },
-  {
     "nome": "Compas - Tavolo da pranzo 5/6 persone in legno di mango e ghisa, 120 cm",
     "categoria": "Tavoli da pranzo",
     "prezzo": 599,
@@ -11093,16 +9463,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano angolare con penisola a sinistra 5 posti grigio chiné"
   },
   {
-    "nome": "Decorazione da parete in metallo dorato e fiori secchi D37",
-    "categoria": "Decorazioni",
-    "prezzo": 29.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-da-parete-in-metallo-dorato-e-fiori-secchi-d37-1000-1-11-227274_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-in-metallo-dorato-e-fiori-secchi-d37-227274.htm",
-    "larghezza_cm": 37,
-    "profondita_cm": 4,
-    "descrizione": "Decorazione da parete in metallo dorato e fiori secchi D37"
-  },
-  {
     "nome": "Grattugia in legno di acacia e acciaio inox",
     "categoria": "Cucina",
     "prezzo": 12.99,
@@ -11163,16 +9523,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Credenza a 4 ante e 2 cassetti in legno massello di mango bianca e stampa vegetale 120cm"
   },
   {
-    "nome": "Set di 4 tazzine in ceramica con motivi natalizi neri, verdi, rossi e dorati",
-    "categoria": "Cucina",
-    "prezzo": 12.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-4-tazzine-in-ceramica-con-motivi-natalizi-neri-verdi-rossi-e-dorati-1000-9-8-228829_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-4-tazzine-in-ceramica-con-motivi-natalizi-neri-verdi-rossi-e-dorati-228829.htm",
-    "larghezza_cm": 5.5,
-    "profondita_cm": 5.5,
-    "descrizione": "Set di 4 tazzine in ceramica con motivi natalizi neri, verdi, rossi e dorati"
-  },
-  {
     "nome": "Mahango - Poltrona da giardino in legno di acacia, resina riciclata con cuscini in poliestere riciclato écru",
     "categoria": "Poltrone",
     "prezzo": 279.3,
@@ -11211,26 +9561,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 34,
     "profondita_cm": 34,
     "descrizione": "Lampada a sospensione in rattan con pompon écru e corallo"
-  },
-  {
-    "nome": "Decorazione da parete corona da appendere in metallo dorato e fiori essiccati beige 25x30 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 16.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-da-parete-corona-da-appendere-in-metallo-dorato-e-fiori-essiccati-beige-25x30-cm-1000-6-31-224916_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-da-parete-corona-da-appendere-in-metallo-dorato-e-fiori-essiccati-beige-25x30-cm-224916.htm",
-    "larghezza_cm": 25,
-    "profondita_cm": 2,
-    "descrizione": "Decorazione da parete corona da appendere in metallo dorato e fiori essiccati beige 25x30 cm"
-  },
-  {
-    "nome": "Ramo di foglie di palma dorato",
-    "categoria": "Altri mobili",
-    "prezzo": 2.95,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/ramo-di-foglie-di-palma-dorato-1000-8-12-194352_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/ramo-di-foglie-di-palma-dorato-194352.htm",
-    "larghezza_cm": 17,
-    "profondita_cm": 1,
-    "descrizione": "Ramo di foglie di palma dorato"
   },
   {
     "nome": "Fioriera in metallo nero alt.180 cm",
@@ -11373,16 +9703,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada a sospensione in lino bianco e con dettagli"
   },
   {
-    "nome": "Mug in ceramica con motivi natalizi neri, bianchi, verdi, rossi e dorati",
-    "categoria": "Cucina",
-    "prezzo": 8.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/mug-in-ceramica-con-motivi-natalizi-neri-bianchi-verdi-rossi-e-dorati-1000-2-23-229213_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/mug-in-ceramica-con-motivi-natalizi-neri-bianchi-verdi-rossi-e-dorati-229213.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Mug in ceramica con motivi natalizi neri, bianchi, verdi, rossi e dorati"
-  },
-  {
     "nome": "Neo Elementary - Schienale per divano componibile grigio carbone",
     "categoria": "Divani",
     "prezzo": 159,
@@ -11511,16 +9831,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 26,
     "profondita_cm": 22,
     "descrizione": "Coprivaso con supporto in ferro battuto verde alt. 57 cm"
-  },
-  {
-    "nome": "Lotto di 2 - Barattolo in vetro trasparente e cucchiaio in legno",
-    "categoria": "Cucina",
-    "prezzo": 7.18,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/barattolo-in-vetro-trasparente-e-cucchiaio-in-legno-1000-2-14-228261_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/barattolo-in-vetro-trasparente-e-cucchiaio-in-legno-228261.htm",
-    "larghezza_cm": 8.6,
-    "profondita_cm": 7.3,
-    "descrizione": "Barattolo in vetro trasparente e cucchiaio in legno"
   },
   {
     "nome": "Neo Elementary - Modulo centrale per divano componibile colore talpa",
@@ -11693,16 +10003,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Coprivaso in fibra vegetale e supporto in metallo nero, 30 cm"
   },
   {
-    "nome": "Bomboniera in vetro striato",
-    "categoria": "Cucina",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bomboniera-in-vetro-striato-1000-15-15-214691_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bomboniera-in-vetro-striato-214691.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Bomboniera in vetro striato"
-  },
-  {
     "nome": "Hipop - Poltrona beige con gambe in acciaio dorato",
     "categoria": "Divani",
     "prezzo": 139,
@@ -11751,16 +10051,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 182,
     "profondita_cm": 216,
     "descrizione": "Letto contenitore in velluto a coste beige 160x200 cm con rete a doghe"
-  },
-  {
-    "nome": "Tappeto beige in juta e cotone grigio antracite 160x230",
-    "categoria": "Tappeti",
-    "prezzo": 259,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tappeto-beige-in-juta-e-cotone-grigio-antracite-160x230-1000-7-9-210093_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-beige-in-juta-e-cotone-grigio-antracite-160x230-210093.htm",
-    "larghezza_cm": 160,
-    "profondita_cm": 0.6,
-    "descrizione": "Tappeto beige in juta e cotone grigio antracite 160x230"
   },
   {
     "nome": "Cuscino in lino lavato bianco 60x60cm",
@@ -11911,26 +10201,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 71,
     "profondita_cm": 71,
     "descrizione": "Lampada da terra in rattan con paralume conico alt. 149 cm"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro pressato",
-    "categoria": "Cucina",
-    "prezzo": 11.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/218280_1/bicchiere-in-vetro-pressato.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-pressato-218280.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 8.5,
-    "descrizione": "Bicchiere in vetro pressato"
-  },
-  {
-    "nome": "Servizio di 12 piatti in gres beige",
-    "categoria": "Cucina",
-    "prezzo": 89.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/servizio-di-12-piatti-in-gres-beige-1000-13-25-247788_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/servizio-di-12-piatti-in-gres-beige-247788.htm",
-    "larghezza_cm": 7.2,
-    "profondita_cm": 7.2,
-    "descrizione": "Servizio di 12 piatti in gres beige"
   },
   {
     "nome": "Uvita - Set di 2 poltrone da giardino in resina riciclata e tavolino basso in acciaio verde",
@@ -12113,16 +10383,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto vintage in paglia di Vienna 160x200 cm con rete a doghe"
   },
   {
-    "nome": "Candela in vetro colorato beige e metallo dorato 200g",
-    "categoria": "Decorazioni",
-    "prezzo": 16.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-in-vetro-colorato-beige-e-metallo-dorato-200g-1000-7-9-212184_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-in-vetro-colorato-beige-e-metallo-dorato-200g-212184.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Candela in vetro colorato beige e metallo dorato 200g"
-  },
-  {
     "nome": "Buddy - Modulo terminale destro per divano componibile blu",
     "categoria": "Divani",
     "prezzo": 419.3,
@@ -12171,16 +10431,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 145,
     "profondita_cm": 45,
     "descrizione": "Madia 2 ante 3 cassetti tricolore 145 cm"
-  },
-  {
-    "nome": "Himalaya - Testata del letto 180 cm in legno massello di mango scolpito",
-    "categoria": "Letti",
-    "prezzo": 649,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-180-cm-in-legno-massello-di-mango-scolpito-1000-11-36-186586_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-180-cm-in-legno-massello-di-mango-scolpito-himalaya-186586.htm",
-    "larghezza_cm": 180,
-    "profondita_cm": 5,
-    "descrizione": "Testata del letto 180 cm in legno massello di mango scolpito"
   },
   {
     "nome": "Cuscino nero in simil pelliccia 45x45 cm",
@@ -12243,26 +10493,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto in legno massello di mango bianco 160x200 cm"
   },
   {
-    "nome": "Tappeto shaggy color avorio in pelle di pecora 110 x 180 cm",
-    "categoria": "Tappeti",
-    "prezzo": 230.3,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tappeto-shaggy-color-avorio-in-pelle-di-pecora-110-x-180-cm-1000-5-36-156779_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-shaggy-color-avorio-in-pelle-di-pecora-110-x-180-cm-156779.htm",
-    "larghezza_cm": 110,
-    "profondita_cm": 2,
-    "descrizione": "Tappeto shaggy color avorio in pelle di pecora 110 x 180 cm"
-  },
-  {
-    "nome": "Set di 2 decorazioni da parete uccello e vaso in ceramica bianca 15x16 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-2-decorazioni-da-parete-uccello-e-vaso-in-ceramica-bianca-15x16-cm-1000-8-31-248327_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-2-decorazioni-da-parete-uccello-e-vaso-in-ceramica-bianca-15x16-cm-248327.htm",
-    "larghezza_cm": 15,
-    "profondita_cm": 6.5,
-    "descrizione": "Set di 2 decorazioni da parete uccello e vaso in ceramica bianca 15x16 cm"
-  },
-  {
     "nome": "Clyde - Sedia in stile scandinavo grigio antracite H66",
     "categoria": "Sedie",
     "prezzo": 79.99,
@@ -12283,16 +10513,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Cassettiera con 6 cassetti blu scuro"
   },
   {
-    "nome": "Kerala - Testata letto 160 cm scolpita in legno massello di mango, bianca",
-    "categoria": "Letti",
-    "prezzo": 599,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-letto-160-cm-scolpita-in-legno-massello-di-mango-bianca-1000-0-10-129693_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-letto-160-cm-scolpita-in-legno-massello-di-mango-bianca-kerala-129693.htm",
-    "larghezza_cm": 160,
-    "profondita_cm": 5,
-    "descrizione": "Testata letto 160 cm scolpita in legno massello di mango, bianca"
-  },
-  {
     "nome": "Luna - Sedia da bar in velluto e acciaio nero H73",
     "categoria": "Sedie",
     "prezzo": 109,
@@ -12311,16 +10531,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 85,
     "profondita_cm": 42,
     "descrizione": "Cassettiera compatibile con piano fasciatoio a 3 cassetti verde 85cm"
-  },
-  {
-    "nome": "Tenda con occhielli in velluto di cotone verde smeraldo, al pezzo, 140x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-con-occhielli-in-velluto-di-cotone-verde-smeraldo-al-pezzo-140x300-cm-1000-1-21-235689_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-con-occhielli-in-velluto-di-cotone-verde-smeraldo-al-pezzo-140x300-cm-235689.htm",
-    "larghezza_cm": 140,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda con occhielli in velluto di cotone verde smeraldo, al pezzo, 140x300 cm"
   },
   {
     "nome": "Barnaby - Modulo angolare destro per divano componibile grigio chiaro chiné",
@@ -12643,26 +10853,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada a sospensione petali di fiore beige"
   },
   {
-    "nome": "Decorazione murale in foglia d'acciaio dorata, 45x45 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 19.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-murale-in-foglia-d-acciaio-dorata-45x45-cm-1000-11-6-182948_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-murale-in-foglia-d-acciaio-dorata-45x45-cm-182948.htm",
-    "larghezza_cm": 45,
-    "profondita_cm": 3,
-    "descrizione": "Decorazione murale in foglia d'acciaio dorata, 45x45 cm"
-  },
-  {
-    "nome": "Lotto di 6 - Calice in vetro alt. 23 cm",
-    "categoria": "Cucina",
-    "prezzo": 23.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/calice-in-vetro-alt-23-cm-1000-13-22-215641_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/calice-in-vetro-alt-23-cm-215641.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Calice in vetro alt. 23 cm"
-  },
-  {
     "nome": "Lotto di 4 - Piatti piani blu in ceramica",
     "categoria": "Cucina",
     "prezzo": 31.96,
@@ -12681,16 +10871,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 38,
     "profondita_cm": 38,
     "descrizione": "Tovaglietta rotonda in fibra vegetale intrecciata D38"
-  },
-  {
-    "nome": "Himalaya - Testata del letto 160 cm scolpita in massello di mango",
-    "categoria": "Letti",
-    "prezzo": 599,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-del-letto-160-cm-scolpita-in-massello-di-mango-1000-0-29-146727_0.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-del-letto-160-cm-scolpita-in-massello-di-mango-himalaya-146727.htm",
-    "larghezza_cm": 160,
-    "profondita_cm": 5,
-    "descrizione": "Testata del letto 160 cm scolpita in massello di mango"
   },
   {
     "nome": "Barnaby - Modulo centrale 2 posti per divano componibile verde kaki",
@@ -12721,26 +10901,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 115,
     "profondita_cm": 48,
     "descrizione": "Madia a 2 ante verde scuro e rattan intrecciato 115 cm"
-  },
-  {
-    "nome": "Lomboque - Testata letto in rattan 160 cm",
-    "categoria": "Letti",
-    "prezzo": 199,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/testata-letto-in-rattan-160-cm-1000-10-38-241733_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/testata-letto-in-rattan-160-cm-lomboque-241733.htm",
-    "larghezza_cm": 165,
-    "profondita_cm": 3,
-    "descrizione": "Testata letto in rattan 160 cm"
-  },
-  {
-    "nome": "Decorazione murale a forma di pesce in acciaio verde, 81x38 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 64.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/decorazione-murale-a-forma-di-pesce-in-acciaio-verde-81x38-cm-1000-9-6-178356_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/decorazione-murale-a-forma-di-pesce-in-acciaio-verde-81x38-cm-178356.htm",
-    "larghezza_cm": 81,
-    "profondita_cm": 3,
-    "descrizione": "Decorazione murale a forma di pesce in acciaio verde, 81x38 cm"
   },
   {
     "nome": "Barnaby - Modulo centrale 2 posti per divano componibile grigio chiaro chiné",
@@ -13213,16 +11373,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano a 2/3 posti in lino superiore bianco"
   },
   {
-    "nome": "Lotto di 3 - Bicchiere in vetro trasparente con motivi a cuori rossi",
-    "categoria": "Cucina",
-    "prezzo": 8.97,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-trasparente-con-motivi-a-cuori-rossi-1000-1-31-241316_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-trasparente-con-motivi-a-cuori-rossi-241316.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 8.5,
-    "descrizione": "Bicchiere in vetro trasparente con motivi a cuori rossi"
-  },
-  {
     "nome": "Cestino quadrato in fibra vegetale 22x22 cm",
     "categoria": "Cucina",
     "prezzo": 7.99,
@@ -13291,16 +11441,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 140,
     "profondita_cm": 200,
     "descrizione": "Materasso a molle insacchettate 140x200 cm"
-  },
-  {
-    "nome": "Candela cilindrica blu 7x14 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-cilindrica-blu-7x14-cm-1000-13-15-249131_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-cilindrica-blu-7x14-cm-249131.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela cilindrica blu 7x14 cm"
   },
   {
     "nome": "Bamba Business - Sedie da giardino in acciaio bianco e resina intrecciata riciclata (x2)",
@@ -13493,16 +11633,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Sedia da bar scandinava bianca e rovere H77"
   },
   {
-    "nome": "Candela profumata in ceramica bianca e dorata, 180g",
-    "categoria": "Decorazioni",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-in-ceramica-bianca-e-dorata-180g-1000-7-23-228844_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-in-ceramica-bianca-e-dorata-180g-228844.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Candela profumata in ceramica bianca e dorata, 180g"
-  },
-  {
     "nome": "Huppy - Sedia per isola centrale in acciaio nero alt. 65 cm",
     "categoria": "Sedie",
     "prezzo": 119,
@@ -13543,16 +11673,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Sedia da bar in velluto ocra e acciaio nero H73"
   },
   {
-    "nome": "Trapunta in lino e cotone beige con stampa a foglie dorate 100x200cm",
-    "categoria": "Letti",
-    "prezzo": 99.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/trapunta-in-lino-e-cotone-beige-con-stampa-a-foglie-dorate-100x200cm-1000-3-28-223519_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/trapunta-in-lino-e-cotone-beige-con-stampa-a-foglie-dorate-100x200cm-223519.htm",
-    "larghezza_cm": 200,
-    "profondita_cm": 3,
-    "descrizione": "Trapunta in lino e cotone beige con stampa a foglie dorate 100x200cm"
-  },
-  {
     "nome": "Lampada a sospensione in rattan e metallo dorato",
     "categoria": "Lampade",
     "prezzo": 299,
@@ -13561,16 +11681,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 88.5,
     "profondita_cm": 76,
     "descrizione": "Lampada a sospensione in rattan e metallo dorato"
-  },
-  {
-    "nome": "Candela LED gialla alt.10 cm",
-    "categoria": "Decorazioni",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252292/candela-led-gialla-alt-10-cm.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-led-gialla-alt-10-cm-252292.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela LED gialla alt.10 cm"
   },
   {
     "nome": "Cuscini in ecrù e cotone blu con motivi (x3)",
@@ -13781,16 +11891,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 140,
     "profondita_cm": 30,
     "descrizione": "Lenzuolo con angoli in cotone bio écru 140x200 cm"
-  },
-  {
-    "nome": "Barcelone - Tappeto grande beige in cotone intrecciato 200x300cm",
-    "categoria": "Tappeti",
-    "prezzo": 219,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tappeto-grande-beige-in-cotone-intrecciato-200x300cm-1000-13-14-230516_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tappeto-grande-beige-in-cotone-intrecciato-200x300cm-barcelone-230516.htm",
-    "larghezza_cm": 200,
-    "profondita_cm": 5,
-    "descrizione": "Tappeto grande beige in cotone intrecciato 200x300cm"
   },
   {
     "nome": "Lampada in metallo rosa e dorato",
@@ -14123,16 +12223,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Sedia per ristorante in acciaio nero e resina riciclata bicolore"
   },
   {
-    "nome": "Candela profumata in vetro color terracotta 7x7",
-    "categoria": "Decorazioni",
-    "prezzo": 5.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-in-vetro-color-terracotta-7x7-1000-16-6-220217_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-in-vetro-color-terracotta-7x7-220217.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata in vetro color terracotta 7x7"
-  },
-  {
     "nome": "Cuscino in lino lavato terracotta 45x45cm",
     "categoria": "Tessile",
     "prezzo": 25.99,
@@ -14161,16 +12251,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 190,
     "profondita_cm": 85,
     "descrizione": "Divano da giardino 2/3 posti in corda intrecciata grigio antracite e legno massello di acacia"
-  },
-  {
-    "nome": "Set di 6 segnabicchieri in metallo multicolore",
-    "categoria": "Cucina",
-    "prezzo": 3.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-6-segnabicchieri-in-metallo-multicolore-1000-0-13-247571_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-6-segnabicchieri-in-metallo-multicolore-247571.htm",
-    "larghezza_cm": 2,
-    "profondita_cm": 0.2,
-    "descrizione": "Set di 6 segnabicchieri in metallo multicolore"
   },
   {
     "nome": "Lilo - Pouf in tessuto bouclé blu notte",
@@ -14293,16 +12373,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Modulo centrale per divano componibile da giardino in resina intrecciata riciclata"
   },
   {
-    "nome": "Set di 4 cucchiai in acciaio inox nero opaco",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-4-cucchiai-in-acciaio-inox-nero-opaco-1000-10-32-227623_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-4-cucchiai-in-acciaio-inox-nero-opaco-227623.htm",
-    "larghezza_cm": 21,
-    "profondita_cm": 5.5,
-    "descrizione": "Set di 4 cucchiai in acciaio inox nero opaco"
-  },
-  {
     "nome": "Puravida - Fodera di protezione per divano da giardino lineare 3 posti nera",
     "categoria": "Divani",
     "prezzo": 45.99,
@@ -14403,26 +12473,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Paralume per lampada a sospensione da esterno in metallo marrone"
   },
   {
-    "nome": "Set di 6 bicchieri in vetro trasparente e multicolore",
-    "categoria": "Cucina",
-    "prezzo": 24.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/253150/set-di-6-bicchieri-in-vetro-trasparente-e-multicolore.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-6-bicchieri-in-vetro-trasparente-e-multicolore-253150.htm",
-    "larghezza_cm": 27.3,
-    "profondita_cm": 8.8,
-    "descrizione": "Set di 6 bicchieri in vetro trasparente e multicolore"
-  },
-  {
-    "nome": "Set 4 tazzine in vetro e piattini in bambù",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-4-tazzine-in-vetro-e-piattini-in-bambu-1000-7-0-197989_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-4-tazzine-in-vetro-e-piattini-in-bambu-197989.htm",
-    "larghezza_cm": 7.5,
-    "profondita_cm": 7.5,
-    "descrizione": "Set 4 tazzine in vetro e piattini in bambù"
-  },
-  {
     "nome": "Mimizan - Lettino con sponde bicolore 90x190 cm",
     "categoria": "Letti",
     "prezzo": 299,
@@ -14443,16 +12493,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Poltrona in bouclé marrone"
   },
   {
-    "nome": "Candela profumata in vetro maculato bianco e oro",
-    "categoria": "Decorazioni",
-    "prezzo": 12.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-in-vetro-maculato-bianco-e-oro-1000-8-21-244791_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-in-vetro-maculato-bianco-e-oro-244791.htm",
-    "larghezza_cm": 7.5,
-    "profondita_cm": 7.5,
-    "descrizione": "Candela profumata in vetro maculato bianco e oro"
-  },
-  {
     "nome": "Malaga - Letto a castello con cassetto in rattan intrecciato 90x190 cm",
     "categoria": "Letti",
     "prezzo": 1199,
@@ -14463,16 +12503,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Letto a castello con cassetto in rattan intrecciato 90x190 cm"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere da spritz in vetro con stampa arancione",
-    "categoria": "Cucina",
-    "prezzo": 23.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-da-spritz-in-vetro-con-stampa-arancione-1000-10-25-215111_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-da-spritz-in-vetro-con-stampa-arancione-215111.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Bicchiere da spritz in vetro con stampa arancione"
-  },
-  {
     "nome": "Casanova - Poltrona in lino",
     "categoria": "Divani",
     "prezzo": 419,
@@ -14481,16 +12511,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 67,
     "profondita_cm": 74,
     "descrizione": "Poltrona in lino"
-  },
-  {
-    "nome": "Cavo di sospensione per lampada a sospensione bianco, 120 cm",
-    "categoria": "Lampade",
-    "prezzo": 2.95,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/cavo-di-sospensione-per-lampada-a-sospensione-bianco-120-cm-1000-2-31-241521_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/cavo-di-sospensione-per-lampada-a-sospensione-bianco-120-cm-241521.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Cavo di sospensione per lampada a sospensione bianco, 120 cm"
   },
   {
     "nome": "Portacapsule girevole in acciaio nero",
@@ -14521,16 +12541,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 83.5,
     "profondita_cm": 79.5,
     "descrizione": "Poltrona girevole in tessuto bouclé azzurro"
-  },
-  {
-    "nome": "Cavo di sospensione nero 120 cm per lampada a sospensione",
-    "categoria": "Lampade",
-    "prezzo": 2.95,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/cavo-di-sospensione-nero-120-cm-per-lampada-a-sospensione-1000-1-30-241520_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/cavo-di-sospensione-nero-120-cm-per-lampada-a-sospensione-241520.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Cavo di sospensione nero 120 cm per lampada a sospensione"
   },
   {
     "nome": "Lotto di 2 - Coppa gelato a forma di fiore in vetro trasparente",
@@ -14603,16 +12613,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Poltrona in legno di acacia con cuscini in cotone e lino écru"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere trasparente a bolle in vetro",
-    "categoria": "Cucina",
-    "prezzo": 23.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-trasparente-a-bolle-in-vetro-1000-9-32-136111_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-trasparente-a-bolle-in-vetro-136111.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Bicchiere trasparente a bolle in vetro"
-  },
-  {
     "nome": "Set di 2 sedie per isola da cucina in tessuto tramato color écru con gambe in acciaio nero, alt. 66 cm",
     "categoria": "Sedie",
     "prezzo": 199,
@@ -14621,26 +12621,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 50.5,
     "profondita_cm": 54,
     "descrizione": "Set di 2 sedie per isola da cucina in tessuto tramato color écru con gambe in acciaio nero, alt. 66 cm"
-  },
-  {
-    "nome": "Candela profumata in vetro e metallo dorato",
-    "categoria": "Decorazioni",
-    "prezzo": 5,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/candela-profumata-in-vetro-e-metallo-dorato-1000-1-27-241435_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/candela-profumata-in-vetro-e-metallo-dorato-241435.htm",
-    "larghezza_cm": 7,
-    "profondita_cm": 7,
-    "descrizione": "Candela profumata in vetro e metallo dorato"
-  },
-  {
-    "nome": "Lotto di 6 - Calice in vetro a bolle verde",
-    "categoria": "Cucina",
-    "prezzo": 41.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/calice-in-vetro-a-bolle-verde-1000-0-5-201110_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/calice-in-vetro-a-bolle-verde-201110.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 8.5,
-    "descrizione": "Calice in vetro a bolle verde"
   },
   {
     "nome": "Guinguette - Set di 2 sedie pieghevoli da giardino in acciaio verde acqua",
@@ -14803,16 +12783,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Campana per candela in vetro trasparente alt. 20 cm"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere in vetro azzurro con bolle",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252365/bicchiere-in-vetro-azzurro-con-bolle.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-azzurro-con-bolle-252365.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Bicchiere in vetro azzurro con bolle"
-  },
-  {
     "nome": "Set da aperitivo con 5 coppette in ceramica bianca e nera e vassoio in bambù nero",
     "categoria": "Cucina",
     "prezzo": 32.99,
@@ -14923,16 +12893,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Piantana in legno di mango con paralume in lino beige alt. 168cm"
   },
   {
-    "nome": "Set di candele profumate con portalumini (x4) in vetro multicolore",
-    "categoria": "Decorazioni",
-    "prezzo": 10.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-candele-profumate-con-portalumini-x4-in-vetro-multicolore-1000-9-39-221808_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-candele-profumate-con-portalumini-x4-in-vetro-multicolore-221808.htm",
-    "larghezza_cm": 5,
-    "profondita_cm": 5,
-    "descrizione": "Set di candele profumate con portalumini (x4) in vetro multicolore"
-  },
-  {
     "nome": "Set tavolo e 2 sedie da giardino in acciaio e resina intrecciata verde",
     "categoria": "Sedie",
     "prezzo": 199,
@@ -14961,26 +12921,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 35,
     "profondita_cm": 35,
     "descrizione": "Piantana beige on paralume in rattan alt. 140"
-  },
-  {
-    "nome": "Cofanetto di candele profumate in vetro con motivi natalizi rossi, bianchi e verdi",
-    "categoria": "Decorazioni",
-    "prezzo": 12.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/cofanetto-di-candele-profumate-in-vetro-con-motivi-natalizi-rossi-bianchi-e-verdi-1000-2-22-244751_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/cofanetto-di-candele-profumate-in-vetro-con-motivi-natalizi-rossi-bianchi-e-verdi-244751.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Cofanetto di candele profumate in vetro con motivi natalizi rossi, bianchi e verdi"
-  },
-  {
-    "nome": "Tazze in vetro (x4) con supporto in metallo nero",
-    "categoria": "Cucina",
-    "prezzo": 12.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazze-in-vetro-x4-con-supporto-in-metallo-nero-1000-8-14-241340_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazze-in-vetro-x4-con-supporto-in-metallo-nero-241340.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 9,
-    "descrizione": "Tazze in vetro (x4) con supporto in metallo nero"
   },
   {
     "nome": "Iseo - Set tavolo da giardino con 4 sedie in acciaio e alluminio grigio antracite e resina riciclata beige",
@@ -15053,26 +12993,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Poltrona marrone in cuoio effetto anticato"
   },
   {
-    "nome": "Set di 10 candele lunghe e sottili bianche",
-    "categoria": "Decorazioni",
-    "prezzo": 6.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-10-candele-lunghe-e-sottili-bianche-1000-2-14-247080_4.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-10-candele-lunghe-e-sottili-bianche-247080.htm",
-    "larghezza_cm": 1,
-    "profondita_cm": 1,
-    "descrizione": "Set di 10 candele lunghe e sottili bianche"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro verde con bolle",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252364/bicchiere-in-vetro-verde-con-bolle.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-verde-con-bolle-252364.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Bicchiere in vetro verde con bolle"
-  },
-  {
     "nome": "Sockette - Poltrona in velluto nero e paglia di Vienna",
     "categoria": "Divani",
     "prezzo": 50,
@@ -15133,16 +13053,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Poltrona in tessuto caramello con gambe in acciaio cromato"
   },
   {
-    "nome": "Set di 6 candele lunghe beige, bordeaux e rosa",
-    "categoria": "Decorazioni",
-    "prezzo": 9.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252303/set-di-6-candele-lunghe-beige-bordeaux-e-rosa.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-6-candele-lunghe-beige-bordeaux-e-rosa-252303.htm",
-    "larghezza_cm": 2,
-    "profondita_cm": 2,
-    "descrizione": "Set di 6 candele lunghe beige, bordeaux e rosa"
-  },
-  {
     "nome": "Sospensione aerea non elettrificata realizzata con corde di iuta",
     "categoria": "Lampade",
     "prezzo": 299,
@@ -15151,16 +13061,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 90,
     "profondita_cm": 90,
     "descrizione": "Sospensione aerea non elettrificata realizzata con corde di iuta"
-  },
-  {
-    "nome": "Lotto di 2 - Set di 3 candele lunghe rosse",
-    "categoria": "Decorazioni",
-    "prezzo": 9.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-3-candele-lunghe-rosse-1000-14-5-249285_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-3-candele-lunghe-rosse-249285.htm",
-    "larghezza_cm": 2.1,
-    "profondita_cm": 2.1,
-    "descrizione": "Set di 3 candele lunghe rosse"
   },
   {
     "nome": "Vassoio blu",
@@ -15213,16 +13113,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Applique in rattan e tessuto bianco"
   },
   {
-    "nome": "Set di 2 mug in ceramica bianca e metallo con cuore dorato",
-    "categoria": "Cucina",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-2-mug-in-ceramica-bianca-e-metallo-con-cuore-dorato-1000-3-22-231016_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-2-mug-in-ceramica-bianca-e-metallo-con-cuore-dorato-231016.htm",
-    "larghezza_cm": 41.5,
-    "profondita_cm": 9.8,
-    "descrizione": "Set di 2 mug in ceramica bianca e metallo con cuore dorato"
-  },
-  {
     "nome": "Sam - Poltrona grigio chiaro",
     "categoria": "Divani",
     "prezzo": 50,
@@ -15231,16 +13121,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 68,
     "profondita_cm": 72,
     "descrizione": "Poltrona grigio chiaro"
-  },
-  {
-    "nome": "Set di 6 calici in vetro multicolore",
-    "categoria": "Cucina",
-    "prezzo": 39.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-6-calici-in-vetro-multicolore-1000-4-30-245620_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-6-calici-in-vetro-multicolore-245620.htm",
-    "larghezza_cm": 7.9,
-    "profondita_cm": 7.9,
-    "descrizione": "Set di 6 calici in vetro multicolore"
   },
   {
     "nome": "Set di 6 bicchieri con supporto nero e beige",
@@ -15413,16 +13293,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Fodera per sedia in tessuto bouclé bianco, compatibile con la sedia MARGAUX"
   },
   {
-    "nome": "Trapunta in lino lavato blu-verde 200x100 cm",
-    "categoria": "Letti",
-    "prezzo": 97.3,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/trapunta-in-lino-lavato-blu-verde-200x100-cm-1000-2-38-231729_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/trapunta-in-lino-lavato-blu-verde-200x100-cm-231729.htm",
-    "larghezza_cm": 200,
-    "profondita_cm": 3,
-    "descrizione": "Trapunta in lino lavato blu-verde 200x100 cm"
-  },
-  {
     "nome": "Bizou - Poltrona in velluto verde foresta",
     "categoria": "Divani",
     "prezzo": 299,
@@ -15493,16 +13363,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Piatto piano in gres écru, decorato con motivi blu e bordo bordeaux"
   },
   {
-    "nome": "Cofanetto con candela profumata e diffusore Cotton Cloud 30 ml",
-    "categoria": "Decorazioni",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252275/cofanetto-con-candela-profumata-e-diffusore-cotton-cloud-30-ml.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/cofanetto-con-candela-profumata-e-diffusore-cotton-cloud-30-ml-252275.htm",
-    "larghezza_cm": 4.8,
-    "profondita_cm": 4.8,
-    "descrizione": "Cofanetto con candela profumata e diffusore Cotton Cloud 30 ml"
-  },
-  {
     "nome": "Piatto fondo in gres giallo e écru con bordo azzurro",
     "categoria": "Cucina",
     "prezzo": 7.99,
@@ -15511,16 +13371,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 20,
     "profondita_cm": 20,
     "descrizione": "Piatto fondo in gres giallo e écru con bordo azzurro"
-  },
-  {
-    "nome": "Ceppo in legno di acacia con coltelli in acciaio",
-    "categoria": "Cucina",
-    "prezzo": 39.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252575/ceppo-in-legno-di-acacia-con-coltelli-in-acciaio.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/ceppo-in-legno-di-acacia-con-coltelli-in-acciaio-252575.htm",
-    "larghezza_cm": 15,
-    "profondita_cm": 7,
-    "descrizione": "Ceppo in legno di acacia con coltelli in acciaio"
   },
   {
     "nome": "Swing - Poltrona girevole con poggiapiedi",
@@ -15541,26 +13391,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 90,
     "profondita_cm": 90,
     "descrizione": "Lampada a sospensione ovale, beige e crema"
-  },
-  {
-    "nome": "Cofanetto con candela profumata e diffusore Vaniglia Orientale 30 ml",
-    "categoria": "Decorazioni",
-    "prezzo": 14.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252276/cofanetto-con-candela-profumata-e-diffusore-vaniglia-orientale-30-ml.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/cofanetto-con-candela-profumata-e-diffusore-vaniglia-orientale-30-ml-252276.htm",
-    "larghezza_cm": 4.8,
-    "profondita_cm": 4.8,
-    "descrizione": "Cofanetto con candela profumata e diffusore Vaniglia Orientale 30 ml"
-  },
-  {
-    "nome": "Bicchiere corolla in vetro trasparente",
-    "categoria": "Cucina",
-    "prezzo": 3.59,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-corolla-in-vetro-trasparente-1000-9-8-247648_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-corolla-in-vetro-trasparente-247648.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 8.5,
-    "descrizione": "Bicchiere corolla in vetro trasparente"
   },
   {
     "nome": "Louvain - Poltrona in velluto a coste marrone",
@@ -15803,26 +13633,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divanetto in rattan 3 posti"
   },
   {
-    "nome": "Tenda con occhielli in lino lavato verde rame, al pezzo, 130x300",
-    "categoria": "Tessile",
-    "prezzo": 129,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-con-occhielli-in-lino-lavato-verde-rame-al-pezzo-130x300-1000-13-26-177884_7.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-con-occhielli-in-lino-lavato-verde-rame-al-pezzo-130x300-177884.htm",
-    "larghezza_cm": 130,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda con occhielli in lino lavato verde rame, al pezzo, 130x300"
-  },
-  {
-    "nome": "Portacapsule tazza in metallo nero",
-    "categoria": "Cucina",
-    "prezzo": 2,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/portacapsule-tazza-in-metallo-nero-1000-3-19-203051_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/portacapsule-tazza-in-metallo-nero-203051.htm",
-    "larghezza_cm": 19,
-    "profondita_cm": 8,
-    "descrizione": "Portacapsule tazza in metallo nero"
-  },
-  {
     "nome": "Amance - Sedia da giardino in legno di teak con cuscini écru",
     "categoria": "Sedie",
     "prezzo": 159.2,
@@ -15913,16 +13723,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divanetto da giardino 2 posti in resina intrecciata effetto rattan e legno massello di acacia"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere in vetro con stampe mojito",
-    "categoria": "Cucina",
-    "prezzo": 13.74,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-con-stampe-mojito-1000-10-7-119112_4.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-con-stampe-mojito-119112.htm",
-    "larghezza_cm": 8.3,
-    "profondita_cm": 8.3,
-    "descrizione": "Bicchiere in vetro con stampe mojito"
-  },
-  {
     "nome": "Sedia da pranzo in legno di hevea scuro e tessuto riciclato beige",
     "categoria": "Sedie",
     "prezzo": 189,
@@ -15961,16 +13761,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 60,
     "profondita_cm": 10,
     "descrizione": "Cuscino in velluto di poliestere riciclato effetto invecchiato beige 60x60cm"
-  },
-  {
-    "nome": "Tenda in lino lavato giallo, al pezzo, 130x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 64.5,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-in-lino-lavato-giallo-al-pezzo-130x300-cm-1000-12-9-147691_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-in-lino-lavato-giallo-al-pezzo-130x300-cm-147691.htm",
-    "larghezza_cm": 130,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda in lino lavato giallo, al pezzo, 130x300 cm"
   },
   {
     "nome": "Lampada a sospensione in vetro rigato e metallo dorato",
@@ -16043,16 +13833,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada da terra da esterno bianco alt. 110 cm"
   },
   {
-    "nome": "Tenda con occhielli beige, al pezzo, 130 cm x 300 cm",
-    "categoria": "Tessile",
-    "prezzo": 104.3,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-con-occhielli-beige-al-pezzo-130-cm-x-300-cm-1000-3-30-234263_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-con-occhielli-beige-al-pezzo-130-cm-x-300-cm-234263.htm",
-    "larghezza_cm": 130,
-    "profondita_cm": 1.2,
-    "descrizione": "Tenda con occhielli beige, al pezzo, 130 cm x 300 cm"
-  },
-  {
     "nome": "Portabottiglie in legno di acacia",
     "categoria": "Cucina",
     "prezzo": 15.99,
@@ -16071,26 +13851,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 26.5,
     "profondita_cm": 15,
     "descrizione": "Set di posate da 24 pezzi in acciaio inossidabile color argento"
-  },
-  {
-    "nome": "Lotto di 2 - Tazza da tè e piattino in porcellana bianca con motivo palma dorata e marrone",
-    "categoria": "Cucina",
-    "prezzo": 17.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazza-da-te-e-piattino-in-porcellana-bianca-con-motivo-palma-dorata-e-marrone-1000-5-10-235965_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazza-da-te-e-piattino-in-porcellana-bianca-con-motivo-palma-dorata-e-marrone-235965.htm",
-    "larghezza_cm": 11,
-    "profondita_cm": 8.5,
-    "descrizione": "Tazza da tè e piattino in porcellana bianca con motivo palma dorata e marrone"
-  },
-  {
-    "nome": "Lotto di 2 - Tazza da caffè e piattino in porcellana bianca con motivo palma dorata e marrone",
-    "categoria": "Cucina",
-    "prezzo": 15.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tazza-da-caffe-e-piattino-in-porcellana-bianca-con-motivo-palma-dorata-e-marrone-1000-4-9-235964_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tazza-da-caffe-e-piattino-in-porcellana-bianca-con-motivo-palma-dorata-e-marrone-235964.htm",
-    "larghezza_cm": 8.5,
-    "profondita_cm": 6.5,
-    "descrizione": "Tazza da caffè e piattino in porcellana bianca con motivo palma dorata e marrone"
   },
   {
     "nome": "Sedia in tessuto tramato beige e acciaio nero",
@@ -16123,16 +13883,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Sedia vintage in tessuto riciclato blu e acciaio effetto rovere"
   },
   {
-    "nome": "Lotto di 2 - Oliera in vetro",
-    "categoria": "Cucina",
-    "prezzo": 9.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/oliera-in-vetro-1000-2-40-233412_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/oliera-in-vetro-233412.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 6,
-    "descrizione": "Oliera in vetro"
-  },
-  {
     "nome": "Ice - Sedia in stile scandinavo blu anatra e legno di hevea",
     "categoria": "Sedie",
     "prezzo": 69.99,
@@ -16161,16 +13911,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 56,
     "profondita_cm": 55,
     "descrizione": "Sedia in tessuto bouclé écru e acciaio nero"
-  },
-  {
-    "nome": "Tenda con occhielli in lino terracotta, al pezzo 130x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 64.5,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-con-occhielli-in-lino-terracotta-al-pezzo-130x300-cm-1000-8-9-200540_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-con-occhielli-in-lino-terracotta-al-pezzo-130x300-cm-200540.htm",
-    "larghezza_cm": 130,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda con occhielli in lino terracotta, al pezzo 130x300 cm"
   },
   {
     "nome": "Isys - Sedia in velluto di cotone beige cappuccino e acciaio nero",
@@ -16313,16 +14053,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano letto 3/4 posti in tessuto tramato beige, materasso 10 cm"
   },
   {
-    "nome": "Tenda in velluto nero con occhielli, al pezzo, 140x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 49.95,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-in-velluto-nero-con-occhielli-al-pezzo-140x300-cm-1000-16-11-235228_4.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-in-velluto-nero-con-occhielli-al-pezzo-140x300-cm-235228.htm",
-    "larghezza_cm": 140,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda in velluto nero con occhielli, al pezzo, 140x300 cm"
-  },
-  {
     "nome": "Set Mojito",
     "categoria": "Cucina",
     "prezzo": 9.95,
@@ -16351,16 +14081,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 203,
     "profondita_cm": 98,
     "descrizione": "Divano letto 3/4 posti in lino lavato bianco"
-  },
-  {
-    "nome": "Tenda con occhielli écru al pezzo, 130x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 50,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-con-occhielli-ecru-al-pezzo-130x300-cm-1000-2-29-234262_2.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-con-occhielli-ecru-al-pezzo-130x300-cm-234262.htm",
-    "larghezza_cm": 130,
-    "profondita_cm": 1,
-    "descrizione": "Tenda con occhielli écru al pezzo, 130x300 cm"
   },
   {
     "nome": "Versailles - Sedia color lino e paglia di Vienna",
@@ -16423,16 +14143,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Lampada a sospensione a forma di campana in vetro fumé e asta in acciaio dorato"
   },
   {
-    "nome": "Lotto di 4 - Bicchiere in vetro trasparente bianco effetto screziato",
-    "categoria": "Cucina",
-    "prezzo": 23.96,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-trasparente-bianco-effetto-screziato-1000-0-28-233359_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-trasparente-bianco-effetto-screziato-233359.htm",
-    "larghezza_cm": 9,
-    "profondita_cm": 6,
-    "descrizione": "Bicchiere in vetro trasparente bianco effetto screziato"
-  },
-  {
     "nome": "Mauricette BUSINESS - Sedie professionali vintage in velluto riciclato blu notte e acciaio imitazione rovere (x2)",
     "categoria": "Sedie",
     "prezzo": 153.3,
@@ -16463,16 +14173,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano trasformabile stile scandinavo 3 posti in velluto a coste marrone"
   },
   {
-    "nome": "Lotto di 2 - Bottiglia in vetro con tappo nero 0,75 L",
-    "categoria": "Cucina",
-    "prezzo": 7.98,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bottiglia-in-vetro-con-tappo-nero-0-75-l-1000-9-35-224018_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bottiglia-in-vetro-con-tappo-nero-0-75-l-224018.htm",
-    "larghezza_cm": 7.5,
-    "profondita_cm": 7.5,
-    "descrizione": "Bottiglia in vetro con tappo nero 0,75 L"
-  },
-  {
     "nome": "Piatto per olive in ceramica verde",
     "categoria": "Cucina",
     "prezzo": 5,
@@ -16501,16 +14201,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 49,
     "profondita_cm": 49.5,
     "descrizione": "Set di 2 sedie in acciaio e tessuto riciclato color terracotta"
-  },
-  {
-    "nome": "Lotto di 4 - Calice in vetro con fondo grigio fumé",
-    "categoria": "Cucina",
-    "prezzo": 19.96,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/calice-in-vetro-con-fondo-grigio-fume-1000-9-1-217014_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/calice-in-vetro-con-fondo-grigio-fume-217014.htm",
-    "larghezza_cm": 5.5,
-    "profondita_cm": 7,
-    "descrizione": "Calice in vetro con fondo grigio fumé"
   },
   {
     "nome": "Charlotte Business - Set di 2 sedie per ristorante verde kaki",
@@ -16551,16 +14241,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 45,
     "profondita_cm": 10,
     "descrizione": "Cuscino in velluto di poliestere riciclato effetto antico, ecru 45x45"
-  },
-  {
-    "nome": "Vassoio rettangolare verde e nero con stampa terrazza di caffetteria",
-    "categoria": "Cucina",
-    "prezzo": 16.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/vassoio-rettangolare-verde-e-nero-con-stampa-terrazza-di-caffetteria-1000-12-17-228305_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/vassoio-rettangolare-verde-e-nero-con-stampa-terrazza-di-caffetteria-228305.htm",
-    "larghezza_cm": 45.5,
-    "profondita_cm": 4,
-    "descrizione": "Vassoio rettangolare verde e nero con stampa terrazza di caffetteria"
   },
   {
     "nome": "Lampada a sospensione tamburo in tessuto beige e legno di hevea",
@@ -16631,16 +14311,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 57.5,
     "profondita_cm": 59,
     "descrizione": "Poltrona professionale in acciaio nero con motivo pied-de-poule"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro trasparente con macchia blu",
-    "categoria": "Cucina",
-    "prezzo": 29.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252367/bicchiere-in-vetro-trasparente-con-macchia-blu.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-trasparente-con-macchia-blu-252367.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 6.3,
-    "descrizione": "Bicchiere in vetro trasparente con macchia blu"
   },
   {
     "nome": "Lampada in rattan traforato",
@@ -16791,16 +14461,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 99,
     "profondita_cm": 87,
     "descrizione": "Poltrona letto pieghevole in velluto verde"
-  },
-  {
-    "nome": "Lampada da notte nuvola bianca",
-    "categoria": "Lampade",
-    "prezzo": 8.45,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/lampada-da-notte-nuvola-bianca-1000-2-15-235027_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/lampada-da-notte-nuvola-bianca-235027.htm",
-    "larghezza_cm": 23,
-    "profondita_cm": 9,
-    "descrizione": "Lampada da notte nuvola bianca"
   },
   {
     "nome": "Nio - Divano letto pieghevole a 2 posti in velluto verde",
@@ -17093,16 +14753,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Sedia da bar in rattan e acciaio nero H75"
   },
   {
-    "nome": "Set di 4 sottobicchieri in gres bianco e giallo a forma di uovo al tegamino",
-    "categoria": "Cucina",
-    "prezzo": 9.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252963/set-di-4-sottobicchieri-in-gres-bianco-e-giallo-a-forma-di-uovo-al-tegamino.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-4-sottobicchieri-in-gres-bianco-e-giallo-a-forma-di-uovo-al-tegamino-252963.htm",
-    "larghezza_cm": 9.7,
-    "profondita_cm": 9.3,
-    "descrizione": "Set di 4 sottobicchieri in gres bianco e giallo a forma di uovo al tegamino"
-  },
-  {
     "nome": "Set di 4 bicchieri in vetro trasparente con motivi multicolori e supporto chiosco verde",
     "categoria": "Cucina",
     "prezzo": 34.99,
@@ -17141,16 +14791,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 56,
     "profondita_cm": 67,
     "descrizione": "Sedia da ufficio professionale in tessuto spalmato bianco"
-  },
-  {
-    "nome": "Infusore da tè a pallina in acciaio con croissant",
-    "categoria": "Cucina",
-    "prezzo": 5.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/252960/infusore-da-te-a-pallina-in-acciaio-con-croissant.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/infusore-da-te-a-pallina-in-acciaio-con-croissant-252960.htm",
-    "larghezza_cm": 4.5,
-    "profondita_cm": 1.8,
-    "descrizione": "Infusore da tè a pallina in acciaio con croissant"
   },
   {
     "nome": "Marignane - 2 sedie da giardino pieghevoli in acciaio nero e cuscini bianco sporco",
@@ -17223,16 +14863,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Set di 2 sedie pieghevoli da giardino in acciaio color argilla"
   },
   {
-    "nome": "Lotto di 6 - Bicchiere in vetro intagliato trasparente",
-    "categoria": "Cucina",
-    "prezzo": 17.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/bicchiere-in-vetro-intagliato-trasparente-1000-9-10-219360_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-intagliato-trasparente-219360.htm",
-    "larghezza_cm": 7.1,
-    "profondita_cm": 7.1,
-    "descrizione": "Bicchiere in vetro intagliato trasparente"
-  },
-  {
     "nome": "Charlotte Business - Set di 2 sedie da bar in acciaio cromato e tessuto bouclé verde kaki alt. 78 cm",
     "categoria": "Sedie",
     "prezzo": 249,
@@ -17241,16 +14871,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 46.5,
     "profondita_cm": 49.5,
     "descrizione": "Set di 2 sedie da bar in acciaio cromato e tessuto bouclé verde kaki alt. 78 cm"
-  },
-  {
-    "nome": "Set di 4 bicchieri in vetro trasparente",
-    "categoria": "Cucina",
-    "prezzo": 8.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/253235/set-di-4-bicchieri-in-vetro-trasparente.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-4-bicchieri-in-vetro-trasparente-253235.htm",
-    "larghezza_cm": 40.7,
-    "profondita_cm": 8.6,
-    "descrizione": "Set di 4 bicchieri in vetro trasparente"
   },
   {
     "nome": "Pirofila in gres beige lung. 30 cm",
@@ -17303,16 +14923,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Barattolo per riso in vetro trasparente e legno di acacia"
   },
   {
-    "nome": "Lotto di 6 - Calice Spritz in vetro trasparente",
-    "categoria": "Cucina",
-    "prezzo": 23.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/253118/calice-spritz-in-vetro-trasparente.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/calice-spritz-in-vetro-trasparente-253118.htm",
-    "larghezza_cm": 7.2,
-    "profondita_cm": 7.2,
-    "descrizione": "Calice Spritz in vetro trasparente"
-  },
-  {
     "nome": "Puravida - Fodera di protezione per sedia a sdraio nera",
     "categoria": "Sedie",
     "prezzo": 35.99,
@@ -17331,26 +14941,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 234,
     "profondita_cm": 96,
     "descrizione": "Set tavolo da giardino con 8 sedie in alluminio verde kaki e resina beige"
-  },
-  {
-    "nome": "Tenda con occhielli beige in poliestere riciclato, al pezzo 130x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 99.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-con-occhielli-beige-in-poliestere-riciclato-al-pezzo-130x300-cm-1000-2-4-235180_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-con-occhielli-beige-in-poliestere-riciclato-al-pezzo-130x300-cm-235180.htm",
-    "larghezza_cm": 140,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda con occhielli beige in poliestere riciclato, al pezzo 130x300 cm"
-  },
-  {
-    "nome": "Set di 6 portauova in ceramica bianca con motivo floreale verde",
-    "categoria": "Cucina",
-    "prezzo": 12.99,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/set-di-6-portauova-in-ceramica-bianca-con-motivo-floreale-verde-1000-3-3-248832_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/set-di-6-portauova-in-ceramica-bianca-con-motivo-floreale-verde-248832.htm",
-    "larghezza_cm": 4.7,
-    "profondita_cm": 4.7,
-    "descrizione": "Set di 6 portauova in ceramica bianca con motivo floreale verde"
   },
   {
     "nome": "Louki - Set tavolo da giardino estensibile in alluminio con 8 sedie effetto rattan e grigio antracite",
@@ -17413,16 +15003,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Divano trasformabile a 3/4 posti in tessuto beige effetto lino, materasso 12 cm"
   },
   {
-    "nome": "Tenda in poliestere riciclato grigio carbone con occhielli, al pezzo, 140x300 cm",
-    "categoria": "Tessile",
-    "prezzo": 20,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/tenda-in-poliestere-riciclato-grigio-carbone-con-occhielli-al-pezzo-140x300-cm-1000-9-35-235170_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/tenda-in-poliestere-riciclato-grigio-carbone-con-occhielli-al-pezzo-140x300-cm-235170.htm",
-    "larghezza_cm": 140,
-    "profondita_cm": 0.5,
-    "descrizione": "Tenda in poliestere riciclato grigio carbone con occhielli, al pezzo, 140x300 cm"
-  },
-  {
     "nome": "Tovaglietta rotonda verde Ø 38 cm",
     "categoria": "Cucina",
     "prezzo": 5.99,
@@ -17441,26 +15021,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 207,
     "profondita_cm": 90,
     "descrizione": "Divano trasformabile a 3/4 posti in lino stropicciato beige, materasso 6 cm"
-  },
-  {
-    "nome": "Chesterfield - Divano trasformabile 3 posti in pelle nera",
-    "categoria": "Divani",
-    "prezzo": 1999,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/divano-trasformabile-3-posti-in-pelle-nera-1000-3-13-232852_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/divano-trasformabile-3-posti-in-pelle-nera-chesterfield-232852.htm",
-    "larghezza_cm": 6.5,
-    "profondita_cm": 6.5,
-    "descrizione": "Divano trasformabile 3 posti in pelle nera"
-  },
-  {
-    "nome": "Lotto di 6 - Barattolo in vetro con coperchio rosso",
-    "categoria": "Cucina",
-    "prezzo": 17.94,
-    "immagine_url": "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/barattolo-in-vetro-con-coperchio-rosso-1000-16-32-240702_1.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/barattolo-in-vetro-con-coperchio-rosso-240702.htm",
-    "larghezza_cm": 6.5,
-    "profondita_cm": 6.5,
-    "descrizione": "Barattolo in vetro con coperchio rosso"
   },
   {
     "nome": "Livia - Divano trasformabile 2/3 posti in velluto a coste verde",
@@ -17541,16 +15101,6 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "larghezza_cm": 16,
     "profondita_cm": 16,
     "descrizione": "Lampada in ceramica bianca con paralume in poliestere riciclato bianco sporco"
-  },
-  {
-    "nome": "Lotto di 6 - Bicchiere in vetro trasparente con motivo di frutti rossi",
-    "categoria": "Cucina",
-    "prezzo": 15.54,
-    "immagine_url": "https://medias.maisonsdumonde.com/images/ar_1:1,c_fill,f_auto,q_auto,w_350/v1/img/253060/bicchiere-in-vetro-trasparente-con-motivo-di-frutti-rossi.jpg",
-    "link": "https://www.maisonsdumonde.com/IT/it/p/bicchiere-in-vetro-trasparente-con-motivo-di-frutti-rossi-253060.htm",
-    "larghezza_cm": 8,
-    "profondita_cm": 8,
-    "descrizione": "Bicchiere in vetro trasparente con motivo di frutti rossi"
   },
   {
     "nome": "Lampada a sospensione doppia in metallo argentato",
@@ -17663,4 +15213,3 @@ export const IMPORTED_PRODUCTS: Omit<Product, "id">[] = [
     "descrizione": "Piantana con 2 fascette in metallo nero opaco alt. 169cm"
   }
 ];
-
