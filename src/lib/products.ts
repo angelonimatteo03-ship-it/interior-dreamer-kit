@@ -1,3 +1,4 @@
+import { IMPORTED_PRODUCTS } from "./imported-products";
 // Static product catalog for Maisons du Monde configurator
 export type Product = {
   id: string;
@@ -108,7 +109,7 @@ const raw: Omit<Product, "id">[] = [
   { nome: "Brooke - Divano scandinavo 3 posti grigio chiaro", categoria: "Divani", prezzo: 649.0, immagine_url: "https://medias.maisonsdumonde.com/image/upload/ar_1:1,c_fill,f_auto,q_auto,w_200/v1/img/divano-scandinavo-3-posti-grigio-chiaro-brooke-166156.jpg", link: "https://www.maisonsdumonde.com/IT/it/p/divano-scandinavo-3-posti-grigio-chiaro-brooke-166156.htm" },
 ];
 
-export const PRODUCTS: Product[] = raw.map((p, i) => ({ ...p, id: `p-${i}` }));
+export const PRODUCTS: Product[] = [...raw, ...IMPORTED_PRODUCTS].map((p, i) => ({ ...p, id: `p-${i}` }));
 
 export const CATEGORIES = [
   "Divani",
@@ -120,6 +121,19 @@ export const CATEGORIES = [
   "Tappeti",
   "Tessile",
   "Decorazioni",
+  "Letti",
+  "Comodini",
+  "Armadi",
+  "Cassettiere",
+  "Credenze",
+  "Librerie",
+  "Mobili TV",
+  "Pouf",
+  "Lampade",
+  "Bagno",
+  "Cucina",
+  "Mobili",
+  "Altri mobili",
 ] as const;
 
 export const WALL_COLORS: { name: string; value: string }[] = [
@@ -132,3 +146,4 @@ export const WALL_COLORS: { name: string; value: string }[] = [
   { name: "Tortora", value: "#b8a99a" },
   { name: "Bianco", value: "#f9f7f2" },
 ];
+
