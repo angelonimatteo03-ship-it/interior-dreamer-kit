@@ -833,6 +833,7 @@ function Step2({
 }) {
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
   const [zoom, setZoom] = useState(100);
+  const [fitZoom, setFitZoom] = useState(100);
   const [showGrid, setShowGrid] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileCatalogOpen, setMobileCatalogOpen] = useState(false);
@@ -840,6 +841,23 @@ function Step2({
   const [announce, setAnnounce] = useState("");
   const [centerRequest, setCenterRequest] = useState(0);
   const [fitRequest, setFitRequest] = useState(0);
+
+  const isFitZoom = zoom === fitZoom;
+
+  const changeZoom = useCallback(
+    (delta: number) => {
+      const nextZoom = clamp(zoom + delta, ZOOM_MIN, ZOOM_MAX);
+      setZoom(nextZoom);
+      setAnnounce(`Zoom ${nextZoom}%`);
+    },
+    [zoom],
+  );
+
+  const handleFitZoom = useCallback((nextZoom: number) => {
+    setFitZoom(nextZoom);
+    setZoom(nextZoom);
+    setAnnounce(`Vista adattata, zoom ${nextZoom}%`);
+  }, []);
 
   const roomWidthCm = width * 100;
   const roomLengthCm = length * 100;
@@ -1092,39 +1110,59 @@ function Step2({
         </div>
 
         {/* Zoom / view controls */}
-        <div className="mb-3 flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1 rounded-full border border-border bg-card p-1">
+        <div className="mb-3 flex flex-wrap items-center gap-2" role="group" aria-label="Controlli della vista">
+          <div className="flex items-center overflow-hidden rounded-full border border-border bg-card shadow-sm" role="group" aria-label="Controlli zoom">
             <button
-              onClick={() => setZoom((z) => Math.max(ZOOM_MIN, z - ZOOM_STEP))}
+              type="button"
+              onClick={() => changeZoom(-ZOOM_STEP)}
               disabled={zoom <= ZOOM_MIN}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary disabled:opacity-40"
-              aria-label="Riduci zoom"
-              title="Riduci zoom"
+              className="flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:relative focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-35"
+              aria-label={zoom <= ZOOM_MIN ? "Zoom minimo raggiunto" : `Riduci zoom al ${Math.max(ZOOM_MIN, zoom - ZOOM_STEP)}%`}
+              aria-controls="room-canvas"
+              title={zoom <= ZOOM_MIN ? "Zoom minimo raggiunto" : `Riduci al ${Math.max(ZOOM_MIN, zoom - ZOOM_STEP)}%`}
             >
-              <ZoomOut className="h-4 w-4" aria-hidden />
+              <ZoomOut className="h-[18px] w-[18px]" aria-hidden />
             </button>
-            <span className="min-w-14 text-center text-xs tabular-nums">{zoom}%</span>
-            <button
-              onClick={() => setZoom((z) => Math.min(ZOOM_MAX, z + ZOOM_STEP))}
-              disabled={zoom >= ZOOM_MAX}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary disabled:opacity-40"
-              aria-label="Aumenta zoom"
-              title="Aumenta zoom"
+            <output
+              className="flex h-11 min-w-12 items-center justify-center border-x border-border px-2 text-center text-sm font-medium tabular-nums text-foreground"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-label={`Zoom attuale ${zoom}%`}
             >
-              <ZoomIn className="h-4 w-4" aria-hidden />
+              {zoom}%
+            </output>
+            <button
+              type="button"
+              onClick={() => changeZoom(ZOOM_STEP)}
+              disabled={zoom >= ZOOM_MAX}
+              className="flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:relative focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-35"
+              aria-label={zoom >= ZOOM_MAX ? "Zoom massimo raggiunto" : `Aumenta zoom al ${Math.min(ZOOM_MAX, zoom + ZOOM_STEP)}%`}
+              aria-controls="room-canvas"
+              title={zoom >= ZOOM_MAX ? "Zoom massimo raggiunto" : `Aumenta al ${Math.min(ZOOM_MAX, zoom + ZOOM_STEP)}%`}
+            >
+              <ZoomIn className="h-[18px] w-[18px]" aria-hidden />
             </button>
           </div>
           <button
+            type="button"
             onClick={() => setFitRequest((n) => n + 1)}
-            className="btn btn-secondary btn-sm"
+            disabled={isFitZoom}
+            aria-controls="room-canvas"
+            className={`btn btn-sm min-h-11 px-4 transition-colors ${
+              isFitZoom
+                ? "border-primary/30 bg-primary/10 text-primary opacity-100"
+                : "btn-secondary"
+            }`}
+            title={isFitZoom ? `La stanza è già interamente visibile (${zoom}%)` : "Mostra l'intera stanza nello spazio disponibile"}
           >
             <Maximize2 className="h-4 w-4" aria-hidden />
-            Adatta alla vista
+            {isFitZoom ? "Vista adattata" : "Adatta alla vista"}
           </button>
           <button
+            type="button"
             onClick={() => setShowGrid((g) => !g)}
             aria-pressed={showGrid}
-            className="btn btn-secondary btn-sm"
+            className="btn btn-secondary btn-sm min-h-11 px-4"
           >
             <Grid3x3 className="h-4 w-4" aria-hidden />
             {showGrid ? "Nascondi griglia" : "Mostra griglia"}
@@ -1146,7 +1184,7 @@ function Step2({
           onRemove={removeItem}
           onRotate={rotateSelected}
           zoom={zoom}
-          onFitZoom={setZoom}
+          onFitZoom={handleFitZoom}
           fitRequest={fitRequest}
           showGrid={showGrid}
           centerRequest={centerRequest}
@@ -1956,6 +1994,7 @@ function RoomCanvas({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const selectedRef = useRef<HTMLDivElement | null>(null);
+  const lastViewportWidthRef = useRef<number | null>(null);
   const [dragging, setDragging] = useState(false);
 
   const fitToViewport = useCallback(() => {
@@ -1987,18 +2026,33 @@ function RoomCanvas({
     const viewport = scrollRef.current;
     if (!viewport) return;
 
-    const frame = requestAnimationFrame(fitToViewport);
+    // Ignore height-only changes produced by manual zoom. Observing every
+    // resize previously caused zoom +/- to snap immediately back to "fit".
+    lastViewportWidthRef.current = null;
+    const fitWhenWidthChanges = () => {
+      const nextWidth = viewport.getBoundingClientRect().width;
+      const previousWidth = lastViewportWidthRef.current;
+      if (previousWidth !== null && Math.abs(nextWidth - previousWidth) < 1) return;
+      lastViewportWidthRef.current = nextWidth;
+      fitToViewport();
+    };
+    const fitAfterWindowResize = () => {
+      lastViewportWidthRef.current = viewport.getBoundingClientRect().width;
+      fitToViewport();
+    };
+
+    const frame = requestAnimationFrame(fitWhenWidthChanges);
     const observer =
       typeof ResizeObserver === "undefined"
         ? null
-        : new ResizeObserver(() => fitToViewport());
+        : new ResizeObserver(fitWhenWidthChanges);
     observer?.observe(viewport);
-    window.addEventListener("resize", fitToViewport);
+    window.addEventListener("resize", fitAfterWindowResize);
 
     return () => {
       cancelAnimationFrame(frame);
       observer?.disconnect();
-      window.removeEventListener("resize", fitToViewport);
+      window.removeEventListener("resize", fitAfterWindowResize);
     };
   }, [fitToViewport]);
 
@@ -2098,6 +2152,7 @@ function RoomCanvas({
 
   return (
     <div
+      id="room-canvas"
       ref={scrollRef}
       className="w-full max-h-[calc(100svh-13rem)] overflow-auto overscroll-contain"
     >
