@@ -45,6 +45,15 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
   const stableFurniture = useMemo(() => furniture, [furniture]);
 
   useEffect(() => {
+    const syncFullscreenState = () => {
+      setIsFullscreen(document.fullscreenElement === hostRef.current?.parentElement);
+    };
+
+    document.addEventListener("fullscreenchange", syncFullscreenState);
+    return () => document.removeEventListener("fullscreenchange", syncFullscreenState);
+  }, []);
+
+  useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
     let disposed = false;
@@ -443,6 +452,71 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
               );
               arm.rotation.y = angle;
             }
+          } else if (kind === "nightstand") {
+            const name = item.name.toLowerCase();
+            const hasManyDrawers = name.includes("12 cassetti");
+            const rows = hasManyDrawers ? 4 : name.includes("3 cassetti") ? 3 : 2;
+            const columns = hasManyDrawers ? 3 : 1;
+            const legHeight = 0.13;
+            const bodyHeight = hasManyDrawers ? 0.58 : 0.46;
+
+            for (const x of [-itemWidth * 0.36, itemWidth * 0.36]) {
+              for (const z of [-itemDepth * 0.32, itemDepth * 0.32]) {
+                addLeg(group, x, z, legHeight, colors.accent, 0.022);
+              }
+            }
+
+            const body = rounded(
+              group,
+              itemWidth * 0.94,
+              bodyHeight,
+              itemDepth * 0.9,
+              colors.wood,
+              0.018,
+            );
+            body.position.y = legHeight + bodyHeight / 2;
+
+            const top = rounded(
+              group,
+              itemWidth * 1.02,
+              0.055,
+              itemDepth * 0.98,
+              Math.min(0xffffff, colors.wood + 0x100b07),
+              0.018,
+            );
+            top.position.y = legHeight + bodyHeight + 0.028;
+
+            const usableHeight = bodyHeight * 0.78;
+            const rowStep = usableHeight / rows;
+            const drawerWidth = (itemWidth * 0.82) / columns;
+            for (let row = 0; row < rows; row += 1) {
+              for (let column = 0; column < columns; column += 1) {
+                const drawer = rounded(
+                  group,
+                  drawerWidth * 0.9,
+                  rowStep * 0.72,
+                  0.032,
+                  Math.min(0xffffff, colors.wood + 0x15100a),
+                  0.009,
+                );
+                drawer.position.set(
+                  -itemWidth * 0.41 + drawerWidth * (column + 0.5),
+                  legHeight + bodyHeight * 0.12 + rowStep * (row + 0.5),
+                  itemDepth * 0.46,
+                );
+
+                const knob = addMesh(
+                  new THREE.SphereGeometry(hasManyDrawers ? 0.012 : 0.016, 12, 8),
+                  new THREE.MeshStandardMaterial({
+                    color: colors.accent,
+                    metalness: 0.4,
+                    roughness: 0.4,
+                  }),
+                  group,
+                );
+                knob.position.set(drawer.position.x, drawer.position.y, itemDepth * 0.495);
+              }
+            }
           } else if (kind === "cabinet") {
             for (const x of [-itemWidth * 0.38, itemWidth * 0.38]) {
               for (const z of [-itemDepth * 0.34, itemDepth * 0.34])
@@ -596,16 +670,23 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
     if (!host) return;
     if (document.fullscreenElement) {
       await document.exitFullscreen();
-      setIsFullscreen(false);
     } else {
       await host.requestFullscreen();
-      setIsFullscreen(true);
     }
   };
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-border bg-[#f5f0e8] shadow-inner">
-      <div ref={hostRef} className="h-[520px] w-full sm:h-[620px]" />
+    <div
+      className={`relative overflow-hidden bg-[#f5f0e8] shadow-inner ${
+        isFullscreen
+          ? "h-screen rounded-none border-0 [height:100dvh]"
+          : "rounded-xl border border-border"
+      }`}
+    >
+      <div
+        ref={hostRef}
+        className={isFullscreen ? "h-full w-full" : "h-[520px] w-full sm:h-[620px]"}
+      />
       {status === "loading" ? (
         <div className="absolute inset-0 grid place-items-center bg-[#f5f0e8] text-sm text-muted-foreground">
           Costruzione della stanza 3Dâ€¦
