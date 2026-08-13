@@ -6,6 +6,7 @@ export type ExactFurnitureKind =
   | "desk"
   | "dining-table"
   | "generic"
+  | "nightstand"
   | "sofa"
   | "wardrobe";
 
@@ -52,10 +53,11 @@ export function getExactFurnitureKind(item: FurnitureKindInput): ExactFurnitureK
     return "desk";
   }
 
-  if (
-    category === "comodini" ||
-    containsAny(name, ["comodino", "mobiletto", "cassettiera", "credenza", "madia"])
-  ) {
+  if (category === "comodini" || containsAny(name, ["comodino", "mobiletto"])) {
+    return "nightstand";
+  }
+
+  if (containsAny(name, ["cassettiera", "credenza", "madia"])) {
     return "cabinet";
   }
 
