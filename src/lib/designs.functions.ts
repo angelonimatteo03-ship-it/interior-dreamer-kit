@@ -15,6 +15,16 @@ export type PlacedItem = {
   rotation: 0 | 90 | 180 | 270;
 };
 
+export type RoomOpening = {
+  uid: string;
+  type: "door" | "window";
+  wall: "top" | "right" | "bottom" | "left";
+  widthCm: number;
+  heightCm: number;
+  offsetCm: number;
+  sillHeightCm: number;
+};
+
 export type RoomDesignInput = {
   id?: string;
   name: string;
@@ -22,6 +32,7 @@ export type RoomDesignInput = {
   length: number;
   wallColor: string;
   items: PlacedItem[];
+  openings: RoomOpening[];
   isPublic: boolean;
 };
 
@@ -76,7 +87,10 @@ export const saveDesign = createServerFn({ method: "POST" })
       width: data.width,
       length: data.length,
       wall_color: data.wallColor,
-      items: data.items as any,
+      items:
+        data.items as unknown as Database["public"]["Tables"]["room_designs"]["Insert"]["items"],
+      openings:
+        data.openings as unknown as Database["public"]["Tables"]["room_designs"]["Insert"]["openings"],
       is_public: data.isPublic,
     };
 
@@ -101,6 +115,7 @@ export const saveDesign = createServerFn({ method: "POST" })
           length: payload.length,
           wall_color: payload.wall_color,
           items: payload.items,
+          openings: payload.openings,
           is_public: payload.is_public,
         })
         .eq("id", data.id)
@@ -140,7 +155,9 @@ export const loadDesign = createServerFn({ method: "GET" })
     const supabasePublic = createPublicClient();
     const { data, error } = await supabasePublic
       .from("room_designs")
-      .select("id, name, slug, width, length, wall_color, items, is_public, user_id, created_at")
+      .select(
+        "id, name, slug, width, length, wall_color, items, openings, is_public, user_id, created_at",
+      )
       .eq("slug", slug)
       .maybeSingle();
 
@@ -157,7 +174,7 @@ export const loadMyDesign = createServerFn({ method: "GET" })
   .handler(async ({ data: id, context }) => {
     const { data, error } = await context.supabase
       .from("room_designs")
-      .select("id, name, slug, width, length, wall_color, items, is_public")
+      .select("id, name, slug, width, length, wall_color, items, openings, is_public")
       .eq("id", id)
       .eq("user_id", context.userId)
       .maybeSingle();
