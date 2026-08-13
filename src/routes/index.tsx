@@ -12,6 +12,7 @@ import {
   type RoomOpening,
 } from "@/lib/designs.functions";
 import { supabase } from "@/integrations/supabase/client";
+import { ExactRoom3D, type ExactRoomFurniture } from "@/components/exact-room-3d";
 import {
   ArrowLeft,
   ArrowRight,
@@ -3997,6 +3998,7 @@ function Render3DPanel({
   customProducts: Product[];
 }) {
   const [src, setSrc] = useState<string | null>(null);
+  const [showExact, setShowExact] = useState(false);
   const [isFinal, setIsFinal] = useState(false);
   const [loadingMode, setLoadingMode] = useState<RenderMode | null>(null);
   const [lastMode, setLastMode] = useState<RenderMode>("creative");
@@ -4008,37 +4010,41 @@ function Render3DPanel({
     lastFeedback: "like" | "dislike" | null;
   }>({ likes: 0, dislikes: 0, lastFeedback: null });
 
+  const exactFurniture = useMemo<ExactRoomFurniture[]>(
+    () =>
+      items.flatMap((item) => {
+        const product = findRenderProduct(item.productId, customProducts);
+        if (!product) return [];
+        const footprint = getFootprint(product);
+        return [
+          {
+            id: item.uid,
+            name: product.nome,
+            category: product.categoria,
+            widthCm: footprint.w,
+            depthCm: footprint.d,
+            xCm: item.x,
+            yCm: item.y,
+            rotation: item.rotation,
+          },
+        ];
+      }),
+    [items, customProducts],
+  );
+
   const generate = async (renderMode: RenderMode) => {
     setLoadingMode(renderMode);
     setLastMode(renderMode);
     setError(null);
     setSrc(null);
+    setShowExact(false);
     setIsFinal(false);
     setFeedback(null);
     if (renderMode === "faithful") {
-      try {
-        await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-        setSrc(
-          createPerspectiveLayoutReference(
-            width,
-            length,
-            wallColor,
-            openings,
-            items,
-            customProducts,
-            "locked",
-          ),
-        );
-        setIsFinal(true);
-      } catch (faithfulError) {
-        setError(
-          faithfulError instanceof Error
-            ? faithfulError.message
-            : "Impossibile creare la vista 3D esatta",
-        );
-      } finally {
-        setLoadingMode(null);
-      }
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      setShowExact(true);
+      setIsFinal(true);
+      setLoadingMode(null);
       return;
     }
     const { prompt, images } = buildRenderPrompt(
@@ -4141,17 +4147,17 @@ function Render3DPanel({
             <Crosshair className="h-4 w-4" aria-hidden />
             {loadingMode === "faithful"
               ? "Calcolo vista esatta…"
-              : src && lastMode === "faithful"
-                ? "Aggiorna vista esatta"
-                : "Vista 3D esatta"}
+              : showExact
+                ? "Ricostruisci vista 3D"
+                : "Vista 3D fedele"}
           </button>
         </div>
       </div>
 
       <p className="mt-3 rounded-lg border border-primary/15 bg-background/75 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
-        <span className="font-medium text-foreground">Vista 3D esatta</span> è costruita
-        direttamente dalle coordinate della pianta: non usa l’AI per riposizionare arredi, porte o
-        finestre. Per un’immagine più creativa e fotorealistica usa “Genera render 3D”.
+        <span className="font-medium text-foreground">Vista 3D fedele</span> è un ambiente
+        interattivo costruito in scala dalle coordinate della pianta. Puoi ruotarlo e ingrandirlo:
+        arredi, porte e finestre non vengono spostati dall’AI.
       </p>
 
       {error && (
@@ -4160,16 +4166,24 @@ function Render3DPanel({
         </p>
       )}
 
-      {src && (
+      {showExact ? (
+        <div className="mt-4">
+          <ExactRoom3D
+            width={width}
+            length={length}
+            wallColor={wallColor}
+            openings={openings}
+            furniture={exactFurniture}
+          />
+        </div>
+      ) : null}
+
+      {src && !showExact && (
         <>
           <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
             <img
               src={src}
-              alt={
-                lastMode === "faithful"
-                  ? "Vista 3D esatta e deterministica della pianta della stanza"
-                  : "Render 3D della stanza"
-              }
+              alt={"Render 3D della stanza"}
               className={
                 "h-auto w-full object-cover transition-[filter] duration-500 " +
                 (isFinal ? "blur-0" : "blur-xl")
@@ -4183,9 +4197,7 @@ function Render3DPanel({
                   ? "Grazie! Terremo lo stesso stile al prossimo render."
                   : feedback === "dislike"
                     ? "Grazie! Miglioreremo la fedeltà ai prodotti al prossimo render."
-                    : lastMode === "faithful"
-                      ? "La vista corrisponde alle posizioni della pianta?"
-                      : "Il render è fedele ai prodotti?"}
+                    : "Il render è fedele ai prodotti?"}
               </p>
               <div className="flex items-center gap-1.5">
                 <button
