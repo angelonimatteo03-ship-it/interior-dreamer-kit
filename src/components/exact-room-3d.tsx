@@ -689,13 +689,15 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
       />
       {status === "loading" ? (
         <div className="absolute inset-0 grid place-items-center bg-[#f5f0e8] text-sm text-muted-foreground">
-          Costruzione della stanza 3Dâ€¦
+          {"Costruzione della stanza 3D\u2026"}
         </div>
       ) : null}
       {status === "error" ? (
         <div className="absolute inset-0 grid place-items-center bg-[#f5f0e8] p-8 text-center text-sm text-destructive">
           <span>
-            Il browser non Ã¨ riuscito ad avviare la vista 3D. Prova ad aggiornare la pagina.
+            {
+              "Il browser non \u00e8 riuscito ad avviare la vista 3D. Prova ad aggiornare la pagina."
+            }
             {errorDetail ? ` Dettaglio: ${errorDetail}` : ""}
           </span>
         </div>
@@ -703,7 +705,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
       <div className="absolute left-3 top-3 flex flex-wrap gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/85 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur">
           <MousePointer2 className="h-3.5 w-3.5" aria-hidden />
-          Trascina per ruotare Â· rotella per zoom
+          {"Trascina per ruotare \u00b7 rotella per zoom"}
         </span>
       </div>
       <div className="absolute right-3 top-3 flex gap-2">
@@ -727,7 +729,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
         </button>
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent px-4 pb-3 pt-12 text-xs text-white">
-        Geometria derivata direttamente dalla piantina Â· nessun riposizionamento automatico
+        {"Geometria derivata direttamente dalla piantina \u00b7 nessun riposizionamento automatico"}
       </div>
     </div>
   );
