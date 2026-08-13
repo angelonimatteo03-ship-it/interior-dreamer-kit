@@ -3176,6 +3176,213 @@ function renderRoomEndpoint() {
   return isLovableHost ? RENDER_API_PATH : `${RENDER_API_HOST}${RENDER_API_PATH}`;
 }
 
+type RenderMode = "creative" | "faithful";
+
+function findRenderProduct(productId: string, customProducts: Product[]) {
+  return (
+    PRODUCTS.find((product) => product.id === productId) ??
+    customProducts.find((product) => product.id === productId)
+  );
+}
+
+function createLayoutReference(
+  width: number,
+  length: number,
+  wallColor: string,
+  openings: RoomOpening[],
+  items: PlacedItem[],
+  customProducts: Product[],
+) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1500;
+  canvas.height = 1100;
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Impossibile creare la planimetria di riferimento");
+
+  const roomWidthCm = width * 100;
+  const roomLengthCm = length * 100;
+  const planLeft = 70;
+  const planTop = 150;
+  const planMaxWidth = 940;
+  const planMaxHeight = 850;
+  const scale = Math.min(planMaxWidth / roomWidthCm, planMaxHeight / roomLengthCm);
+  const roomPixelWidth = roomWidthCm * scale;
+  const roomPixelHeight = roomLengthCm * scale;
+  const roomLeft = planLeft + (planMaxWidth - roomPixelWidth) / 2;
+  const roomTop = planTop + (planMaxHeight - roomPixelHeight) / 2;
+
+  context.fillStyle = "#fffdf9";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "#2f2923";
+  context.font = "700 34px Arial, sans-serif";
+  context.fillText("PLANIMETRIA VINCOLANTE — VISTA DALL'ALTO", 70, 62);
+  context.font = "22px Arial, sans-serif";
+  context.fillStyle = "#695f55";
+  context.fillText(
+    `${width} × ${length} m · origine coordinate nell'angolo in alto a sinistra`,
+    70,
+    102,
+  );
+
+  context.fillStyle = wallColor;
+  context.fillRect(roomLeft, roomTop, roomPixelWidth, roomPixelHeight);
+  context.strokeStyle = "rgba(82, 70, 57, 0.18)";
+  context.lineWidth = 1;
+  for (let x = 50; x < roomWidthCm; x += 50) {
+    const pixelX = roomLeft + x * scale;
+    context.beginPath();
+    context.moveTo(pixelX, roomTop);
+    context.lineTo(pixelX, roomTop + roomPixelHeight);
+    context.stroke();
+  }
+  for (let y = 50; y < roomLengthCm; y += 50) {
+    const pixelY = roomTop + y * scale;
+    context.beginPath();
+    context.moveTo(roomLeft, pixelY);
+    context.lineTo(roomLeft + roomPixelWidth, pixelY);
+    context.stroke();
+  }
+  context.strokeStyle = "#796b5b";
+  context.lineWidth = 16;
+  context.strokeRect(roomLeft, roomTop, roomPixelWidth, roomPixelHeight);
+
+  let doorNumber = 0;
+  let windowNumber = 0;
+  for (const opening of openings) {
+    const horizontal = opening.wall === "top" || opening.wall === "bottom";
+    const openingStart = opening.offsetCm * scale;
+    const openingSize = opening.widthCm * scale;
+    const isDoor = opening.type === "door";
+    const marker = isDoor ? `D${++doorNumber}` : `F${++windowNumber}`;
+    context.strokeStyle = isDoor ? "#b4482f" : "#4b887c";
+    context.lineWidth = 20;
+    context.beginPath();
+    if (horizontal) {
+      const y = opening.wall === "top" ? roomTop : roomTop + roomPixelHeight;
+      context.moveTo(roomLeft + openingStart, y);
+      context.lineTo(roomLeft + openingStart + openingSize, y);
+    } else {
+      const x = opening.wall === "left" ? roomLeft : roomLeft + roomPixelWidth;
+      context.moveTo(x, roomTop + openingStart);
+      context.lineTo(x, roomTop + openingStart + openingSize);
+    }
+    context.stroke();
+
+    context.fillStyle = "#fffdf9";
+    const centerX = horizontal
+      ? roomLeft + openingStart + openingSize / 2
+      : opening.wall === "left"
+        ? roomLeft + 24
+        : roomLeft + roomPixelWidth - 24;
+    const centerY = horizontal
+      ? opening.wall === "top"
+        ? roomTop + 24
+        : roomTop + roomPixelHeight - 24
+      : roomTop + openingStart + openingSize / 2;
+    context.beginPath();
+    context.arc(centerX, centerY, 20, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = isDoor ? "#943520" : "#356b61";
+    context.font = "700 17px Arial, sans-serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(marker, centerX, centerY + 1);
+  }
+
+  const palette = ["#d9a66f", "#8eaaa0", "#c9897c", "#9da6c1", "#b7a2c8", "#d1b765"];
+  for (let index = 0; index < items.length; index += 1) {
+    const item = items[index];
+    const product = findRenderProduct(item.productId, customProducts);
+    if (!product) continue;
+    const footprint = getFootprint(product);
+    const rotated = item.rotation === 90 || item.rotation === 270;
+    const occupiedWidth = rotated ? footprint.d : footprint.w;
+    const occupiedDepth = rotated ? footprint.w : footprint.d;
+    const centerX = roomLeft + (item.x + occupiedWidth / 2) * scale;
+    const centerY = roomTop + (item.y + occupiedDepth / 2) * scale;
+    const baseWidth = footprint.w * scale;
+    const baseDepth = footprint.d * scale;
+
+    context.save();
+    context.translate(centerX, centerY);
+    context.rotate((item.rotation * Math.PI) / 180);
+    context.fillStyle = palette[index % palette.length];
+    context.strokeStyle = "#40372f";
+    context.lineWidth = 3;
+    context.fillRect(-baseWidth / 2, -baseDepth / 2, baseWidth, baseDepth);
+    context.strokeRect(-baseWidth / 2, -baseDepth / 2, baseWidth, baseDepth);
+    context.strokeStyle = "#40372f";
+    context.lineWidth = 4;
+    context.beginPath();
+    context.moveTo(0, 4);
+    context.lineTo(0, -Math.max(14, baseDepth / 2 - 8));
+    context.stroke();
+    context.beginPath();
+    context.moveTo(-8, -Math.max(10, baseDepth / 2 - 12));
+    context.lineTo(0, -Math.max(18, baseDepth / 2 - 4));
+    context.lineTo(8, -Math.max(10, baseDepth / 2 - 12));
+    context.fillStyle = "#40372f";
+    context.fill();
+    context.restore();
+
+    context.fillStyle = "#fffdf9";
+    context.beginPath();
+    context.arc(centerX, centerY, 24, 0, Math.PI * 2);
+    context.fill();
+    context.strokeStyle = "#40372f";
+    context.lineWidth = 2;
+    context.stroke();
+    context.fillStyle = "#2f2923";
+    context.font = "700 18px Arial, sans-serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(`E${index + 1}`, centerX, centerY + 1);
+  }
+
+  const legendX = 1060;
+  context.textAlign = "left";
+  context.textBaseline = "alphabetic";
+  context.fillStyle = "#2f2923";
+  context.font = "700 25px Arial, sans-serif";
+  context.fillText("Elementi", legendX, 165);
+  context.font = "18px Arial, sans-serif";
+  items.forEach((item, index) => {
+    const product = findRenderProduct(item.productId, customProducts);
+    if (!product) return;
+    const footprint = getFootprint(product);
+    const rotated = item.rotation === 90 || item.rotation === 270;
+    const occupiedWidth = rotated ? footprint.d : footprint.w;
+    const occupiedDepth = rotated ? footprint.w : footprint.d;
+    const lineY = 205 + index * 58;
+    context.fillStyle = "#2f2923";
+    context.font = "700 18px Arial, sans-serif";
+    context.fillText(`E${index + 1} · ${product.nome.slice(0, 31)}`, legendX, lineY);
+    context.fillStyle = "#695f55";
+    context.font = "16px Arial, sans-serif";
+    context.fillText(
+      `x ${Math.round(item.x)} · y ${Math.round(item.y)} cm · ${occupiedWidth}×${occupiedDepth} · ${item.rotation}°`,
+      legendX,
+      lineY + 24,
+    );
+  });
+
+  const openingsStart = Math.min(870, 230 + items.length * 58);
+  context.fillStyle = "#2f2923";
+  context.font = "700 25px Arial, sans-serif";
+  context.fillText("Aperture", legendX, openingsStart);
+  context.font = "17px Arial, sans-serif";
+  openings.forEach((opening, index) => {
+    context.fillStyle = opening.type === "door" ? "#943520" : "#356b61";
+    context.fillText(
+      `${opening.type === "door" ? "Porta" : "Finestra"} ${index + 1} · ${WALL_LABELS[opening.wall]} · offset ${opening.offsetCm} cm`,
+      legendX,
+      openingsStart + 34 + index * 30,
+    );
+  });
+
+  return canvas.toDataURL("image/png");
+}
+
 function buildRenderPrompt(
   width: number,
   length: number,
@@ -3183,31 +3390,34 @@ function buildRenderPrompt(
   openings: RoomOpening[],
   items: PlacedItem[],
   customProducts: Product[],
+  renderMode: RenderMode,
   feedback?: { likes: number; dislikes: number; lastFeedback: "like" | "dislike" | null },
 ): { prompt: string; images: string[] } {
   const colorName = WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ?? "neutro";
 
-  // Aggregate placed pieces by product id
+  // Aggregate placed pieces by product id and attach product references once.
   const counts = new Map<string, number>();
   for (const it of items) counts.set(it.productId, (counts.get(it.productId) ?? 0) + 1);
 
   const images: string[] = [];
   const pieceLines: string[] = [];
-  let refIndex = 0;
+  const productReferences = new Map<string, string[]>();
+  let refIndex = renderMode === "faithful" ? 1 : 0;
 
   for (const [id, qty] of counts) {
-    const p = PRODUCTS.find((x) => x.id === id) ?? customProducts.find((x) => x.id === id);
+    const p = findRenderProduct(id, customProducts);
     if (!p) continue;
 
     // Collect reference photos: the main image + any extra reference photos.
     const refs = [p.immagine_url, ...(p.reference_images ?? [])].filter(Boolean);
     const refTags: string[] = [];
     for (const url of refs) {
-      if (images.length >= 12) break;
+      if (images.length >= (renderMode === "faithful" ? 11 : 12)) break;
       refIndex += 1;
       images.push(url);
       refTags.push(`[REF ${refIndex}]`);
     }
+    productReferences.set(id, refTags);
 
     const link = p.link ? ` — scheda prodotto: ${p.link}` : "";
     const note = p.descrizione ? ` (${p.descrizione})` : "";
@@ -3216,9 +3426,31 @@ function buildRenderPrompt(
     );
   }
 
-  const piecesBlock = pieceLines.length
-    ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
-    : "La stanza è vuota, minimalista.";
+  const roomWidthCm = width * 100;
+  const roomLengthCm = length * 100;
+  const faithfulLines = items.flatMap((item, index) => {
+    const product = findRenderProduct(item.productId, customProducts);
+    if (!product) return [];
+    const footprint = getFootprint(product);
+    const rotated = item.rotation === 90 || item.rotation === 270;
+    const occupiedWidth = rotated ? footprint.d : footprint.w;
+    const occupiedDepth = rotated ? footprint.w : footprint.d;
+    const centerX = item.x + occupiedWidth / 2;
+    const centerY = item.y + occupiedDepth / 2;
+    const refs = productReferences.get(item.productId) ?? [];
+    return [
+      `[ELEMENTO E${index + 1}] ${product.nome}${refs.length ? ` ${refs.join(" ")}` : ""}: impronta a terra ${occupiedWidth}×${occupiedDepth} cm; angolo superiore sinistro x=${Math.round(item.x)} cm, y=${Math.round(item.y)} cm; centro x=${Math.round(centerX)} cm (${Math.round((centerX / roomWidthCm) * 100)}% della larghezza), y=${Math.round(centerY)} cm (${Math.round((centerY / roomLengthCm) * 100)}% della lunghezza); rotazione ${item.rotation}°; distanze libere dalle pareti sinistra=${Math.round(item.x)} cm, destra=${Math.round(roomWidthCm - item.x - occupiedWidth)} cm, alta=${Math.round(item.y)} cm, bassa=${Math.round(roomLengthCm - item.y - occupiedDepth)} cm.`,
+    ];
+  });
+
+  const piecesBlock =
+    renderMode === "faithful"
+      ? faithfulLines.length
+        ? `La PRIMA immagine allegata è la [REF 1 — PLANIMETRIA VINCOLANTE]. Ogni rettangolo E1, E2, ecc. corrisponde esattamente agli elementi elencati qui. Mantieni numero, posizione, ingombro relativo e orientamento di ogni elemento:\n${faithfulLines.join("\n")}`
+        : "La [REF 1 — PLANIMETRIA VINCOLANTE] mostra una stanza vuota: non aggiungere arredi."
+      : pieceLines.length
+        ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
+        : "La stanza è vuota, minimalista.";
 
   const openingsBlock = openings.length
     ? `Rispetta esattamente queste aperture architettoniche: ${openings
@@ -3233,7 +3465,9 @@ function buildRenderPrompt(
   if (feedback && (feedback.likes > 0 || feedback.dislikes > 0)) {
     if (feedback.lastFeedback === "dislike") {
       feedbackLines.push(
-        `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. I prodotti non erano abbastanza fedeli alle foto di riferimento. In questa nuova versione: aumenta drasticamente la fedeltà visiva ad ogni [REF] (materiali, colori esatti, texture, forma, proporzioni, dettagli di finitura). NON inventare varianti, NON stilizzare, NON modificare colori o tessuti. Mantieni composizione e inquadratura della stanza.`,
+        renderMode === "faithful"
+          ? `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. Le posizioni non rispettavano abbastanza la piantina. Correggi rigorosamente geometria, distanze dalle pareti, orientamenti e aperture seguendo la [REF 1] e le coordinate di ogni ELEMENTO. NON ricomporre la stanza.`
+          : `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. I prodotti non erano abbastanza fedeli alle foto di riferimento. In questa nuova versione: aumenta drasticamente la fedeltà visiva ad ogni [REF] (materiali, colori esatti, texture, forma, proporzioni, dettagli di finitura). NON inventare varianti, NON stilizzare, NON modificare colori o tessuti. Mantieni composizione e inquadratura della stanza.`,
       );
     } else if (feedback.lastFeedback === "like") {
       feedbackLines.push(
@@ -3247,9 +3481,15 @@ function buildRenderPrompt(
     }
   }
 
+  const layoutConstraint =
+    renderMode === "faithful"
+      ? `MODALITÀ FEDELE ALLA PIANTA — VINCOLO PRIORITARIO: trasforma la planimetria [REF 1] in una vista prospettica fotorealistica senza cambiare il layout. Non spostare, centrare, allineare, raggruppare, eliminare, duplicare o sostituire alcun ELEMENTO. Non cambiare la parete, la posizione o la dimensione relativa di porte e finestre. Mantieni gli stessi rapporti davanti/dietro, destra/sinistra e le stesse distanze relative. Scegli la posizione della fotocamera in modo da mostrare il layout, senza alterarlo per migliorare la composizione. La fedeltà geometrica ha priorità assoluta sullo stile.`
+      : "Puoi scegliere l'inquadratura più armoniosa mantenendo tutti i prodotti richiesti.";
+
   const prompt = [
     `Fotografia interior design fotorealistica di una stanza di ${width}×${length} metri,`,
     `pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro a listoni,`,
+    layoutConstraint,
     openingsBlock,
     `luce naturale morbida coerente con le finestre configurate, atmosfera Maisons du Monde calda e accogliente,`,
     `estetica scandinava/mediterranea con tessuti bouclé, legno naturale, ceramica, ottone brunito.`,
@@ -3279,7 +3519,8 @@ function Render3DPanel({
 }) {
   const [src, setSrc] = useState<string | null>(null);
   const [isFinal, setIsFinal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loadingMode, setLoadingMode] = useState<RenderMode | null>(null);
+  const [lastMode, setLastMode] = useState<RenderMode>("creative");
   const [error, setError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
   const [feedbackStats, setFeedbackStats] = useState<{
@@ -3288,8 +3529,9 @@ function Render3DPanel({
     lastFeedback: "like" | "dislike" | null;
   }>({ likes: 0, dislikes: 0, lastFeedback: null });
 
-  const generate = async () => {
-    setLoading(true);
+  const generate = async (renderMode: RenderMode) => {
+    setLoadingMode(renderMode);
+    setLastMode(renderMode);
     setError(null);
     setSrc(null);
     setIsFinal(false);
@@ -3301,13 +3543,21 @@ function Render3DPanel({
       openings,
       items,
       customProducts,
+      renderMode,
       feedbackStats,
     );
     try {
+      const requestImages =
+        renderMode === "faithful"
+          ? [
+              createLayoutReference(width, length, wallColor, openings, items, customProducts),
+              ...images,
+            ]
+          : images;
       const res = await fetch(renderRoomEndpoint(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, images }),
+        body: JSON.stringify({ prompt, images: requestImages }),
       });
       if (!res.ok || !res.body) {
         throw new Error(await res.text().catch(() => "Errore generazione"));
@@ -3351,11 +3601,11 @@ function Render3DPanel({
         parser.feed(value);
       }
       if (streamError) throw new Error(streamError);
-      if (!sawCompleted && !src) throw new Error("Nessuna immagine ricevuta");
+      if (!sawCompleted) throw new Error("Nessuna immagine ricevuta");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Errore generazione");
     } finally {
-      setLoading(false);
+      setLoadingMode(null);
     }
   };
 
@@ -3369,15 +3619,41 @@ function Render3DPanel({
             Un'anteprima realistica della stanza in pochi secondi.
           </p>
         </div>
-        <button
-          onClick={generate}
-          disabled={loading}
-          className="btn btn-primary btn-sm w-full sm:w-auto"
-        >
-          <Sparkles className="h-4 w-4" />
-          {loading ? "Generazione…" : src ? "Rigenera" : "Genera render 3D"}
-        </button>
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+          <button
+            type="button"
+            onClick={() => generate("creative")}
+            disabled={loadingMode !== null}
+            className="btn btn-secondary btn-sm w-full sm:w-auto"
+          >
+            <Sparkles className="h-4 w-4" aria-hidden />
+            {loadingMode === "creative"
+              ? "Generazione…"
+              : src
+                ? "Rigenera liberamente"
+                : "Genera render 3D"}
+          </button>
+          <button
+            type="button"
+            onClick={() => generate("faithful")}
+            disabled={loadingMode !== null}
+            className="btn btn-primary btn-sm w-full sm:w-auto"
+          >
+            <Crosshair className="h-4 w-4" aria-hidden />
+            {loadingMode === "faithful"
+              ? "Generazione fedele…"
+              : src && lastMode === "faithful"
+                ? "Rigenera fedele"
+                : "Render fedele alla pianta"}
+          </button>
+        </div>
       </div>
+
+      <p className="mt-3 rounded-lg border border-primary/15 bg-background/75 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+        <span className="font-medium text-foreground">Render fedele alla pianta</span> usa una
+        planimetria tecnica con coordinate e rotazioni per mantenere arredi, porte e finestre nelle
+        posizioni impostate.
+      </p>
 
       {error && (
         <p className="mt-3 rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
@@ -3390,7 +3666,11 @@ function Render3DPanel({
           <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
             <img
               src={src}
-              alt="Render 3D della stanza"
+              alt={
+                lastMode === "faithful"
+                  ? "Render 3D fedele alla pianta della stanza"
+                  : "Render 3D della stanza"
+              }
               className={
                 "h-auto w-full object-cover transition-[filter] duration-500 " +
                 (isFinal ? "blur-0" : "blur-xl")
@@ -3404,7 +3684,9 @@ function Render3DPanel({
                   ? "Grazie! Terremo lo stesso stile al prossimo render."
                   : feedback === "dislike"
                     ? "Grazie! Miglioreremo la fedeltà ai prodotti al prossimo render."
-                    : "Il render è fedele ai prodotti?"}
+                    : lastMode === "faithful"
+                      ? "Il render rispetta posizioni, porte e finestre della pianta?"
+                      : "Il render è fedele ai prodotti?"}
               </p>
               <div className="flex items-center gap-1.5">
                 <button
