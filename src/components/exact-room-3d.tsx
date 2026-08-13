@@ -268,7 +268,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
           }
         };
 
-        // La parete frontale resta aperta: la stanza Ã¨ leggibile come una casa delle bambole
+        // La parete frontale resta aperta: la stanza è leggibile come una casa delle bambole
         // e gli arredi vicini al bordo inferiore non nascondono quelli sul fondo.
         for (const wall of ["top", "right", "left"] as const) {
           const wallLength = wall === "top" ? roomWidth : roomLength;
@@ -296,7 +296,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
           addWallBox(wall, cursor, wallLength - cursor, 0, wallHeight);
         }
         // Le aperture sulla parete frontale restano visibili nel punto esatto anche se la parete
-        // Ã¨ aperta per consentire la lettura completa della stanza.
+        // è aperta per consentire la lettura completa della stanza.
         openings.filter((opening) => opening.wall === "bottom").forEach(addOpeningDetails);
 
         const skirting = (sizeX: number, sizeZ: number, x: number, z: number) => {
@@ -458,7 +458,11 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
             const rows = hasManyDrawers ? 4 : name.includes("3 cassetti") ? 3 : 2;
             const columns = hasManyDrawers ? 3 : 1;
             const legHeight = 0.13;
-            const bodyHeight = hasManyDrawers ? 0.58 : 0.46;
+            const bodyHeight = hasManyDrawers ? 0.64 : 0.46;
+            const cabinetColor = hasManyDrawers ? 0xd7c8ad : colors.wood;
+            const drawerColor = hasManyDrawers
+              ? 0xe2d5bd
+              : Math.min(0xffffff, colors.wood + 0x15100a);
 
             for (const x of [-itemWidth * 0.36, itemWidth * 0.36]) {
               for (const z of [-itemDepth * 0.32, itemDepth * 0.32]) {
@@ -466,43 +470,40 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
               }
             }
 
-            const body = rounded(
+            // Célestine (12 drawers) was previously rendered as a pile of rounded
+            // blocks. A rigid carcass and recessed drawer fronts make the product
+            // read as a cabinet from the front, sides and rear.
+            const body = addMesh(
+              new THREE.BoxGeometry(itemWidth * 0.94, bodyHeight, itemDepth * 0.9),
+              new THREE.MeshStandardMaterial({ color: cabinetColor, roughness: 0.78 }),
               group,
-              itemWidth * 0.94,
-              bodyHeight,
-              itemDepth * 0.9,
-              colors.wood,
-              0.018,
             );
             body.position.y = legHeight + bodyHeight / 2;
 
-            const top = rounded(
+            const top = addMesh(
+              new THREE.BoxGeometry(itemWidth * 1.02, 0.055, itemDepth * 0.98),
+              new THREE.MeshStandardMaterial({
+                color: hasManyDrawers ? 0xc4ad8b : Math.min(0xffffff, colors.wood + 0x100b07),
+                roughness: 0.72,
+              }),
               group,
-              itemWidth * 1.02,
-              0.055,
-              itemDepth * 0.98,
-              Math.min(0xffffff, colors.wood + 0x100b07),
-              0.018,
             );
             top.position.y = legHeight + bodyHeight + 0.028;
 
-            const usableHeight = bodyHeight * 0.78;
+            const usableHeight = bodyHeight * 0.84;
             const rowStep = usableHeight / rows;
             const drawerWidth = (itemWidth * 0.82) / columns;
             for (let row = 0; row < rows; row += 1) {
               for (let column = 0; column < columns; column += 1) {
-                const drawer = rounded(
+                const drawer = addMesh(
+                  new THREE.BoxGeometry(drawerWidth * 0.9, rowStep * 0.76, 0.026),
+                  new THREE.MeshStandardMaterial({ color: drawerColor, roughness: 0.76 }),
                   group,
-                  drawerWidth * 0.9,
-                  rowStep * 0.72,
-                  0.032,
-                  Math.min(0xffffff, colors.wood + 0x15100a),
-                  0.009,
                 );
                 drawer.position.set(
                   -itemWidth * 0.41 + drawerWidth * (column + 0.5),
-                  legHeight + bodyHeight * 0.12 + rowStep * (row + 0.5),
-                  itemDepth * 0.46,
+                  legHeight + bodyHeight * 0.08 + rowStep * (row + 0.5),
+                  itemDepth * 0.463,
                 );
 
                 const knob = addMesh(
@@ -514,7 +515,25 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
                   }),
                   group,
                 );
-                knob.position.set(drawer.position.x, drawer.position.y, itemDepth * 0.495);
+                knob.position.set(drawer.position.x, drawer.position.y, itemDepth * 0.505);
+              }
+            }
+
+            if (hasManyDrawers) {
+              const rearPanel = addMesh(
+                new THREE.BoxGeometry(itemWidth * 0.86, bodyHeight * 0.86, 0.018),
+                new THREE.MeshStandardMaterial({ color: 0xcbb99d, roughness: 0.82 }),
+                group,
+              );
+              rearPanel.position.set(0, legHeight + bodyHeight / 2, -itemDepth * 0.458);
+
+              for (const x of [-itemWidth * 0.475, itemWidth * 0.475]) {
+                const sidePost = addMesh(
+                  new THREE.BoxGeometry(0.026, bodyHeight * 0.96, itemDepth * 0.94),
+                  new THREE.MeshStandardMaterial({ color: 0xbda482, roughness: 0.76 }),
+                  group,
+                );
+                sidePost.position.set(x, legHeight + bodyHeight / 2, 0);
               }
             }
           } else if (kind === "cabinet") {
