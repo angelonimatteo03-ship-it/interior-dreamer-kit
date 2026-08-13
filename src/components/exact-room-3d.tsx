@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { RoomOpening } from "@/lib/designs.functions";
+import { getExactFurnitureKind } from "@/lib/furniture-kind";
 import { Maximize2, MousePointer2, RotateCcw } from "lucide-react";
 import type { BufferGeometry, Group, Material, Object3D } from "three";
 
@@ -21,20 +22,6 @@ type ExactRoom3DProps = {
   openings: RoomOpening[];
   furniture: ExactRoomFurniture[];
 };
-
-function productKind(item: ExactRoomFurniture) {
-  const value = `${item.name} ${item.category}`.toLowerCase();
-  if (value.includes("letto") && !value.includes("divano")) return "bed";
-  if (value.includes("comodino") || value.includes("mobiletto") || value.includes("cassett"))
-    return "cabinet";
-  if (value.includes("scrivania") || value.includes("console") || value.includes("tavolo"))
-    return "desk";
-  if (value.includes("sedia") || value.includes("poltrona")) return "chair";
-  if (value.includes("divano")) return "sofa";
-  if (value.includes("armadio") || value.includes("guardaroba") || value.includes("libreria"))
-    return "wardrobe";
-  return "generic";
-}
 
 function materialColors(item: ExactRoomFurniture) {
   const value = item.name.toLowerCase();
@@ -272,7 +259,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
           }
         };
 
-        // La parete frontale resta aperta: la stanza è leggibile come una casa delle bambole
+        // La parete frontale resta aperta: la stanza Ã¨ leggibile come una casa delle bambole
         // e gli arredi vicini al bordo inferiore non nascondono quelli sul fondo.
         for (const wall of ["top", "right", "left"] as const) {
           const wallLength = wall === "top" ? roomWidth : roomLength;
@@ -300,7 +287,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
           addWallBox(wall, cursor, wallLength - cursor, 0, wallHeight);
         }
         // Le aperture sulla parete frontale restano visibili nel punto esatto anche se la parete
-        // è aperta per consentire la lettura completa della stanza.
+        // Ã¨ aperta per consentire la lettura completa della stanza.
         openings.filter((opening) => opening.wall === "bottom").forEach(addOpeningDetails);
 
         const skirting = (sizeX: number, sizeZ: number, x: number, z: number) => {
@@ -355,7 +342,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
           const itemWidth = Math.max(0.22, item.widthCm / 100);
           const itemDepth = Math.max(0.22, item.depthCm / 100);
           const colors = materialColors(item);
-          const kind = productKind(item);
+          const kind = getExactFurnitureKind(item);
 
           if (kind === "bed") {
             const base = rounded(
@@ -404,6 +391,25 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
             top.position.y = 0.76;
             for (const x of [-itemWidth * 0.36, itemWidth * 0.36]) {
               addLeg(group, x, 0, 0.72, colors.wood, Math.max(0.035, itemWidth * 0.045));
+            }
+          } else if (kind === "dining-table" || kind === "coffee-table") {
+            const isCoffeeTable = kind === "coffee-table";
+            const topHeight = isCoffeeTable ? 0.43 : 0.77;
+            const topThickness = isCoffeeTable ? 0.065 : 0.085;
+            const top = rounded(group, itemWidth, topThickness, itemDepth, colors.wood, 0.045);
+            top.position.y = topHeight;
+            const legHeight = topHeight - topThickness / 2;
+            for (const x of [-itemWidth * 0.38, itemWidth * 0.38]) {
+              for (const z of [-itemDepth * 0.36, itemDepth * 0.36]) {
+                addLeg(
+                  group,
+                  x,
+                  z,
+                  legHeight,
+                  colors.wood,
+                  Math.max(0.025, Math.min(itemWidth, itemDepth) * 0.055),
+                );
+              }
             }
           } else if (kind === "chair") {
             const seat = rounded(
@@ -602,13 +608,13 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
       <div ref={hostRef} className="h-[520px] w-full sm:h-[620px]" />
       {status === "loading" ? (
         <div className="absolute inset-0 grid place-items-center bg-[#f5f0e8] text-sm text-muted-foreground">
-          Costruzione della stanza 3D…
+          Costruzione della stanza 3Dâ€¦
         </div>
       ) : null}
       {status === "error" ? (
         <div className="absolute inset-0 grid place-items-center bg-[#f5f0e8] p-8 text-center text-sm text-destructive">
           <span>
-            Il browser non è riuscito ad avviare la vista 3D. Prova ad aggiornare la pagina.
+            Il browser non Ã¨ riuscito ad avviare la vista 3D. Prova ad aggiornare la pagina.
             {errorDetail ? ` Dettaglio: ${errorDetail}` : ""}
           </span>
         </div>
@@ -616,7 +622,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
       <div className="absolute left-3 top-3 flex flex-wrap gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/85 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur">
           <MousePointer2 className="h-3.5 w-3.5" aria-hidden />
-          Trascina per ruotare · rotella per zoom
+          Trascina per ruotare Â· rotella per zoom
         </span>
       </div>
       <div className="absolute right-3 top-3 flex gap-2">
@@ -640,7 +646,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
         </button>
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent px-4 pb-3 pt-12 text-xs text-white">
-        Geometria derivata direttamente dalla piantina · nessun riposizionamento automatico
+        Geometria derivata direttamente dalla piantina Â· nessun riposizionamento automatico
       </div>
     </div>
   );
