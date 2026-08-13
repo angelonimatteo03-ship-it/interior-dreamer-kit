@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { loadDesign } from "@/lib/designs.functions";
 import { PRODUCTS, getFootprint } from "@/lib/products";
-import type { PlacedItem } from "@/lib/designs.functions";
+import type { PlacedItem, RoomOpening } from "@/lib/designs.functions";
 
 export const Route = createFileRoute("/share/$slug")({
   head: () => ({
@@ -44,13 +44,20 @@ type SharedDesign = Awaited<ReturnType<typeof loadDesign>>;
 
 function SharedDesignPage() {
   const { options } = Route.useLoaderData();
-  const { data: design } = useSuspenseQuery({ ...options, queryKey: [...(options.queryKey as readonly string[])] as string[] }) as { data: SharedDesign };
+  const { data: design } = useSuspenseQuery({
+    ...options,
+    queryKey: [...(options.queryKey as readonly string[])] as string[],
+  }) as { data: SharedDesign };
 
   const roomWidthCm = design.width * 100;
   const roomLengthCm = design.length * 100;
   const items = (design.items as unknown as PlacedItem[]) ?? [];
+  const openings = (design.openings as unknown as RoomOpening[]) ?? [];
 
-  const grouped = new Map<string, { nome: string; categoria: string; prezzo: number; immagine_url: string; qty: number }>();
+  const grouped = new Map<
+    string,
+    { nome: string; categoria: string; prezzo: number; immagine_url: string; qty: number }
+  >();
   for (const it of items) {
     const p = PRODUCTS.find((x) => x.id === it.productId);
     if (!p) continue;
@@ -96,6 +103,39 @@ function SharedDesignPage() {
                 maxWidth: "100%",
               }}
             >
+              {openings.map((opening) => {
+                const wallLength =
+                  opening.wall === "top" || opening.wall === "bottom" ? roomWidthCm : roomLengthCm;
+                const offsetCm = Math.max(
+                  0,
+                  Math.min(opening.offsetCm, wallLength - opening.widthCm),
+                );
+                const horizontal = opening.wall === "top" || opening.wall === "bottom";
+                const style: React.CSSProperties = horizontal
+                  ? {
+                      left: `${(offsetCm / wallLength) * 100}%`,
+                      width: `${(Math.min(opening.widthCm, wallLength) / wallLength) * 100}%`,
+                      height: "7px",
+                      [opening.wall]: 0,
+                    }
+                  : {
+                      top: `${(offsetCm / wallLength) * 100}%`,
+                      height: `${(Math.min(opening.widthCm, wallLength) / wallLength) * 100}%`,
+                      width: "7px",
+                      [opening.wall]: 0,
+                    };
+                return (
+                  <span
+                    key={opening.uid}
+                    aria-hidden
+                    className={
+                      "pointer-events-none absolute z-20 shadow-[0_0_0_2px_rgba(255,255,255,0.9)] " +
+                      (opening.type === "door" ? "bg-primary" : "bg-accent")
+                    }
+                    style={style}
+                  />
+                );
+              })}
               {items.map((it) => {
                 const p = PRODUCTS.find((x) => x.id === it.productId);
                 if (!p) return null;
@@ -137,17 +177,33 @@ function SharedDesignPage() {
             </div>
             <p className="mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
               {design.width} × {design.length} m · {items.length}{" "}
-              {items.length === 1 ? "pezzo" : "pezzi"}
+              {items.length === 1 ? "pezzo" : "pezzi"} · {openings.length}{" "}
+              {openings.length === 1 ? "apertura" : "aperture"}
             </p>
+            {openings.length > 0 && (
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                {openings.map((opening, index) => (
+                  <li
+                    key={opening.uid}
+                    className="rounded-lg border border-border bg-card px-3 py-2 text-xs"
+                  >
+                    <span className="font-medium">
+                      {opening.type === "door" ? "Porta" : "Finestra"} {index + 1}
+                    </span>
+                    <span className="block text-muted-foreground">
+                      {opening.widthCm} × {opening.heightCm} cm
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
 
           <aside className="surface p-5 sm:p-6">
             <p className="eyebrow">Shopping list</p>
             <h2 className="mt-1.5 text-2xl">Prodotti selezionati</h2>
             {rows.length === 0 ? (
-              <p className="mt-4 text-sm text-muted-foreground">
-                Nessun prodotto nella stanza.
-              </p>
+              <p className="mt-4 text-sm text-muted-foreground">Nessun prodotto nella stanza.</p>
             ) : (
               <>
                 <ul className="mt-4 divide-y divide-border">

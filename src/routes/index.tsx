@@ -4,17 +4,12 @@ import { flushSync } from "react-dom";
 import { createParser } from "eventsource-parser";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import {
-  PRODUCTS,
-  CATEGORIES,
-  WALL_COLORS,
-  getFootprint,
-  type Product,
-} from "@/lib/products";
+import { PRODUCTS, CATEGORIES, WALL_COLORS, getFootprint, type Product } from "@/lib/products";
 import {
   saveDesign,
   loadMyDesign,
   type PlacedItem as SavedPlacedItem,
+  type RoomOpening,
 } from "@/lib/designs.functions";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -24,11 +19,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Crosshair,
+  DoorOpen,
   Grid3x3,
   Maximize2,
   Printer,
   RotateCw,
   Search,
+  Square,
   Trash2,
   Minus,
   Plus,
@@ -109,11 +106,12 @@ const SAVED_PRODUCTS_STORAGE_KEY = "mdm.savedProducts.v1";
 const DRAFT_STORAGE_KEY = "mdm.draft.v2";
 
 type Draft = {
-  step: 1 | 2 | 3;
+  step: 1 | 2 | 3 | 4;
   width: number;
   length: number;
   wallColor: string;
   items: PlacedItem[];
+  openings?: RoomOpening[];
   customProducts: Product[];
   designName: string;
   designId: string | null;
@@ -122,11 +120,12 @@ type Draft = {
 
 function App() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [width, setWidth] = useState(5); // meters
   const [length, setLength] = useState(4);
   const [wallColor, setWallColor] = useState(WALL_COLORS[0].value);
   const [items, setItems] = useState<PlacedItem[]>([]);
+  const [openings, setOpenings] = useState<RoomOpening[]>([]);
   const [customProducts, setCustomProducts] = useState<Product[]>([]);
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
   const [user, setUser] = useState<{ email?: string } | null>(null);
@@ -162,10 +161,7 @@ function App() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      window.localStorage.setItem(
-        SAVED_PRODUCTS_STORAGE_KEY,
-        JSON.stringify(savedProducts),
-      );
+      window.localStorage.setItem(SAVED_PRODUCTS_STORAGE_KEY, JSON.stringify(savedProducts));
     } catch {
       // ignore quota errors
     }
@@ -199,10 +195,11 @@ function App() {
           setLength(Number(design.length));
           setWallColor(design.wall_color);
           setItems((design.items as unknown as SavedPlacedItem[]) ?? []);
+          setOpenings((design.openings as unknown as RoomOpening[]) ?? []);
           setDesignName(design.name ?? "");
           setDesignId(design.id);
           setSavedSlug(design.is_public ? design.slug : null);
-          setStep(2);
+          setStep(3);
           setSaveState("saved");
           setLastSavedAt(Date.now());
         })
@@ -225,11 +222,12 @@ function App() {
           setLength(d.length);
           setWallColor(d.wallColor);
           setItems(Array.isArray(d.items) ? d.items : []);
+          setOpenings(Array.isArray(d.openings) ? d.openings : []);
           setCustomProducts(Array.isArray(d.customProducts) ? d.customProducts : []);
           setDesignName(d.designName ?? "");
           setDesignId(d.designId ?? null);
           setSavedSlug(d.savedSlug ?? null);
-          setStep(d.step === 3 ? 2 : (d.step ?? 1));
+          setStep(d.step === 4 ? 3 : (d.step ?? 1));
         }
       }
     } catch {
@@ -247,6 +245,7 @@ function App() {
       length,
       wallColor,
       items,
+      openings,
       customProducts,
       designName,
       designId,
@@ -257,7 +256,18 @@ function App() {
     } catch {
       // ignore quota errors
     }
-  }, [step, width, length, wallColor, items, customProducts, designName, designId, savedSlug]);
+  }, [
+    step,
+    width,
+    length,
+    wallColor,
+    items,
+    openings,
+    customProducts,
+    designName,
+    designId,
+    savedSlug,
+  ]);
 
   // Mark unsaved changes whenever the project content changes.
   const firstDirtyRun = useRef(true);
@@ -267,7 +277,7 @@ function App() {
       return;
     }
     setSaveState((s) => (s === "saving" ? s : "dirty"));
-  }, [width, length, wallColor, items, designName]);
+  }, [width, length, wallColor, items, openings, designName]);
 
   const userProducts = useMemo(
     () => [...customProducts, ...savedProducts],
@@ -288,6 +298,7 @@ function App() {
             length,
             wallColor,
             items,
+            openings,
             isPublic: true,
           },
         });
@@ -299,14 +310,12 @@ function App() {
         return result;
       } catch (e) {
         setSaveState("error");
-        setSaveError(
-          e instanceof Error ? e.message : "Errore durante il salvataggio.",
-        );
+        setSaveError(e instanceof Error ? e.message : "Errore durante il salvataggio.");
         if (!opts?.silent) toast.error("Errore di salvataggio");
         return null;
       }
     },
-    [user, designId, designName, width, length, wallColor, items, saveDesignFn],
+    [user, designId, designName, width, length, wallColor, items, openings, saveDesignFn],
   );
 
   // Debounced autosave — only for signed-in users on an already saved project.
@@ -320,6 +329,7 @@ function App() {
 
   const resetProject = () => {
     setItems([]);
+    setOpenings([]);
     setCustomProducts([]);
     setDesignName("");
     setDesignId(null);
@@ -365,10 +375,22 @@ function App() {
           />
         )}
         {step === 2 && (
+          <OpeningsStep
+            width={width}
+            length={length}
+            wallColor={wallColor}
+            openings={openings}
+            setOpenings={setOpenings}
+            onBack={() => setStep(1)}
+            onNext={() => setStep(3)}
+          />
+        )}
+        {step === 3 && (
           <Step2
             width={width}
             length={length}
             wallColor={wallColor}
+            openings={openings}
             items={items}
             setItems={setItems}
             customProducts={customProducts}
@@ -376,16 +398,17 @@ function App() {
             savedProducts={savedProducts}
             setSavedProducts={setSavedProducts}
             userProducts={userProducts}
-            onBack={() => setStep(1)}
-            onNext={() => setStep(3)}
+            onBack={() => setStep(2)}
+            onNext={() => setStep(4)}
           />
         )}
-        {step === 3 && (
+        {step === 4 && (
           <Step3
             width={width}
             length={length}
             wallColor={wallColor}
             items={items}
+            openings={openings}
             customProducts={userProducts}
             user={user}
             designName={designName}
@@ -394,7 +417,7 @@ function App() {
             saveError={saveError}
             savedSlug={savedSlug}
             onSave={() => void persist()}
-            onBack={() => setStep(2)}
+            onBack={() => setStep(3)}
             onEditRoom={() => setStep(1)}
             onRestart={resetProject}
           />
@@ -410,8 +433,9 @@ function App() {
 
 const STEPS = [
   { n: 1 as const, label: "Stanza" },
-  { n: 2 as const, label: "Progettazione" },
-  { n: 3 as const, label: "Riepilogo" },
+  { n: 2 as const, label: "Aperture" },
+  { n: 3 as const, label: "Progettazione" },
+  { n: 4 as const, label: "Riepilogo" },
 ];
 
 function SaveStatus({
@@ -466,8 +490,8 @@ function Header({
   lastSavedAt,
   onRetrySave,
 }: {
-  step: 1 | 2 | 3;
-  onStep: (s: 1 | 2 | 3) => void;
+  step: 1 | 2 | 3 | 4;
+  onStep: (s: 1 | 2 | 3 | 4) => void;
   user: { email?: string } | null;
   authReady: boolean;
   saveState: SaveState;
@@ -479,9 +503,7 @@ function Header({
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-2.5 sm:px-6 lg:px-8">
         <div className="min-w-0">
           <p className="eyebrow">Maisons du Monde</p>
-          <h1 className="truncate text-base leading-tight sm:text-lg">
-            Configuratore Stanze
-          </h1>
+          <h1 className="truncate text-base leading-tight sm:text-lg">Configuratore Stanze</h1>
         </div>
 
         <nav aria-label="Avanzamento" className="hidden md:block">
@@ -575,9 +597,7 @@ function Header({
                   <span
                     className={
                       "flex items-center gap-1 text-[11px] " +
-                      (active
-                        ? "font-medium text-foreground"
-                        : "text-muted-foreground")
+                      (active ? "font-medium text-foreground" : "text-muted-foreground")
                     }
                   >
                     {done ? (
@@ -630,11 +650,11 @@ function Step1({
     <section className="grid gap-6 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:gap-10">
       <div className="surface space-y-8 p-5 sm:p-7">
         <div>
-          <p className="eyebrow">Passo 1 di 3</p>
+          <p className="eyebrow">Passo 1 di 4</p>
           <h2 className="mt-2 text-3xl sm:text-4xl">La stanza</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Inserisci le misure reali e scegli la finitura delle pareti.
-            Potrai modificarle in qualsiasi momento.
+            Inserisci le misure reali e scegli la finitura delle pareti. Potrai modificarle in
+            qualsiasi momento.
           </p>
         </div>
 
@@ -704,7 +724,7 @@ function Step1({
         </div>
 
         <button onClick={onNext} className="btn btn-primary w-full sm:w-auto">
-          Continua alla progettazione
+          Continua a porte e finestre
           <ArrowRight className="h-4 w-4" aria-hidden />
         </button>
       </div>
@@ -756,9 +776,7 @@ function DimensionField({
             max={max}
             step={0.1}
             value={value}
-            onChange={(e) =>
-              onChange(Math.max(min, Math.min(max, Number(e.target.value) || min)))
-            }
+            onChange={(e) => onChange(Math.max(min, Math.min(max, Number(e.target.value) || min)))}
             className="field w-20 text-right tabular-nums"
           />
           <span className="text-sm text-muted-foreground">m</span>
@@ -783,7 +801,398 @@ function DimensionField({
 }
 
 /* ------------------------------------------------------------------ */
-/* STEP 2 — Room design (editor)                                      */
+/* STEP 2 — Doors and windows                                         */
+/* ------------------------------------------------------------------ */
+
+const WALL_LABELS: Record<RoomOpening["wall"], string> = {
+  top: "Parete superiore",
+  right: "Parete destra",
+  bottom: "Parete inferiore",
+  left: "Parete sinistra",
+};
+
+function openingWallLength(wall: RoomOpening["wall"], roomWidthCm: number, roomLengthCm: number) {
+  return wall === "top" || wall === "bottom" ? roomWidthCm : roomLengthCm;
+}
+
+function RoomOpeningsOverlay({
+  openings,
+  roomWidthCm,
+  roomLengthCm,
+}: {
+  openings: RoomOpening[];
+  roomWidthCm: number;
+  roomLengthCm: number;
+}) {
+  return (
+    <>
+      {openings.map((opening) => {
+        const wallLength = openingWallLength(opening.wall, roomWidthCm, roomLengthCm);
+        const offset = clamp(opening.offsetCm, 0, Math.max(0, wallLength - opening.widthCm));
+        const start = `${(offset / wallLength) * 100}%`;
+        const size = `${(Math.min(opening.widthCm, wallLength) / wallLength) * 100}%`;
+        const horizontal = opening.wall === "top" || opening.wall === "bottom";
+        const style: React.CSSProperties = horizontal
+          ? {
+              left: start,
+              width: size,
+              height: "7px",
+              [opening.wall]: 0,
+            }
+          : {
+              top: start,
+              height: size,
+              width: "7px",
+              [opening.wall]: 0,
+            };
+        return (
+          <span
+            key={opening.uid}
+            aria-hidden
+            className={
+              "pointer-events-none absolute z-20 shadow-[0_0_0_2px_rgba(255,255,255,0.9)] " +
+              (opening.type === "door" ? "bg-primary" : "bg-accent")
+            }
+            style={style}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+function OpeningMeasureField({
+  id,
+  label,
+  value,
+  min,
+  max,
+  step = 5,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step?: number;
+  onChange: (value: number) => void;
+}) {
+  const safeMax = Math.max(min, max);
+  return (
+    <div>
+      <div className="mb-1.5 flex items-center justify-between gap-2">
+        <label htmlFor={`${id}-range`} className="text-xs font-medium">
+          {label}
+        </label>
+        <span className="flex items-center gap-1">
+          <input
+            id={`${id}-number`}
+            aria-label={`${label} in centimetri`}
+            type="number"
+            min={min}
+            max={safeMax}
+            step={step}
+            value={value}
+            onChange={(event) => onChange(clamp(Number(event.target.value) || min, min, safeMax))}
+            className="field min-h-9 w-20 py-1 text-right text-xs tabular-nums"
+          />
+          <span className="text-xs text-muted-foreground">cm</span>
+        </span>
+      </div>
+      <input
+        id={`${id}-range`}
+        type="range"
+        min={min}
+        max={safeMax}
+        step={step}
+        value={clamp(value, min, safeMax)}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="range"
+      />
+    </div>
+  );
+}
+
+function OpeningsStep({
+  width,
+  length,
+  wallColor,
+  openings,
+  setOpenings,
+  onBack,
+  onNext,
+}: {
+  width: number;
+  length: number;
+  wallColor: string;
+  openings: RoomOpening[];
+  setOpenings: React.Dispatch<React.SetStateAction<RoomOpening[]>>;
+  onBack: () => void;
+  onNext: () => void;
+}) {
+  const roomWidthCm = width * 100;
+  const roomLengthCm = length * 100;
+
+  useEffect(() => {
+    setOpenings((current) => {
+      let changed = false;
+      const repaired = current.map((opening) => {
+        const wallLength = openingWallLength(opening.wall, roomWidthCm, roomLengthCm);
+        const widthCm = Math.min(opening.widthCm, wallLength);
+        const offsetCm = clamp(opening.offsetCm, 0, Math.max(0, wallLength - widthCm));
+        if (widthCm === opening.widthCm && offsetCm === opening.offsetCm) return opening;
+        changed = true;
+        return { ...opening, widthCm, offsetCm };
+      });
+      return changed ? repaired : current;
+    });
+  }, [roomWidthCm, roomLengthCm, setOpenings]);
+
+  const addOpening = (type: RoomOpening["type"]) => {
+    const widthCm = type === "door" ? 90 : 120;
+    setOpenings((current) => [
+      ...current,
+      {
+        uid: `o-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        type,
+        wall: "top",
+        widthCm,
+        heightCm: type === "door" ? 210 : 120,
+        sillHeightCm: type === "window" ? 90 : 0,
+        offsetCm: Math.round((roomWidthCm - widthCm) / 10) * 5,
+      },
+    ]);
+  };
+
+  const updateOpening = (uid: string, patch: Partial<RoomOpening>) => {
+    setOpenings((current) =>
+      current.map((opening) => {
+        if (opening.uid !== uid) return opening;
+        const next = { ...opening, ...patch };
+        const wallLength = openingWallLength(next.wall, roomWidthCm, roomLengthCm);
+        const minWidth = next.type === "door" ? 60 : 40;
+        next.widthCm = clamp(next.widthCm, minWidth, wallLength);
+        next.offsetCm = clamp(next.offsetCm, 0, Math.max(0, wallLength - next.widthCm));
+        return next;
+      }),
+    );
+  };
+
+  const conflictingIds = useMemo(() => {
+    const ids = new Set<string>();
+    for (let i = 0; i < openings.length; i += 1) {
+      for (let j = i + 1; j < openings.length; j += 1) {
+        const a = openings[i];
+        const b = openings[j];
+        if (a.wall !== b.wall) continue;
+        if (a.offsetCm < b.offsetCm + b.widthCm && b.offsetCm < a.offsetCm + a.widthCm) {
+          ids.add(a.uid);
+          ids.add(b.uid);
+        }
+      }
+    }
+    return ids;
+  }, [openings]);
+
+  return (
+    <section className="grid gap-6 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)] lg:gap-10">
+      <div className="surface min-w-0 p-5 sm:p-7">
+        <div>
+          <p className="eyebrow">Passo 2 di 4</p>
+          <h2 className="mt-2 text-3xl sm:text-4xl">Porte e finestre</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Aggiungi le aperture, scegli la parete e regola posizione e misure reali. Puoi anche
+            continuare senza inserirne.
+          </p>
+        </div>
+
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => addOpening("door")}
+            className="btn btn-secondary w-full"
+          >
+            <DoorOpen className="h-4 w-4" aria-hidden />
+            Aggiungi porta
+          </button>
+          <button
+            type="button"
+            onClick={() => addOpening("window")}
+            className="btn btn-secondary w-full"
+          >
+            <Square className="h-4 w-4" aria-hidden />
+            Aggiungi finestra
+          </button>
+        </div>
+
+        {conflictingIds.size > 0 && (
+          <p
+            role="alert"
+            className="mt-4 rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive"
+          >
+            Alcune aperture si sovrappongono sulla stessa parete. Regola la loro posizione prima di
+            continuare.
+          </p>
+        )}
+
+        <div className="mt-6 space-y-4">
+          {openings.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+              Nessuna apertura aggiunta.
+            </div>
+          ) : (
+            openings.map((opening, index) => {
+              const wallLength = openingWallLength(opening.wall, roomWidthCm, roomLengthCm);
+              const maxOffset = Math.max(0, wallLength - opening.widthCm);
+              return (
+                <article
+                  key={opening.uid}
+                  className={
+                    "rounded-xl border p-4 " +
+                    (conflictingIds.has(opening.uid) ? "border-destructive/60" : "border-border")
+                  }
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className={opening.type === "door" ? "text-primary" : "text-accent"}>
+                        {opening.type === "door" ? (
+                          <DoorOpen className="h-5 w-5" aria-hidden />
+                        ) : (
+                          <Square className="h-5 w-5" aria-hidden />
+                        )}
+                      </span>
+                      <div>
+                        <h3 className="text-base">
+                          {opening.type === "door" ? "Porta" : "Finestra"} {index + 1}
+                        </h3>
+                        <p className="text-[11px] text-muted-foreground">
+                          {opening.widthCm} × {opening.heightCm} cm
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setOpenings((current) => current.filter((item) => item.uid !== opening.uid))
+                      }
+                      className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                      aria-label={`Rimuovi ${opening.type === "door" ? "porta" : "finestra"} ${index + 1}`}
+                    >
+                      <Trash2 className="h-4 w-4" aria-hidden />
+                    </button>
+                  </div>
+
+                  <label htmlFor={`${opening.uid}-wall`} className="mt-4 block text-xs font-medium">
+                    Parete
+                    <select
+                      id={`${opening.uid}-wall`}
+                      value={opening.wall}
+                      onChange={(event) =>
+                        updateOpening(opening.uid, {
+                          wall: event.target.value as RoomOpening["wall"],
+                        })
+                      }
+                      className="field mt-1.5"
+                    >
+                      {Object.entries(WALL_LABELS).map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    <OpeningMeasureField
+                      id={`${opening.uid}-width`}
+                      label="Larghezza"
+                      value={opening.widthCm}
+                      min={opening.type === "door" ? 60 : 40}
+                      max={Math.min(opening.type === "door" ? 180 : 300, wallLength)}
+                      onChange={(value) => updateOpening(opening.uid, { widthCm: value })}
+                    />
+                    <OpeningMeasureField
+                      id={`${opening.uid}-height`}
+                      label="Altezza"
+                      value={opening.heightCm}
+                      min={opening.type === "door" ? 180 : 40}
+                      max={opening.type === "door" ? 260 : 220}
+                      onChange={(value) => updateOpening(opening.uid, { heightCm: value })}
+                    />
+                    <OpeningMeasureField
+                      id={`${opening.uid}-offset`}
+                      label="Distanza dall’angolo"
+                      value={opening.offsetCm}
+                      min={0}
+                      max={maxOffset}
+                      onChange={(value) => updateOpening(opening.uid, { offsetCm: value })}
+                    />
+                    {opening.type === "window" && (
+                      <OpeningMeasureField
+                        id={`${opening.uid}-sill`}
+                        label="Altezza davanzale"
+                        value={opening.sillHeightCm}
+                        min={0}
+                        max={180}
+                        onChange={(value) => updateOpening(opening.uid, { sillHeightCm: value })}
+                      />
+                    )}
+                  </div>
+                </article>
+              );
+            })
+          )}
+        </div>
+
+        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <button type="button" onClick={onBack} className="btn btn-secondary w-full sm:w-auto">
+            <ArrowLeft className="h-4 w-4" aria-hidden />
+            Torna alla stanza
+          </button>
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={conflictingIds.size > 0}
+            className="btn btn-primary w-full sm:ml-auto sm:w-auto"
+          >
+            Continua alla progettazione
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </button>
+        </div>
+      </div>
+
+      <div className="surface flex min-h-[360px] flex-col items-center justify-center gap-5 bg-secondary/40 p-5 sm:p-8 lg:sticky lg:top-24 lg:self-start">
+        <div className="text-center">
+          <p className="eyebrow">Pianta della stanza</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Porte in terracotta · finestre in verde salvia
+          </p>
+        </div>
+        <div
+          className="relative w-full max-w-2xl overflow-hidden rounded-lg border-[6px] shadow-inner"
+          style={{
+            borderColor: "#8a7863",
+            backgroundColor: wallColor,
+            aspectRatio: `${width} / ${length}`,
+          }}
+        >
+          <RoomOpeningsOverlay
+            openings={openings}
+            roomWidthCm={roomWidthCm}
+            roomLengthCm={roomLengthCm}
+          />
+        </div>
+        <p className="text-sm text-muted-foreground">
+          {width} × {length} m · {openings.length} {openings.length === 1 ? "apertura" : "aperture"}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* STEP 3 — Room design (editor)                                      */
 /* ------------------------------------------------------------------ */
 
 const CUSTOM_CATEGORY = "I miei prodotti";
@@ -808,6 +1217,7 @@ function Step2({
   width,
   length,
   wallColor,
+  openings,
   items,
   setItems,
   customProducts,
@@ -821,6 +1231,7 @@ function Step2({
   width: number;
   length: number;
   wallColor: string;
+  openings: RoomOpening[];
   items: PlacedItem[];
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
   customProducts: Product[];
@@ -863,8 +1274,7 @@ function Step2({
   const roomLengthCm = length * 100;
 
   const findProduct = useCallback(
-    (id: string) =>
-      PRODUCTS.find((x) => x.id === id) ?? userProducts.find((x) => x.id === id),
+    (id: string) => PRODUCTS.find((x) => x.id === id) ?? userProducts.find((x) => x.id === id),
     [userProducts],
   );
 
@@ -1057,7 +1467,7 @@ function Step2({
       <div className="surface min-w-0 p-4 sm:p-5">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div className="min-w-0">
-            <p className="eyebrow">Passo 2 di 3</p>
+            <p className="eyebrow">Passo 3 di 4</p>
             <h2 className="mt-1 text-2xl sm:text-3xl">Progettazione stanza</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {items.length === 0
@@ -1110,16 +1520,32 @@ function Step2({
         </div>
 
         {/* Zoom / view controls */}
-        <div className="mb-3 flex flex-wrap items-center gap-2" role="group" aria-label="Controlli della vista">
-          <div className="flex items-center overflow-hidden rounded-full border border-border bg-card shadow-sm" role="group" aria-label="Controlli zoom">
+        <div
+          className="mb-3 flex flex-wrap items-center gap-2"
+          role="group"
+          aria-label="Controlli della vista"
+        >
+          <div
+            className="flex items-center overflow-hidden rounded-full border border-border bg-card shadow-sm"
+            role="group"
+            aria-label="Controlli zoom"
+          >
             <button
               type="button"
               onClick={() => changeZoom(-ZOOM_STEP)}
               disabled={zoom <= ZOOM_MIN}
               className="flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:relative focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-35"
-              aria-label={zoom <= ZOOM_MIN ? "Zoom minimo raggiunto" : `Riduci zoom al ${Math.max(ZOOM_MIN, zoom - ZOOM_STEP)}%`}
+              aria-label={
+                zoom <= ZOOM_MIN
+                  ? "Zoom minimo raggiunto"
+                  : `Riduci zoom al ${Math.max(ZOOM_MIN, zoom - ZOOM_STEP)}%`
+              }
               aria-controls="room-canvas"
-              title={zoom <= ZOOM_MIN ? "Zoom minimo raggiunto" : `Riduci al ${Math.max(ZOOM_MIN, zoom - ZOOM_STEP)}%`}
+              title={
+                zoom <= ZOOM_MIN
+                  ? "Zoom minimo raggiunto"
+                  : `Riduci al ${Math.max(ZOOM_MIN, zoom - ZOOM_STEP)}%`
+              }
             >
               <ZoomOut className="h-[18px] w-[18px]" aria-hidden />
             </button>
@@ -1136,9 +1562,17 @@ function Step2({
               onClick={() => changeZoom(ZOOM_STEP)}
               disabled={zoom >= ZOOM_MAX}
               className="flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:relative focus-visible:z-10 disabled:cursor-not-allowed disabled:opacity-35"
-              aria-label={zoom >= ZOOM_MAX ? "Zoom massimo raggiunto" : `Aumenta zoom al ${Math.min(ZOOM_MAX, zoom + ZOOM_STEP)}%`}
+              aria-label={
+                zoom >= ZOOM_MAX
+                  ? "Zoom massimo raggiunto"
+                  : `Aumenta zoom al ${Math.min(ZOOM_MAX, zoom + ZOOM_STEP)}%`
+              }
               aria-controls="room-canvas"
-              title={zoom >= ZOOM_MAX ? "Zoom massimo raggiunto" : `Aumenta al ${Math.min(ZOOM_MAX, zoom + ZOOM_STEP)}%`}
+              title={
+                zoom >= ZOOM_MAX
+                  ? "Zoom massimo raggiunto"
+                  : `Aumenta al ${Math.min(ZOOM_MAX, zoom + ZOOM_STEP)}%`
+              }
             >
               <ZoomIn className="h-[18px] w-[18px]" aria-hidden />
             </button>
@@ -1153,7 +1587,11 @@ function Step2({
                 ? "border-primary/30 bg-primary/10 text-primary opacity-100"
                 : "btn-secondary"
             }`}
-            title={isFitZoom ? `La stanza è già interamente visibile (${zoom}%)` : "Mostra l'intera stanza nello spazio disponibile"}
+            title={
+              isFitZoom
+                ? `La stanza è già interamente visibile (${zoom}%)`
+                : "Mostra l'intera stanza nello spazio disponibile"
+            }
           >
             <Maximize2 className="h-4 w-4" aria-hidden />
             {isFitZoom ? "Vista adattata" : "Adatta alla vista"}
@@ -1176,6 +1614,7 @@ function Step2({
           roomWidthCm={roomWidthCm}
           roomLengthCm={roomLengthCm}
           wallColor={wallColor}
+          openings={openings}
           items={items}
           setItems={setItems}
           customProducts={userProducts}
@@ -1199,6 +1638,7 @@ function Step2({
           width={width}
           length={length}
           wallColor={wallColor}
+          openings={openings}
           items={items}
           customProducts={userProducts}
         />
@@ -1224,10 +1664,7 @@ function Step2({
 
       {/* Mobile catalog sheet */}
       {mobileCatalogOpen && (
-        <MobileSheet
-          title="Catalogo e progetto"
-          onClose={() => setMobileCatalogOpen(false)}
-        >
+        <MobileSheet title="Catalogo e progetto" onClose={() => setMobileCatalogOpen(false)}>
           {catalog}
         </MobileSheet>
       )}
@@ -1302,11 +1739,7 @@ function MobileSheet({
 
   return (
     <div className="no-print fixed inset-0 z-50 lg:hidden">
-      <div
-        className="absolute inset-0 bg-ink/40"
-        onClick={onClose}
-        aria-hidden
-      />
+      <div className="absolute inset-0 bg-ink/40" onClick={onClose} aria-hidden />
       <div
         ref={ref}
         role="dialog"
@@ -1390,10 +1823,7 @@ function CatalogPanel({
     }
   }, [sort]);
 
-  const allCategories = useMemo(
-    () => [...CATEGORIES, CUSTOM_CATEGORY, SAVED_CATEGORY],
-    [],
-  );
+  const allCategories = useMemo(() => [...CATEGORIES, CUSTOM_CATEGORY, SAVED_CATEGORY], []);
 
   const counts = useMemo(() => {
     const m = new Map<string, number>();
@@ -1565,8 +1995,8 @@ function CatalogPanel({
 
           {category === SAVED_CATEGORY && savedProducts.length > 0 && (
             <p className="mb-3 text-[11px] leading-snug text-muted-foreground">
-              I prodotti salvati restano disponibili anche nei progetti futuri su
-              questo dispositivo.
+              I prodotti salvati restano disponibili anche nei progetti futuri su questo
+              dispositivo.
             </p>
           )}
 
@@ -1629,15 +2059,7 @@ function CatalogPanel({
   );
 }
 
-function ProductThumb({
-  src,
-  alt,
-  className,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) {
+function ProductThumb({ src, alt, className }: { src: string; alt: string; className?: string }) {
   const [state, setState] = useState<"loading" | "ok" | "error">("loading");
   return (
     <span
@@ -1807,11 +2229,7 @@ function ProductDetail({
         className="surface relative w-full max-w-md overflow-hidden rounded-t-2xl outline-none sm:rounded-xl"
       >
         <div className="flex items-start gap-3 p-5">
-          <ProductThumb
-            src={product.immagine_url}
-            alt={product.nome}
-            className="h-28 w-28"
-          />
+          <ProductThumb src={product.immagine_url} alt={product.nome} className="h-28 w-28" />
           <div className="min-w-0 flex-1">
             <p className="eyebrow">{product.categoria}</p>
             <h3 className="mt-1 text-lg leading-snug">{product.nome}</h3>
@@ -1903,11 +2321,7 @@ function ProjectPanel({
                 onClick={() => onShowInRoom(product.id)}
                 className="flex min-w-0 flex-1 gap-3 text-left"
               >
-                <ProductThumb
-                  src={product.immagine_url}
-                  alt={product.nome}
-                  className="h-16 w-16"
-                />
+                <ProductThumb src={product.immagine_url} alt={product.nome} className="h-16 w-16" />
                 <span className="min-w-0 flex-1">
                   <span className="line-clamp-2 block text-xs font-medium leading-snug">
                     {product.nome}
@@ -1958,6 +2372,7 @@ function RoomCanvas({
   roomWidthCm,
   roomLengthCm,
   wallColor,
+  openings,
   items,
   setItems,
   customProducts,
@@ -1975,6 +2390,7 @@ function RoomCanvas({
   roomWidthCm: number;
   roomLengthCm: number;
   wallColor: string;
+  openings: RoomOpening[];
   items: PlacedItem[];
   setItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
   customProducts: Product[];
@@ -2002,12 +2418,8 @@ function RoomCanvas({
     if (!viewport || typeof window === "undefined") return;
 
     const rect = viewport.getBoundingClientRect();
-    const availableHeight = Math.max(
-      180,
-      window.innerHeight - Math.max(rect.top, 80) - 20,
-    );
-    const heightAtFullWidth =
-      viewport.clientWidth * (roomLengthCm / roomWidthCm);
+    const availableHeight = Math.max(180, window.innerHeight - Math.max(rect.top, 80) - 20);
+    const heightAtFullWidth = viewport.clientWidth * (roomLengthCm / roomWidthCm);
     if (!Number.isFinite(heightAtFullWidth) || heightAtFullWidth <= 0) return;
 
     const fittedZoom = Math.floor(
@@ -2043,9 +2455,7 @@ function RoomCanvas({
 
     const frame = requestAnimationFrame(fitWhenWidthChanges);
     const observer =
-      typeof ResizeObserver === "undefined"
-        ? null
-        : new ResizeObserver(fitWhenWidthChanges);
+      typeof ResizeObserver === "undefined" ? null : new ResizeObserver(fitWhenWidthChanges);
     observer?.observe(viewport);
     window.addEventListener("resize", fitAfterWindowResize);
 
@@ -2183,6 +2593,12 @@ function RoomCanvas({
             />
           )}
 
+          <RoomOpeningsOverlay
+            openings={openings}
+            roomWidthCm={roomWidthCm}
+            roomLengthCm={roomLengthCm}
+          />
+
           {items.map((it) => {
             const p = findProduct(it.productId);
             if (!p) return null;
@@ -2211,12 +2627,30 @@ function RoomCanvas({
                     setSelectedUid(it.uid);
                   }
                   if (!selected) return;
-                  if (e.key === "ArrowLeft") { e.preventDefault(); nudge(it, -SNAP_CM, 0); }
-                  if (e.key === "ArrowRight") { e.preventDefault(); nudge(it, SNAP_CM, 0); }
-                  if (e.key === "ArrowUp") { e.preventDefault(); nudge(it, 0, -SNAP_CM); }
-                  if (e.key === "ArrowDown") { e.preventDefault(); nudge(it, 0, SNAP_CM); }
-                  if (e.key === "r" || e.key === "R") { e.preventDefault(); onRotate(); }
-                  if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); onRemove(it.uid); }
+                  if (e.key === "ArrowLeft") {
+                    e.preventDefault();
+                    nudge(it, -SNAP_CM, 0);
+                  }
+                  if (e.key === "ArrowRight") {
+                    e.preventDefault();
+                    nudge(it, SNAP_CM, 0);
+                  }
+                  if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    nudge(it, 0, -SNAP_CM);
+                  }
+                  if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    nudge(it, 0, SNAP_CM);
+                  }
+                  if (e.key === "r" || e.key === "R") {
+                    e.preventDefault();
+                    onRotate();
+                  }
+                  if (e.key === "Delete" || e.key === "Backspace") {
+                    e.preventDefault();
+                    onRemove(it.uid);
+                  }
                 }}
                 className={
                   "group absolute overflow-visible rounded-md border-2 bg-card shadow-md transition-shadow " +
@@ -2285,9 +2719,7 @@ function RoomCanvas({
 
           {items.length === 0 && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center">
-              <p className="text-sm text-ink/70">
-                Apri il catalogo e aggiungi il primo arredo
-              </p>
+              <p className="text-sm text-ink/70">Apri il catalogo e aggiungi il primo arredo</p>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -2307,7 +2739,7 @@ function RoomCanvas({
 }
 
 /* ------------------------------------------------------------------ */
-/* STEP 3 — Summary                                                   */
+/* STEP 4 — Summary                                                   */
 /* ------------------------------------------------------------------ */
 
 function Step3({
@@ -2315,6 +2747,7 @@ function Step3({
   length,
   wallColor,
   items,
+  openings,
   customProducts,
   user,
   designName,
@@ -2331,6 +2764,7 @@ function Step3({
   length: number;
   wallColor: string;
   items: PlacedItem[];
+  openings: RoomOpening[];
   customProducts: Product[];
   user: { email?: string } | null;
   designName: string;
@@ -2414,14 +2848,33 @@ function Step3({
       {/* Shopping list */}
       <div className="surface min-w-0 p-5 sm:p-7">
         <div className="mb-6">
-          <p className="eyebrow">Passo 3 di 3</p>
+          <p className="eyebrow">Passo 4 di 4</p>
           <h2 className="mt-2 text-3xl sm:text-4xl">Riepilogo del progetto</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             {grouped.length === 0
               ? "Nessun prodotto selezionato."
-              : `${grouped.length} prodotti · ${items.length} pezzi · stanza ${width} × ${length} m${wallName ? ` · pareti ${wallName}` : ""}`}
+              : `${grouped.length} prodotti · ${items.length} pezzi · ${openings.length} ${openings.length === 1 ? "apertura" : "aperture"} · stanza ${width} × ${length} m${wallName ? ` · pareti ${wallName}` : ""}`}
           </p>
         </div>
+
+        {openings.length > 0 && (
+          <div className="mb-6 rounded-xl border border-border bg-secondary/35 p-4">
+            <p className="eyebrow">Porte e finestre</p>
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+              {openings.map((opening, index) => (
+                <li key={opening.uid} className="rounded-lg bg-card px-3 py-2 text-xs">
+                  <span className="font-medium">
+                    {opening.type === "door" ? "Porta" : "Finestra"} {index + 1}
+                  </span>
+                  <span className="block text-muted-foreground">
+                    {WALL_LABELS[opening.wall]} · {opening.widthCm} × {opening.heightCm} cm
+                    {opening.type === "window" ? ` · davanzale ${opening.sillHeightCm} cm` : ""}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {grouped.length === 0 ? (
           <div className="rounded-xl border border-dashed border-border py-14 text-center">
@@ -2674,7 +3127,9 @@ function Step3({
             aria-describedby="confirm-new-description"
             className="surface relative w-full max-w-sm p-5"
           >
-            <h3 id="confirm-new-title" className="text-xl">Creare una nuova configurazione?</h3>
+            <h3 id="confirm-new-title" className="text-xl">
+              Creare una nuova configurazione?
+            </h3>
             <p id="confirm-new-description" className="mt-2 text-sm text-muted-foreground">
               {saveState === "saved"
                 ? "Il progetto attuale resta salvato nel tuo account."
@@ -2725,13 +3180,12 @@ function buildRenderPrompt(
   width: number,
   length: number,
   wallColor: string,
+  openings: RoomOpening[],
   items: PlacedItem[],
   customProducts: Product[],
   feedback?: { likes: number; dislikes: number; lastFeedback: "like" | "dislike" | null },
 ): { prompt: string; images: string[] } {
-  const colorName =
-    WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ??
-    "neutro";
+  const colorName = WALL_COLORS.find((c) => c.value === wallColor)?.name.toLowerCase() ?? "neutro";
 
   // Aggregate placed pieces by product id
   const counts = new Map<string, number>();
@@ -2742,9 +3196,7 @@ function buildRenderPrompt(
   let refIndex = 0;
 
   for (const [id, qty] of counts) {
-    const p =
-      PRODUCTS.find((x) => x.id === id) ??
-      customProducts.find((x) => x.id === id);
+    const p = PRODUCTS.find((x) => x.id === id) ?? customProducts.find((x) => x.id === id);
     if (!p) continue;
 
     // Collect reference photos: the main image + any extra reference photos.
@@ -2768,6 +3220,15 @@ function buildRenderPrompt(
     ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
     : "La stanza è vuota, minimalista.";
 
+  const openingsBlock = openings.length
+    ? `Rispetta esattamente queste aperture architettoniche: ${openings
+        .map((opening, index) => {
+          const sill = opening.type === "window" ? `, davanzale a ${opening.sillHeightCm} cm` : "";
+          return `${opening.type === "door" ? "porta" : "finestra"} ${index + 1} sulla ${WALL_LABELS[opening.wall].toLowerCase()}, ${opening.widthCm}×${opening.heightCm} cm, a ${opening.offsetCm} cm dall'angolo${sill}`;
+        })
+        .join("; ")}.`
+    : "La stanza non ha aperture visibili nell'inquadratura.";
+
   const feedbackLines: string[] = [];
   if (feedback && (feedback.likes > 0 || feedback.dislikes > 0)) {
     if (feedback.lastFeedback === "dislike") {
@@ -2789,7 +3250,8 @@ function buildRenderPrompt(
   const prompt = [
     `Fotografia interior design fotorealistica di una stanza di ${width}×${length} metri,`,
     `pareti color ${colorName} (${wallColor}), pavimento in parquet chiaro a listoni,`,
-    `luce naturale morbida da grande finestra laterale, atmosfera Maisons du Monde calda e accogliente,`,
+    openingsBlock,
+    `luce naturale morbida coerente con le finestre configurate, atmosfera Maisons du Monde calda e accogliente,`,
     `estetica scandinava/mediterranea con tessuti bouclé, legno naturale, ceramica, ottone brunito.`,
     piecesBlock,
     `Le foto di riferimento allegate mostrano l'aspetto ESATTO di ogni prodotto: mantieni identici modello, colore, tessuto e finiture — non inventare varianti.`,
@@ -2804,12 +3266,14 @@ function Render3DPanel({
   width,
   length,
   wallColor,
+  openings,
   items,
   customProducts,
 }: {
   width: number;
   length: number;
   wallColor: string;
+  openings: RoomOpening[];
   items: PlacedItem[];
   customProducts: Product[];
 }) {
@@ -2834,6 +3298,7 @@ function Render3DPanel({
       width,
       length,
       wallColor,
+      openings,
       items,
       customProducts,
       feedbackStats,
@@ -2851,7 +3316,11 @@ function Render3DPanel({
       let streamError: string | undefined;
       const parser = createParser({
         onEvent(event) {
-          let payload: any;
+          let payload: {
+            type?: string;
+            error?: { message?: string };
+            b64_json?: string;
+          };
           try {
             payload = JSON.parse(event.data);
           } catch {
@@ -2866,6 +3335,7 @@ function Render3DPanel({
             event.event !== "image_generation.completed"
           )
             return;
+          if (typeof payload.b64_json !== "string") return;
           const final = event.event === "image_generation.completed";
           flushSync(() => {
             setSrc(`data:image/png;base64,${payload.b64_json}`);
@@ -2908,7 +3378,6 @@ function Render3DPanel({
           {loading ? "Generazione…" : src ? "Rigenera" : "Genera render 3D"}
         </button>
       </div>
-
 
       {error && (
         <p className="mt-3 rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
@@ -2999,11 +3468,7 @@ function Render3DPanel({
 /* Custom product uploader — user-supplied images                     */
 /* ------------------------------------------------------------------ */
 
-function CustomProductUploader({
-  onAdd,
-}: {
-  onAdd: (p: Product, save: boolean) => void;
-}) {
+function CustomProductUploader({ onAdd }: { onAdd: (p: Product, save: boolean) => void }) {
   const [nome, setNome] = useState("");
   const [larghezza, setLarghezza] = useState(80);
   const [profondita, setProfondita] = useState(60);
@@ -3088,7 +3553,8 @@ function CustomProductUploader({
     <div className="mb-4 space-y-3 rounded-xl border border-dashed border-border bg-secondary/30 p-3">
       <p className="text-xs font-medium">Aggiungi un tuo prodotto</p>
       <p className="text-[11px] leading-snug text-muted-foreground">
-        Più foto carichi (angolazioni diverse, dettagli materiali) e più il render 3D sarà fedele al prodotto reale.
+        Più foto carichi (angolazioni diverse, dettagli materiali) e più il render 3D sarà fedele al
+        prodotto reale.
       </p>
 
       {images.length > 0 && (
@@ -3102,9 +3568,7 @@ function CustomProductUploader({
               />
               <button
                 type="button"
-                onClick={() =>
-                  setImages((prev) => prev.filter((_, j) => j !== i))
-                }
+                onClick={() => setImages((prev) => prev.filter((_, j) => j !== i))}
                 className="absolute -right-1.5 -top-1.5 rounded-full bg-background p-0.5 shadow ring-1 ring-border"
                 aria-label="Rimuovi immagine"
               >
@@ -3178,8 +3642,6 @@ function CustomProductUploader({
         className="field text-xs"
       />
 
-
-
       <div className="grid grid-cols-2 gap-2">
         <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
           L
@@ -3252,8 +3714,8 @@ function CustomProductUploader({
         </button>
       </div>
       <p className="text-[10px] leading-snug text-muted-foreground">
-        Spunta la casella per salvare il prodotto in "Prodotti salvati" e
-        riutilizzarlo nei prossimi progetti.
+        Spunta la casella per salvare il prodotto in "Prodotti salvati" e riutilizzarlo nei prossimi
+        progetti.
       </p>
     </div>
   );
