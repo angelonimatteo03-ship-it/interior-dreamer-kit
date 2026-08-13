@@ -3430,6 +3430,257 @@ type RenderLayoutElement = {
   rotation: PlacedItem["rotation"];
 };
 
+function buildRenderLayoutElements(items: PlacedItem[], customProducts: Product[]) {
+  return items.flatMap<RenderLayoutElement>((item, index) => {
+    const product = findRenderProduct(item.productId, customProducts);
+    if (!product) return [];
+    const footprint = getFootprint(product);
+    const rotated = item.rotation === 90 || item.rotation === 270;
+    const occupiedWidth = rotated ? footprint.d : footprint.w;
+    const occupiedDepth = rotated ? footprint.w : footprint.d;
+    return [
+      {
+        marker: `E${index + 1}`,
+        productId: item.productId,
+        product,
+        left: item.x,
+        top: item.y,
+        right: item.x + occupiedWidth,
+        bottom: item.y + occupiedDepth,
+        width: occupiedWidth,
+        depth: occupiedDepth,
+        centerX: item.x + occupiedWidth / 2,
+        centerY: item.y + occupiedDepth / 2,
+        rotation: item.rotation,
+      },
+    ];
+  });
+}
+
+function renderObjectHeight(product: Product) {
+  const name = product.nome.toLowerCase();
+  if (name.includes("letto") && !name.includes("divano")) return 65;
+  if (name.includes("comodino") || name.includes("mobiletto")) return 62;
+  if (name.includes("scrivania") || name.includes("tavolo")) return 76;
+  if (name.includes("sedia") || product.categoria === "Sedie") return 92;
+  if (product.categoria === "Divani") return 88;
+  if (product.categoria === "Armadi" || product.categoria === "Librerie") return 190;
+  if (product.categoria === "Cassettiere" || product.categoria === "Credenze") return 85;
+  return 75;
+}
+
+function createPerspectiveLayoutReference(
+  width: number,
+  length: number,
+  wallColor: string,
+  openings: RoomOpening[],
+  items: PlacedItem[],
+  customProducts: Product[],
+) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1500;
+  canvas.height = 1100;
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Impossibile creare la scena prospettica di riferimento");
+
+  const roomWidthCm = width * 100;
+  const roomLengthCm = length * 100;
+  const wallHeightCm = 270;
+  const topY = 300;
+  const bottomY = 1000;
+  const topLeftX = 285;
+  const topRightX = 1215;
+  const bottomLeftX = 45;
+  const bottomRightX = 1455;
+  const palette = ["#d9a66f", "#8eaaa0", "#c9897c", "#9da6c1", "#b7a2c8", "#d1b765"];
+  const elements = buildRenderLayoutElements(items, customProducts);
+
+  const project = (x: number, y: number, z = 0) => {
+    const depthRatio = clamp(y / roomLengthCm, 0, 1);
+    const leftEdge = topLeftX + (bottomLeftX - topLeftX) * depthRatio;
+    const rightEdge = topRightX + (bottomRightX - topRightX) * depthRatio;
+    const floorY = topY + (bottomY - topY) * depthRatio;
+    const heightScale = 0.72 - depthRatio * 0.18;
+    return {
+      x: leftEdge + (x / roomWidthCm) * (rightEdge - leftEdge),
+      y: floorY - z * heightScale,
+    };
+  };
+
+  const polygon = (
+    points: Array<{ x: number; y: number }>,
+    fill: string,
+    stroke = "#5d5043",
+    lineWidth = 3,
+  ) => {
+    if (points.length === 0) return;
+    context.beginPath();
+    context.moveTo(points[0].x, points[0].y);
+    for (let index = 1; index < points.length; index += 1) {
+      context.lineTo(points[index].x, points[index].y);
+    }
+    context.closePath();
+    context.fillStyle = fill;
+    context.fill();
+    context.strokeStyle = stroke;
+    context.lineWidth = lineWidth;
+    context.stroke();
+  };
+
+  const label = (text: string, point: { x: number; y: number }, fill = "#2f2923") => {
+    context.fillStyle = "#fffdf9";
+    context.beginPath();
+    context.arc(point.x, point.y, 23, 0, Math.PI * 2);
+    context.fill();
+    context.strokeStyle = fill;
+    context.lineWidth = 2;
+    context.stroke();
+    context.fillStyle = fill;
+    context.font = "700 18px Arial, sans-serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(text, point.x, point.y + 1);
+  };
+
+  context.fillStyle = "#fffdf9";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "#2f2923";
+  context.font = "700 32px Arial, sans-serif";
+  context.textAlign = "left";
+  context.textBaseline = "alphabetic";
+  context.fillText("SCENA 3D STRUTTURALE VINCOLANTE — STESSA INQUADRATURA", 48, 50);
+  context.fillStyle = "#943520";
+  context.font = "700 18px Arial, sans-serif";
+  context.fillText(
+    "Trasforma materiali e forme, ma non spostare volumi, aperture o fotocamera",
+    48,
+    82,
+  );
+
+  const floorTopLeft = project(0, 0);
+  const floorTopRight = project(roomWidthCm, 0);
+  const floorBottomRight = project(roomWidthCm, roomLengthCm);
+  const floorBottomLeft = project(0, roomLengthCm);
+  const backTopLeft = project(0, 0, wallHeightCm);
+  const backTopRight = project(roomWidthCm, 0, wallHeightCm);
+  const leftTopFront = project(0, roomLengthCm, wallHeightCm);
+  const rightTopFront = project(roomWidthCm, roomLengthCm, wallHeightCm);
+
+  polygon([backTopLeft, backTopRight, floorTopRight, floorTopLeft], wallColor, "#796b5b", 4);
+  polygon([backTopLeft, floorTopLeft, floorBottomLeft, leftTopFront], "#e8dfd0", "#796b5b", 4);
+  polygon([backTopRight, rightTopFront, floorBottomRight, floorTopRight], "#ded2c1", "#796b5b", 4);
+  polygon(
+    [floorTopLeft, floorTopRight, floorBottomRight, floorBottomLeft],
+    "#eadfc7",
+    "#796b5b",
+    5,
+  );
+
+  context.strokeStyle = "rgba(82, 70, 57, 0.2)";
+  context.lineWidth = 1;
+  for (let x = 50; x < roomWidthCm; x += 50) {
+    const start = project(x, 0);
+    const end = project(x, roomLengthCm);
+    context.beginPath();
+    context.moveTo(start.x, start.y);
+    context.lineTo(end.x, end.y);
+    context.stroke();
+  }
+  for (let y = 50; y < roomLengthCm; y += 50) {
+    const start = project(0, y);
+    const end = project(roomWidthCm, y);
+    context.beginPath();
+    context.moveTo(start.x, start.y);
+    context.lineTo(end.x, end.y);
+    context.stroke();
+  }
+
+  let doorNumber = 0;
+  let windowNumber = 0;
+  for (const opening of openings) {
+    const isDoor = opening.type === "door";
+    const marker = isDoor ? `D${++doorNumber}` : `F${++windowNumber}`;
+    const bottom = isDoor ? 0 : opening.sillHeightCm;
+    const top = Math.min(wallHeightCm, bottom + opening.heightCm);
+    let openingPoints: Array<{ x: number; y: number }>;
+
+    if (opening.wall === "top" || opening.wall === "bottom") {
+      const y = opening.wall === "top" ? 0 : roomLengthCm;
+      openingPoints = [
+        project(opening.offsetCm, y, bottom),
+        project(opening.offsetCm + opening.widthCm, y, bottom),
+        project(opening.offsetCm + opening.widthCm, y, top),
+        project(opening.offsetCm, y, top),
+      ];
+    } else {
+      const x = opening.wall === "left" ? 0 : roomWidthCm;
+      openingPoints = [
+        project(x, opening.offsetCm, bottom),
+        project(x, opening.offsetCm + opening.widthCm, bottom),
+        project(x, opening.offsetCm + opening.widthCm, top),
+        project(x, opening.offsetCm, top),
+      ];
+    }
+
+    polygon(openingPoints, isDoor ? "#f3c0ad" : "#b8ded6", isDoor ? "#943520" : "#356b61", 6);
+    const center = {
+      x: openingPoints.reduce((sum, point) => sum + point.x, 0) / openingPoints.length,
+      y: openingPoints.reduce((sum, point) => sum + point.y, 0) / openingPoints.length,
+    };
+    label(marker, center, isDoor ? "#943520" : "#356b61");
+  }
+
+  const sortedElements = [...elements].sort((first, second) => first.centerY - second.centerY);
+  for (const element of sortedElements) {
+    const height = renderObjectHeight(element.product);
+    const floorPoints = [
+      project(element.left, element.top),
+      project(element.right, element.top),
+      project(element.right, element.bottom),
+      project(element.left, element.bottom),
+    ];
+    const topPoints = [
+      project(element.left, element.top, height),
+      project(element.right, element.top, height),
+      project(element.right, element.bottom, height),
+      project(element.left, element.bottom, height),
+    ];
+    const color = palette[(Number(element.marker.slice(1)) - 1) % palette.length];
+
+    polygon([floorPoints[1], floorPoints[2], topPoints[2], topPoints[1]], "#8d7762");
+    polygon([floorPoints[2], floorPoints[3], topPoints[3], topPoints[2]], "#a58d75");
+    polygon(topPoints, color, "#40372f", 4);
+
+    const centerTop = project(element.centerX, element.centerY, height + 2);
+    label(element.marker, centerTop);
+
+    const directionDistance = Math.min(element.width, element.depth) * 0.35;
+    const direction =
+      element.rotation === 0
+        ? { x: element.centerX, y: element.centerY - directionDistance }
+        : element.rotation === 90
+          ? { x: element.centerX + directionDistance, y: element.centerY }
+          : element.rotation === 180
+            ? { x: element.centerX, y: element.centerY + directionDistance }
+            : { x: element.centerX - directionDistance, y: element.centerY };
+    const arrowEnd = project(direction.x, direction.y, height + 4);
+    context.strokeStyle = "#40372f";
+    context.lineWidth = 5;
+    context.beginPath();
+    context.moveTo(centerTop.x, centerTop.y);
+    context.lineTo(arrowEnd.x, arrowEnd.y);
+    context.stroke();
+  }
+
+  context.fillStyle = "#2f2923";
+  context.font = "700 17px Arial, sans-serif";
+  context.textAlign = "center";
+  context.fillText("PARETE ALTA · Y=0 · FONDO", (topLeftX + topRightX) / 2, topY + 28);
+  context.fillText("PARETE BASSA · PRIMO PIANO / FOTOCAMERA", canvas.width / 2, 1070);
+
+  return canvas.toDataURL("image/png");
+}
+
 function renderAxisZone(value: number, total: number, axis: "x" | "y") {
   const ratio = total > 0 ? value / total : 0.5;
   if (axis === "x") {
@@ -3440,6 +3691,25 @@ function renderAxisZone(value: number, total: number, axis: "x" | "y") {
   if (ratio < 1 / 3) return "fascia alta, sul fondo del render";
   if (ratio > 2 / 3) return "fascia bassa, in primo piano";
   return "fascia centrale in profondità";
+}
+
+function renderOrientationPhrase(product: Product, rotation: PlacedItem["rotation"]) {
+  const direction =
+    rotation === 0
+      ? "parete alta / fondo"
+      : rotation === 90
+        ? "parete destra"
+        : rotation === 180
+          ? "parete bassa / primo piano"
+          : "parete sinistra";
+  const name = product.nome.toLowerCase();
+  if (name.includes("letto") && !name.includes("divano")) {
+    return `testiera rivolta verso ${direction}`;
+  }
+  if (name.includes("sedia") || product.categoria === "Sedie") {
+    return `schienale rivolto verso ${direction}`;
+  }
+  return `freccia frontale rivolta verso ${direction}`;
 }
 
 function buildSpatialRelationships(elements: RenderLayoutElement[]) {
@@ -3503,7 +3773,7 @@ function buildRenderPrompt(
   const images: string[] = [];
   const pieceLines: string[] = [];
   const productReferences = new Map<string, string[]>();
-  let refIndex = renderMode === "faithful" ? 1 : 0;
+  let refIndex = renderMode === "faithful" ? 2 : 0;
 
   for (const [id, qty] of counts) {
     const p = findRenderProduct(id, customProducts);
@@ -3513,7 +3783,7 @@ function buildRenderPrompt(
     const refs = [p.immagine_url, ...(p.reference_images ?? [])].filter(Boolean);
     const refTags: string[] = [];
     for (const url of refs) {
-      if (images.length >= (renderMode === "faithful" ? 11 : 12)) break;
+      if (images.length >= (renderMode === "faithful" ? 10 : 12)) break;
       refIndex += 1;
       images.push(url);
       refTags.push(`[REF ${refIndex}]`);
@@ -3529,36 +3799,11 @@ function buildRenderPrompt(
 
   const roomWidthCm = width * 100;
   const roomLengthCm = length * 100;
-  const layoutElements = items.flatMap<RenderLayoutElement>((item, index) => {
-    const product = findRenderProduct(item.productId, customProducts);
-    if (!product) return [];
-    const footprint = getFootprint(product);
-    const rotated = item.rotation === 90 || item.rotation === 270;
-    const occupiedWidth = rotated ? footprint.d : footprint.w;
-    const occupiedDepth = rotated ? footprint.w : footprint.d;
-    const centerX = item.x + occupiedWidth / 2;
-    const centerY = item.y + occupiedDepth / 2;
-    return [
-      {
-        marker: `E${index + 1}`,
-        productId: item.productId,
-        product,
-        left: item.x,
-        top: item.y,
-        right: item.x + occupiedWidth,
-        bottom: item.y + occupiedDepth,
-        width: occupiedWidth,
-        depth: occupiedDepth,
-        centerX,
-        centerY,
-        rotation: item.rotation,
-      },
-    ];
-  });
+  const layoutElements = buildRenderLayoutElements(items, customProducts);
 
   const faithfulLines = layoutElements.map((element) => {
     const refs = productReferences.get(element.productId) ?? [];
-    return `[ELEMENTO ${element.marker}] ${element.product.nome}${refs.length ? ` ${refs.join(" ")}` : ""}: impronta a terra ${element.width}×${element.depth} cm; angolo superiore sinistro x=${Math.round(element.left)} cm, y=${Math.round(element.top)} cm; centro x=${Math.round(element.centerX)} cm (${Math.round((element.centerX / roomWidthCm) * 100)}% della larghezza), y=${Math.round(element.centerY)} cm (${Math.round((element.centerY / roomLengthCm) * 100)}% della lunghezza); ${renderAxisZone(element.centerX, roomWidthCm, "x")}, ${renderAxisZone(element.centerY, roomLengthCm, "y")}; rotazione ${element.rotation}°; distanze libere dalle pareti sinistra=${Math.round(element.left)} cm, destra=${Math.round(roomWidthCm - element.right)} cm, alta=${Math.round(element.top)} cm, bassa=${Math.round(roomLengthCm - element.bottom)} cm.`;
+    return `[ELEMENTO ${element.marker}] ${element.product.nome}${refs.length ? ` ${refs.join(" ")}` : ""}: impronta a terra ${element.width}×${element.depth} cm; angolo superiore sinistro x=${Math.round(element.left)} cm, y=${Math.round(element.top)} cm; centro x=${Math.round(element.centerX)} cm (${Math.round((element.centerX / roomWidthCm) * 100)}% della larghezza), y=${Math.round(element.centerY)} cm (${Math.round((element.centerY / roomLengthCm) * 100)}% della lunghezza); ${renderAxisZone(element.centerX, roomWidthCm, "x")}, ${renderAxisZone(element.centerY, roomLengthCm, "y")}; rotazione ${element.rotation}°, ${renderOrientationPhrase(element.product, element.rotation)}; distanze libere dalle pareti sinistra=${Math.round(element.left)} cm, destra=${Math.round(roomWidthCm - element.right)} cm, alta=${Math.round(element.top)} cm, bassa=${Math.round(roomLengthCm - element.bottom)} cm.`;
   });
 
   const relationshipLines = buildSpatialRelationships(layoutElements);
@@ -3566,17 +3811,30 @@ function buildRenderPrompt(
   const piecesBlock =
     renderMode === "faithful"
       ? faithfulLines.length
-        ? `La PRIMA immagine allegata è la [REF 1 — PLANIMETRIA VINCOLANTE]. Ogni rettangolo E1, E2, ecc. corrisponde esattamente agli elementi elencati qui. Mantieni numero, posizione, ingombro relativo e orientamento di ogni elemento:\n${faithfulLines.join("\n")}\nRELAZIONI SPAZIALI VINCOLANTI FRA GLI ELEMENTI:\n${relationshipLines.join("\n")}`
-        : "La [REF 1 — PLANIMETRIA VINCOLANTE] mostra una stanza vuota: non aggiungere arredi."
+        ? `La [REF 1 — SCENA 3D STRUTTURALE] è il telaio prospettico da trasformare direttamente: conserva la posizione nell'immagine di pareti, pavimento, aperture e di ogni volume E1, E2, ecc. La [REF 2 — PLANIMETRIA ORTOGONALE] è la verifica geometrica dall'alto. Se le due viste sembrano in conflitto, usa REF 2 per le coordinate e REF 1 per fotocamera, profondità e occlusioni. Mantieni numero, posizione, ingombro relativo e orientamento di ogni elemento:\n${faithfulLines.join("\n")}\nRELAZIONI SPAZIALI VINCOLANTI FRA GLI ELEMENTI:\n${relationshipLines.join("\n")}`
+        : "Le [REF 1 e REF 2] mostrano una stanza vuota: non aggiungere arredi."
       : pieceLines.length
         ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
         : "La stanza è vuota, minimalista.";
 
+  let promptDoorNumber = 0;
+  let promptWindowNumber = 0;
   const openingsBlock = openings.length
     ? `Rispetta esattamente queste aperture architettoniche: ${openings
-        .map((opening, index) => {
+        .map((opening) => {
           const sill = opening.type === "window" ? `, davanzale a ${opening.sillHeightCm} cm` : "";
-          return `${opening.type === "door" ? "porta" : "finestra"} ${index + 1} sulla ${WALL_LABELS[opening.wall].toLowerCase()}, ${opening.widthCm}×${opening.heightCm} cm, a ${opening.offsetCm} cm dall'angolo${sill}`;
+          const wallLength =
+            opening.wall === "top" || opening.wall === "bottom" ? roomWidthCm : roomLengthCm;
+          const centerRatio = (opening.offsetCm + opening.widthCm / 2) / wallLength;
+          const zone =
+            centerRatio < 1 / 3
+              ? "nel primo terzo della parete a partire dall'angolo di origine"
+              : centerRatio > 2 / 3
+                ? "nell'ultimo terzo della parete"
+                : "nel terzo centrale della parete";
+          const marker =
+            opening.type === "door" ? `D${++promptDoorNumber}` : `F${++promptWindowNumber}`;
+          return `${opening.type === "door" ? "porta" : "finestra"} ${marker} sulla ${WALL_LABELS[opening.wall].toLowerCase()}, ${opening.widthCm}×${opening.heightCm} cm, a ${opening.offsetCm} cm dall'angolo, ${zone}${sill}`;
         })
         .join("; ")}.`
     : "La stanza non ha aperture visibili nell'inquadratura.";
@@ -3586,7 +3844,7 @@ function buildRenderPrompt(
     if (feedback.lastFeedback === "dislike") {
       feedbackLines.push(
         renderMode === "faithful"
-          ? `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. Le posizioni non rispettavano abbastanza la piantina. Correggi rigorosamente geometria, distanze dalle pareti, orientamenti e aperture seguendo la [REF 1] e le coordinate di ogni ELEMENTO. NON ricomporre la stanza.`
+          ? `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. Le posizioni non rispettavano abbastanza la piantina. Correggi rigorosamente geometria, distanze dalle pareti, orientamenti e aperture seguendo la scena [REF 1], la pianta [REF 2] e le coordinate di ogni ELEMENTO. NON ricomporre la stanza.`
           : `IMPORTANTE — feedback cliente sul render precedente: NEGATIVO. I prodotti non erano abbastanza fedeli alle foto di riferimento. In questa nuova versione: aumenta drasticamente la fedeltà visiva ad ogni [REF] (materiali, colori esatti, texture, forma, proporzioni, dettagli di finitura). NON inventare varianti, NON stilizzare, NON modificare colori o tessuti. Mantieni composizione e inquadratura della stanza.`,
       );
     } else if (feedback.lastFeedback === "like") {
@@ -3605,7 +3863,7 @@ function buildRenderPrompt(
 
   const layoutConstraint =
     renderMode === "faithful"
-      ? `MODALITÀ FEDELE ALLA PIANTA — VINCOLO PRIORITARIO: trasforma la planimetria [REF 1] in una vista 3D fotorealistica senza cambiare il layout. Usa una vista assonometrica/prospettica ALTA a tre quarti dall'alto, con il pavimento quasi interamente visibile: la PARETE ALTA (Y=0) deve restare sul fondo dell'immagine, la PARETE BASSA in primo piano, sinistra e destra non devono essere invertite. Tutti gli arredi a pavimento — inclusi letto, sedia, scrivania, tavoli, comodini, divani e armadi — devono poggiare con la base sullo STESSO PIANO DEL PAVIMENTO. È severamente vietato collocare una sedia, una scrivania o qualsiasi altro arredo sopra un letto, un tavolo, una mensola o un altro mobile. Non spostare, centrare, allineare, raggruppare, eliminare, duplicare o sostituire alcun ELEMENTO. Non cambiare la parete, la posizione o la dimensione relativa di porte e finestre. Mantieni gli stessi rapporti davanti/dietro, destra/sinistra e le stesse distanze relative. Se un arredo più vicino alla fotocamera ne nasconde parzialmente uno lontano, L'OCCLUSIONE È CORRETTA E OBBLIGATORIA: non sollevare, impilare o spostare l'oggetto lontano per renderlo visibile. Prima di produrre l'immagine, verifica mentalmente tutte le impronte sul pavimento e correggi qualsiasi sovrapposizione non presente nella planimetria. La fedeltà geometrica e la plausibilità fisica hanno priorità assoluta sullo stile e sulla visibilità di tutti i prodotti.`
+      ? `MODALITÀ FEDELE ALLA PIANTA — IMAGE-TO-IMAGE STRUTTURALE: usa [REF 1] come immagine base da rifinire, non come semplice ispirazione. Sostituisci i volumi colorati E1, E2, ecc. con i prodotti corrispondenti, elimina marcatori e colori tecnici, ma conserva esattamente le loro sagome sul pavimento, i centri, gli angoli, la profondità, le occlusioni e la fotocamera di REF 1. Usa [REF 2] per controllare dall'alto tutte le coordinate. La PARETE ALTA (Y=0) resta sul fondo dell'immagine, la PARETE BASSA in primo piano, sinistra e destra non devono essere invertite. Tutti gli arredi a pavimento — inclusi letto, sedia, scrivania, tavoli, comodini, divani e armadi — poggiano sullo STESSO PIANO DEL PAVIMENTO. Non reinterpretare i comodini come elementi ai lati della testiera: mettili nelle loro coordinate reali, anche quando sono vicino alla parete bassa e ai piedi del letto. La porta e la finestra devono occupare esattamente i rettangoli D/F disegnati in REF 1, sulla stessa parete e nello stesso tratto; non spostarle verso un angolo più fotogenico. Non ruotare o capovolgere il letto: la direzione indicata dalla freccia tecnica è vincolante. È vietato spostare, centrare, allineare, raggruppare, eliminare, duplicare o sostituire ELEMENTI. Se un arredo vicino alla fotocamera ne nasconde uno lontano, l'occlusione è corretta: non sollevare o spostare l'oggetto lontano. La fedeltà geometrica ha priorità assoluta su stile, simmetria e visibilità dei prodotti.`
       : "Puoi scegliere l'inquadratura più armoniosa mantenendo tutti i prodotti richiesti.";
 
   const prompt = [
@@ -3619,7 +3877,7 @@ function buildRenderPrompt(
     `Le foto di riferimento allegate mostrano l'aspetto ESATTO di ogni prodotto: mantieni identici modello, colore, tessuto e finiture — non inventare varianti.`,
     ...feedbackLines,
     renderMode === "faithful"
-      ? `Rendering fotorealistico ad alta risoluzione, vista 3D alta a tre quarti dall'alto (circa 35–50° rispetto al pavimento), pavimento e distanze chiaramente leggibili, obiettivo naturale senza distorsioni, dettagli nitidi dei materiali e ombre morbide. Non usare una vista frontale a livello degli occhi.`
+      ? `Rendering fotorealistico ad alta risoluzione ottenuto rifinendo la stessa vista 3D di REF 1. Non cambiare altezza, orientamento, punto di fuga, campo visivo o ritaglio della fotocamera. Pavimento e distanze devono restare chiaramente leggibili, con obiettivo naturale senza distorsioni, dettagli nitidi e ombre morbide.`
       : `Rendering fotorealistico ad alta risoluzione, vista prospettica grandangolare a livello degli occhi, dettagli nitidi dei materiali, ombre morbide, profondità di campo cinematografica.`,
   ].join(" ");
 
@@ -3674,6 +3932,14 @@ function Render3DPanel({
       const requestImages =
         renderMode === "faithful"
           ? [
+              createPerspectiveLayoutReference(
+                width,
+                length,
+                wallColor,
+                openings,
+                items,
+                customProducts,
+              ),
               createLayoutReference(width, length, wallColor, openings, items, customProducts),
               ...images,
             ]
@@ -3774,9 +4040,9 @@ function Render3DPanel({
       </div>
 
       <p className="mt-3 rounded-lg border border-primary/15 bg-background/75 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
-        <span className="font-medium text-foreground">Render fedele alla pianta</span> usa una
-        planimetria tecnica con coordinate e rotazioni per mantenere arredi, porte e finestre nelle
-        posizioni impostate.
+        <span className="font-medium text-foreground">Render fedele alla pianta</span> costruisce
+        prima una scena 3D strutturale con volumi e aperture nelle coordinate esatte, poi la
+        trasforma in un render fotorealistico mantenendo la stessa inquadratura.
       </p>
 
       {error && (
