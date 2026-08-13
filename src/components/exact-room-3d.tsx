@@ -460,9 +460,7 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
             const legHeight = 0.13;
             const bodyHeight = hasManyDrawers ? 0.64 : 0.46;
             const cabinetColor = hasManyDrawers ? 0xd7c8ad : colors.wood;
-            const drawerColor = hasManyDrawers
-              ? 0xe2d5bd
-              : Math.min(0xffffff, colors.wood + 0x15100a);
+            const drawerPalette = [0xd9c7ad, 0xb5b8aa, 0xc7a98d, 0xd3b4a6, 0xaeb9b3, 0xe2d1b7];
 
             for (const x of [-itemWidth * 0.36, itemWidth * 0.36]) {
               for (const z of [-itemDepth * 0.32, itemDepth * 0.32]) {
@@ -495,27 +493,42 @@ export function ExactRoom3D({ width, length, wallColor, openings, furniture }: E
             const drawerWidth = (itemWidth * 0.82) / columns;
             for (let row = 0; row < rows; row += 1) {
               for (let column = 0; column < columns; column += 1) {
+                const drawerX = -itemWidth * 0.41 + drawerWidth * (column + 0.5);
+                const drawerY = legHeight + bodyHeight * 0.08 + rowStep * (row + 0.5);
+                const drawerColor = hasManyDrawers
+                  ? drawerPalette[(row * columns + column) % drawerPalette.length]
+                  : Math.min(0xffffff, colors.wood + 0x15100a);
+
+                if (hasManyDrawers) {
+                  const drawerOutline = addMesh(
+                    new THREE.BoxGeometry(drawerWidth * 0.93, rowStep * 0.82, 0.018),
+                    new THREE.MeshStandardMaterial({ color: 0x826b51, roughness: 0.8 }),
+                    group,
+                  );
+                  drawerOutline.position.set(drawerX, drawerY, itemDepth * 0.462);
+                }
+
                 const drawer = addMesh(
-                  new THREE.BoxGeometry(drawerWidth * 0.9, rowStep * 0.76, 0.026),
+                  new THREE.BoxGeometry(
+                    drawerWidth * (hasManyDrawers ? 0.84 : 0.9),
+                    rowStep * (hasManyDrawers ? 0.7 : 0.76),
+                    0.035,
+                  ),
                   new THREE.MeshStandardMaterial({ color: drawerColor, roughness: 0.76 }),
                   group,
                 );
-                drawer.position.set(
-                  -itemWidth * 0.41 + drawerWidth * (column + 0.5),
-                  legHeight + bodyHeight * 0.08 + rowStep * (row + 0.5),
-                  itemDepth * 0.463,
-                );
+                drawer.position.set(drawerX, drawerY, itemDepth * 0.475);
 
                 const knob = addMesh(
-                  new THREE.SphereGeometry(hasManyDrawers ? 0.012 : 0.016, 12, 8),
+                  new THREE.SphereGeometry(hasManyDrawers ? 0.019 : 0.016, 12, 8),
                   new THREE.MeshStandardMaterial({
-                    color: colors.accent,
-                    metalness: 0.4,
+                    color: hasManyDrawers ? 0x574331 : colors.accent,
+                    metalness: hasManyDrawers ? 0.12 : 0.4,
                     roughness: 0.4,
                   }),
                   group,
                 );
-                knob.position.set(drawer.position.x, drawer.position.y, itemDepth * 0.505);
+                knob.position.set(drawer.position.x, drawer.position.y, itemDepth * 0.525);
               }
             }
 
