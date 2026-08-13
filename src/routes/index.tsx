@@ -3476,6 +3476,7 @@ function createPerspectiveLayoutReference(
   openings: RoomOpening[],
   items: PlacedItem[],
   customProducts: Product[],
+  mode: "technical" | "locked" = "technical",
 ) {
   const canvas = document.createElement("canvas");
   canvas.width = 1500;
@@ -3494,6 +3495,7 @@ function createPerspectiveLayoutReference(
   const bottomRightX = 1455;
   const palette = ["#d9a66f", "#8eaaa0", "#c9897c", "#9da6c1", "#b7a2c8", "#d1b765"];
   const elements = buildRenderLayoutElements(items, customProducts);
+  const locked = mode === "locked";
 
   const project = (x: number, y: number, z = 0) => {
     const depthRatio = clamp(y / roomLengthCm, 0, 1);
@@ -3542,17 +3544,25 @@ function createPerspectiveLayoutReference(
     context.fillText(text, point.x, point.y + 1);
   };
 
-  context.fillStyle = "#fffdf9";
+  context.fillStyle = locked ? "#f7f2ea" : "#fffdf9";
   context.fillRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "#2f2923";
   context.font = "700 32px Arial, sans-serif";
   context.textAlign = "left";
   context.textBaseline = "alphabetic";
-  context.fillText("SCENA 3D STRUTTURALE VINCOLANTE — STESSA INQUADRATURA", 48, 50);
-  context.fillStyle = "#943520";
+  context.fillText(
+    locked
+      ? "VISTA 3D ESATTA DELLA PIANTA"
+      : "SCENA 3D STRUTTURALE VINCOLANTE — STESSA INQUADRATURA",
+    48,
+    50,
+  );
+  context.fillStyle = locked ? "#6c5d4d" : "#943520";
   context.font = "700 18px Arial, sans-serif";
   context.fillText(
-    "Trasforma materiali e forme, ma non spostare volumi, aperture o fotocamera",
+    locked
+      ? "Posizioni, ingombri, orientamenti e aperture calcolati direttamente dalle coordinate"
+      : "Trasforma materiali e forme, ma non spostare volumi, aperture o fotocamera",
     48,
     82,
   );
@@ -3566,13 +3576,14 @@ function createPerspectiveLayoutReference(
   const leftTopFront = project(0, roomLengthCm, wallHeightCm);
   const rightTopFront = project(roomWidthCm, roomLengthCm, wallHeightCm);
 
-  polygon([backTopLeft, backTopRight, floorTopRight, floorTopLeft], wallColor, "#796b5b", 4);
-  polygon([backTopLeft, floorTopLeft, floorBottomLeft, leftTopFront], "#e8dfd0", "#796b5b", 4);
-  polygon([backTopRight, rightTopFront, floorBottomRight, floorTopRight], "#ded2c1", "#796b5b", 4);
+  const roomStroke = locked ? "#a99b8a" : "#796b5b";
+  polygon([backTopLeft, backTopRight, floorTopRight, floorTopLeft], wallColor, roomStroke, 4);
+  polygon([backTopLeft, floorTopLeft, floorBottomLeft, leftTopFront], "#e8dfd0", roomStroke, 4);
+  polygon([backTopRight, rightTopFront, floorBottomRight, floorTopRight], "#ded2c1", roomStroke, 4);
   polygon(
     [floorTopLeft, floorTopRight, floorBottomRight, floorBottomLeft],
     "#eadfc7",
-    "#796b5b",
+    roomStroke,
     5,
   );
 
@@ -3622,12 +3633,17 @@ function createPerspectiveLayoutReference(
       ];
     }
 
-    polygon(openingPoints, isDoor ? "#f3c0ad" : "#b8ded6", isDoor ? "#943520" : "#356b61", 6);
+    polygon(
+      openingPoints,
+      isDoor ? (locked ? "#cda77e" : "#f3c0ad") : locked ? "#b9d8df" : "#b8ded6",
+      isDoor ? (locked ? "#765232" : "#943520") : locked ? "#5b8791" : "#356b61",
+      6,
+    );
     const center = {
       x: openingPoints.reduce((sum, point) => sum + point.x, 0) / openingPoints.length,
       y: openingPoints.reduce((sum, point) => sum + point.y, 0) / openingPoints.length,
     };
-    label(marker, center, isDoor ? "#943520" : "#356b61");
+    if (!locked) label(marker, center, isDoor ? "#943520" : "#356b61");
   }
 
   const sortedElements = [...elements].sort((first, second) => first.centerY - second.centerY);
@@ -3645,14 +3661,83 @@ function createPerspectiveLayoutReference(
       project(element.right, element.bottom, height),
       project(element.left, element.bottom, height),
     ];
-    const color = palette[(Number(element.marker.slice(1)) - 1) % palette.length];
+    const name = element.product.nome.toLowerCase();
+    const isBed = name.includes("letto") && !name.includes("divano");
+    const isNightstand = name.includes("comodino") || name.includes("mobiletto");
+    const isDesk = name.includes("scrivania") || name.includes("tavolo");
+    const isChair = name.includes("sedia") || element.product.categoria === "Sedie";
+    const color = locked
+      ? isBed
+        ? "#eee9df"
+        : isDesk || isNightstand
+          ? "#c8a579"
+          : isChair
+            ? "#d9d1c4"
+            : "#b8aa96"
+      : palette[(Number(element.marker.slice(1)) - 1) % palette.length];
 
-    polygon([floorPoints[1], floorPoints[2], topPoints[2], topPoints[1]], "#8d7762");
-    polygon([floorPoints[2], floorPoints[3], topPoints[3], topPoints[2]], "#a58d75");
+    polygon(
+      [floorPoints[1], floorPoints[2], topPoints[2], topPoints[1]],
+      locked ? (isBed ? "#cfc7bb" : "#947656") : "#8d7762",
+    );
+    polygon(
+      [floorPoints[2], floorPoints[3], topPoints[3], topPoints[2]],
+      locked ? (isBed ? "#ddd6ca" : "#ad8c67") : "#a58d75",
+    );
     polygon(topPoints, color, "#40372f", 4);
 
     const centerTop = project(element.centerX, element.centerY, height + 2);
-    label(element.marker, centerTop);
+    if (!locked) label(element.marker, centerTop);
+
+    if (locked && isBed) {
+      const pillowYStart = element.rotation === 180 ? 0.72 : 0.08;
+      const pillowYEnd = element.rotation === 180 ? 0.92 : 0.28;
+      for (const [startX, endX] of [
+        [0.12, 0.46],
+        [0.54, 0.88],
+      ] as const) {
+        polygon(
+          [
+            project(
+              element.left + element.width * startX,
+              element.top + element.depth * pillowYStart,
+              height + 5,
+            ),
+            project(
+              element.left + element.width * endX,
+              element.top + element.depth * pillowYStart,
+              height + 5,
+            ),
+            project(
+              element.left + element.width * endX,
+              element.top + element.depth * pillowYEnd,
+              height + 5,
+            ),
+            project(
+              element.left + element.width * startX,
+              element.top + element.depth * pillowYEnd,
+              height + 5,
+            ),
+          ],
+          "#fffdf9",
+          "#c7bfb4",
+          2,
+        );
+      }
+    }
+
+    if (locked && isNightstand) {
+      context.strokeStyle = "#6f5339";
+      context.lineWidth = 3;
+      for (const ratio of [0.38, 0.68]) {
+        const drawerLeft = project(element.left, element.bottom, height * ratio);
+        const drawerRight = project(element.right, element.bottom, height * ratio);
+        context.beginPath();
+        context.moveTo(drawerLeft.x, drawerLeft.y);
+        context.lineTo(drawerRight.x, drawerRight.y);
+        context.stroke();
+      }
+    }
 
     const directionDistance = Math.min(element.width, element.depth) * 0.35;
     const direction =
@@ -3664,19 +3749,31 @@ function createPerspectiveLayoutReference(
             ? { x: element.centerX, y: element.centerY + directionDistance }
             : { x: element.centerX - directionDistance, y: element.centerY };
     const arrowEnd = project(direction.x, direction.y, height + 4);
-    context.strokeStyle = "#40372f";
-    context.lineWidth = 5;
-    context.beginPath();
-    context.moveTo(centerTop.x, centerTop.y);
-    context.lineTo(arrowEnd.x, arrowEnd.y);
-    context.stroke();
+    if (!locked) {
+      context.strokeStyle = "#40372f";
+      context.lineWidth = 5;
+      context.beginPath();
+      context.moveTo(centerTop.x, centerTop.y);
+      context.lineTo(arrowEnd.x, arrowEnd.y);
+      context.stroke();
+    }
   }
 
   context.fillStyle = "#2f2923";
   context.font = "700 17px Arial, sans-serif";
   context.textAlign = "center";
-  context.fillText("PARETE ALTA · Y=0 · FONDO", (topLeftX + topRightX) / 2, topY + 28);
-  context.fillText("PARETE BASSA · PRIMO PIANO / FOTOCAMERA", canvas.width / 2, 1070);
+  if (!locked) {
+    context.fillText("PARETE ALTA · Y=0 · FONDO", (topLeftX + topRightX) / 2, topY + 28);
+    context.fillText("PARETE BASSA · PRIMO PIANO / FOTOCAMERA", canvas.width / 2, 1070);
+  } else {
+    context.fillStyle = "#6c5d4d";
+    context.font = "600 16px Arial, sans-serif";
+    context.fillText(
+      "La parte inferiore corrisponde al lato basso della pianta · nessuna ricomposizione automatica",
+      canvas.width / 2,
+      1070,
+    );
+  }
 
   return canvas.toDataURL("image/png");
 }
@@ -3918,6 +4015,32 @@ function Render3DPanel({
     setSrc(null);
     setIsFinal(false);
     setFeedback(null);
+    if (renderMode === "faithful") {
+      try {
+        await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        setSrc(
+          createPerspectiveLayoutReference(
+            width,
+            length,
+            wallColor,
+            openings,
+            items,
+            customProducts,
+            "locked",
+          ),
+        );
+        setIsFinal(true);
+      } catch (faithfulError) {
+        setError(
+          faithfulError instanceof Error
+            ? faithfulError.message
+            : "Impossibile creare la vista 3D esatta",
+        );
+      } finally {
+        setLoadingMode(null);
+      }
+      return;
+    }
     const { prompt, images } = buildRenderPrompt(
       width,
       length,
@@ -3929,21 +4052,7 @@ function Render3DPanel({
       feedbackStats,
     );
     try {
-      const requestImages =
-        renderMode === "faithful"
-          ? [
-              createPerspectiveLayoutReference(
-                width,
-                length,
-                wallColor,
-                openings,
-                items,
-                customProducts,
-              ),
-              createLayoutReference(width, length, wallColor, openings, items, customProducts),
-              ...images,
-            ]
-          : images;
+      const requestImages = images;
       const res = await fetch(renderRoomEndpoint(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -4004,7 +4113,7 @@ function Render3DPanel({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="eyebrow">Visualizzazione AI</p>
-          <p className="mt-1 text-sm font-medium">Render fotorealistico</p>
+          <p className="mt-1 text-sm font-medium">Render e vista 3D esatta</p>
           <p className="text-xs text-muted-foreground">
             Un'anteprima realistica della stanza in pochi secondi.
           </p>
@@ -4031,18 +4140,18 @@ function Render3DPanel({
           >
             <Crosshair className="h-4 w-4" aria-hidden />
             {loadingMode === "faithful"
-              ? "Generazione fedele…"
+              ? "Calcolo vista esatta…"
               : src && lastMode === "faithful"
-                ? "Rigenera fedele"
-                : "Render fedele alla pianta"}
+                ? "Aggiorna vista esatta"
+                : "Vista 3D esatta"}
           </button>
         </div>
       </div>
 
       <p className="mt-3 rounded-lg border border-primary/15 bg-background/75 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
-        <span className="font-medium text-foreground">Render fedele alla pianta</span> costruisce
-        prima una scena 3D strutturale con volumi e aperture nelle coordinate esatte, poi la
-        trasforma in un render fotorealistico mantenendo la stessa inquadratura.
+        <span className="font-medium text-foreground">Vista 3D esatta</span> è costruita
+        direttamente dalle coordinate della pianta: non usa l’AI per riposizionare arredi, porte o
+        finestre. Per un’immagine più creativa e fotorealistica usa “Genera render 3D”.
       </p>
 
       {error && (
@@ -4058,7 +4167,7 @@ function Render3DPanel({
               src={src}
               alt={
                 lastMode === "faithful"
-                  ? "Render 3D fedele alla pianta della stanza"
+                  ? "Vista 3D esatta e deterministica della pianta della stanza"
                   : "Render 3D della stanza"
               }
               className={
@@ -4075,7 +4184,7 @@ function Render3DPanel({
                   : feedback === "dislike"
                     ? "Grazie! Miglioreremo la fedeltà ai prodotti al prossimo render."
                     : lastMode === "faithful"
-                      ? "Il render rispetta posizioni, porte e finestre della pianta?"
+                      ? "La vista corrisponde alle posizioni della pianta?"
                       : "Il render è fedele ai prodotti?"}
               </p>
               <div className="flex items-center gap-1.5">
