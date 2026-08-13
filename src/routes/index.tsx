@@ -3223,6 +3223,13 @@ function createLayoutReference(
     70,
     102,
   );
+  context.fillStyle = "#943520";
+  context.font = "700 18px Arial, sans-serif";
+  context.fillText(
+    "TUTTI GLI ARREDI A PAVIMENTO RESTANO SULLO STESSO PIANO — NON IMPILARE",
+    70,
+    132,
+  );
 
   context.fillStyle = wallColor;
   context.fillRect(roomLeft, roomTop, roomPixelWidth, roomPixelHeight);
@@ -3245,6 +3252,31 @@ function createLayoutReference(
   context.strokeStyle = "#796b5b";
   context.lineWidth = 16;
   context.strokeRect(roomLeft, roomTop, roomPixelWidth, roomPixelHeight);
+
+  context.fillStyle = "#695f55";
+  context.font = "700 15px Arial, sans-serif";
+  context.textAlign = "center";
+  context.textBaseline = "alphabetic";
+  context.fillText(
+    "PARETE ALTA · Y=0 · FONDO DEL RENDER",
+    roomLeft + roomPixelWidth / 2,
+    roomTop - 18,
+  );
+  context.fillText(
+    `PARETE BASSA · Y=${Math.round(roomLengthCm)} · PRIMO PIANO`,
+    roomLeft + roomPixelWidth / 2,
+    roomTop + roomPixelHeight + 30,
+  );
+  context.save();
+  context.translate(roomLeft - 26, roomTop + roomPixelHeight / 2);
+  context.rotate(-Math.PI / 2);
+  context.fillText("SINISTRA", 0, 0);
+  context.restore();
+  context.save();
+  context.translate(roomLeft + roomPixelWidth + 35, roomTop + roomPixelHeight / 2);
+  context.rotate(Math.PI / 2);
+  context.fillText("DESTRA", 0, 0);
+  context.restore();
 
   let doorNumber = 0;
   let windowNumber = 0;
@@ -3383,6 +3415,75 @@ function createLayoutReference(
   return canvas.toDataURL("image/png");
 }
 
+type RenderLayoutElement = {
+  marker: string;
+  productId: string;
+  product: Product;
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  width: number;
+  depth: number;
+  centerX: number;
+  centerY: number;
+  rotation: PlacedItem["rotation"];
+};
+
+function renderAxisZone(value: number, total: number, axis: "x" | "y") {
+  const ratio = total > 0 ? value / total : 0.5;
+  if (axis === "x") {
+    if (ratio < 1 / 3) return "fascia sinistra";
+    if (ratio > 2 / 3) return "fascia destra";
+    return "fascia centrale";
+  }
+  if (ratio < 1 / 3) return "fascia alta, sul fondo del render";
+  if (ratio > 2 / 3) return "fascia bassa, in primo piano";
+  return "fascia centrale in profondità";
+}
+
+function buildSpatialRelationships(elements: RenderLayoutElement[]) {
+  const relationships: string[] = [];
+
+  for (let firstIndex = 0; firstIndex < elements.length; firstIndex += 1) {
+    for (let secondIndex = firstIndex + 1; secondIndex < elements.length; secondIndex += 1) {
+      const first = elements[firstIndex];
+      const second = elements[secondIndex];
+      const clauses: string[] = [];
+
+      if (first.right <= second.left) {
+        clauses.push(
+          `${first.marker} è a sinistra di ${second.marker}, con ${Math.round(second.left - first.right)} cm di spazio libero orizzontale`,
+        );
+      } else if (second.right <= first.left) {
+        clauses.push(
+          `${first.marker} è a destra di ${second.marker}, con ${Math.round(first.left - second.right)} cm di spazio libero orizzontale`,
+        );
+      }
+
+      if (first.bottom <= second.top) {
+        clauses.push(
+          `${first.marker} è più vicino alla parete ALTA rispetto a ${second.marker}, con ${Math.round(second.top - first.bottom)} cm di spazio libero sul pavimento`,
+        );
+      } else if (second.bottom <= first.top) {
+        clauses.push(
+          `${first.marker} è più vicino alla parete BASSA rispetto a ${second.marker}, con ${Math.round(first.top - second.bottom)} cm di spazio libero sul pavimento`,
+        );
+      }
+
+      if (clauses.length > 0) {
+        relationships.push(`- ${clauses.join("; ")}. Le loro impronte NON si sovrappongono.`);
+      } else {
+        relationships.push(
+          `- Le proiezioni in pianta di ${first.marker} e ${second.marker} si intersecano. Mantieni questa relazione solo sul piano orizzontale e in modo fisicamente plausibile; se sono entrambi arredi a pavimento, le loro basi restano sullo stesso pavimento e nessuno dei due va collocato sopra l'altro.`,
+        );
+      }
+    }
+  }
+
+  return relationships.slice(0, 36);
+}
+
 function buildRenderPrompt(
   width: number,
   length: number,
@@ -3428,7 +3529,7 @@ function buildRenderPrompt(
 
   const roomWidthCm = width * 100;
   const roomLengthCm = length * 100;
-  const faithfulLines = items.flatMap((item, index) => {
+  const layoutElements = items.flatMap<RenderLayoutElement>((item, index) => {
     const product = findRenderProduct(item.productId, customProducts);
     if (!product) return [];
     const footprint = getFootprint(product);
@@ -3437,16 +3538,35 @@ function buildRenderPrompt(
     const occupiedDepth = rotated ? footprint.w : footprint.d;
     const centerX = item.x + occupiedWidth / 2;
     const centerY = item.y + occupiedDepth / 2;
-    const refs = productReferences.get(item.productId) ?? [];
     return [
-      `[ELEMENTO E${index + 1}] ${product.nome}${refs.length ? ` ${refs.join(" ")}` : ""}: impronta a terra ${occupiedWidth}×${occupiedDepth} cm; angolo superiore sinistro x=${Math.round(item.x)} cm, y=${Math.round(item.y)} cm; centro x=${Math.round(centerX)} cm (${Math.round((centerX / roomWidthCm) * 100)}% della larghezza), y=${Math.round(centerY)} cm (${Math.round((centerY / roomLengthCm) * 100)}% della lunghezza); rotazione ${item.rotation}°; distanze libere dalle pareti sinistra=${Math.round(item.x)} cm, destra=${Math.round(roomWidthCm - item.x - occupiedWidth)} cm, alta=${Math.round(item.y)} cm, bassa=${Math.round(roomLengthCm - item.y - occupiedDepth)} cm.`,
+      {
+        marker: `E${index + 1}`,
+        productId: item.productId,
+        product,
+        left: item.x,
+        top: item.y,
+        right: item.x + occupiedWidth,
+        bottom: item.y + occupiedDepth,
+        width: occupiedWidth,
+        depth: occupiedDepth,
+        centerX,
+        centerY,
+        rotation: item.rotation,
+      },
     ];
   });
+
+  const faithfulLines = layoutElements.map((element) => {
+    const refs = productReferences.get(element.productId) ?? [];
+    return `[ELEMENTO ${element.marker}] ${element.product.nome}${refs.length ? ` ${refs.join(" ")}` : ""}: impronta a terra ${element.width}×${element.depth} cm; angolo superiore sinistro x=${Math.round(element.left)} cm, y=${Math.round(element.top)} cm; centro x=${Math.round(element.centerX)} cm (${Math.round((element.centerX / roomWidthCm) * 100)}% della larghezza), y=${Math.round(element.centerY)} cm (${Math.round((element.centerY / roomLengthCm) * 100)}% della lunghezza); ${renderAxisZone(element.centerX, roomWidthCm, "x")}, ${renderAxisZone(element.centerY, roomLengthCm, "y")}; rotazione ${element.rotation}°; distanze libere dalle pareti sinistra=${Math.round(element.left)} cm, destra=${Math.round(roomWidthCm - element.right)} cm, alta=${Math.round(element.top)} cm, bassa=${Math.round(roomLengthCm - element.bottom)} cm.`;
+  });
+
+  const relationshipLines = buildSpatialRelationships(layoutElements);
 
   const piecesBlock =
     renderMode === "faithful"
       ? faithfulLines.length
-        ? `La PRIMA immagine allegata è la [REF 1 — PLANIMETRIA VINCOLANTE]. Ogni rettangolo E1, E2, ecc. corrisponde esattamente agli elementi elencati qui. Mantieni numero, posizione, ingombro relativo e orientamento di ogni elemento:\n${faithfulLines.join("\n")}`
+        ? `La PRIMA immagine allegata è la [REF 1 — PLANIMETRIA VINCOLANTE]. Ogni rettangolo E1, E2, ecc. corrisponde esattamente agli elementi elencati qui. Mantieni numero, posizione, ingombro relativo e orientamento di ogni elemento:\n${faithfulLines.join("\n")}\nRELAZIONI SPAZIALI VINCOLANTI FRA GLI ELEMENTI:\n${relationshipLines.join("\n")}`
         : "La [REF 1 — PLANIMETRIA VINCOLANTE] mostra una stanza vuota: non aggiungere arredi."
       : pieceLines.length
         ? `Riproduci fedelmente ogni prodotto usando le foto di riferimento numerate qui sotto (materiali, colore, forma, texture e proporzioni devono corrispondere all'originale):\n${pieceLines.join("\n")}`
@@ -3471,7 +3591,9 @@ function buildRenderPrompt(
       );
     } else if (feedback.lastFeedback === "like") {
       feedbackLines.push(
-        `Feedback cliente sul render precedente: POSITIVO. Mantieni lo stesso stile, atmosfera, palette e livello di realismo. Conserva la stessa fedeltà ai prodotti di riferimento variando leggermente inquadratura/luce per una nuova versione coerente.`,
+        renderMode === "faithful"
+          ? `Feedback cliente sul render precedente: POSITIVO. Mantieni stile, atmosfera, palette, geometria, altezza e orientamento della fotocamera. Non variare l'inquadratura e non ricomporre gli arredi.`
+          : `Feedback cliente sul render precedente: POSITIVO. Mantieni lo stesso stile, atmosfera, palette e livello di realismo. Conserva la stessa fedeltà ai prodotti di riferimento variando leggermente inquadratura/luce per una nuova versione coerente.`,
       );
     }
     if (feedback.dislikes >= 2) {
@@ -3483,7 +3605,7 @@ function buildRenderPrompt(
 
   const layoutConstraint =
     renderMode === "faithful"
-      ? `MODALITÀ FEDELE ALLA PIANTA — VINCOLO PRIORITARIO: trasforma la planimetria [REF 1] in una vista prospettica fotorealistica senza cambiare il layout. Non spostare, centrare, allineare, raggruppare, eliminare, duplicare o sostituire alcun ELEMENTO. Non cambiare la parete, la posizione o la dimensione relativa di porte e finestre. Mantieni gli stessi rapporti davanti/dietro, destra/sinistra e le stesse distanze relative. Scegli la posizione della fotocamera in modo da mostrare il layout, senza alterarlo per migliorare la composizione. La fedeltà geometrica ha priorità assoluta sullo stile.`
+      ? `MODALITÀ FEDELE ALLA PIANTA — VINCOLO PRIORITARIO: trasforma la planimetria [REF 1] in una vista 3D fotorealistica senza cambiare il layout. Usa una vista assonometrica/prospettica ALTA a tre quarti dall'alto, con il pavimento quasi interamente visibile: la PARETE ALTA (Y=0) deve restare sul fondo dell'immagine, la PARETE BASSA in primo piano, sinistra e destra non devono essere invertite. Tutti gli arredi a pavimento — inclusi letto, sedia, scrivania, tavoli, comodini, divani e armadi — devono poggiare con la base sullo STESSO PIANO DEL PAVIMENTO. È severamente vietato collocare una sedia, una scrivania o qualsiasi altro arredo sopra un letto, un tavolo, una mensola o un altro mobile. Non spostare, centrare, allineare, raggruppare, eliminare, duplicare o sostituire alcun ELEMENTO. Non cambiare la parete, la posizione o la dimensione relativa di porte e finestre. Mantieni gli stessi rapporti davanti/dietro, destra/sinistra e le stesse distanze relative. Se un arredo più vicino alla fotocamera ne nasconde parzialmente uno lontano, L'OCCLUSIONE È CORRETTA E OBBLIGATORIA: non sollevare, impilare o spostare l'oggetto lontano per renderlo visibile. Prima di produrre l'immagine, verifica mentalmente tutte le impronte sul pavimento e correggi qualsiasi sovrapposizione non presente nella planimetria. La fedeltà geometrica e la plausibilità fisica hanno priorità assoluta sullo stile e sulla visibilità di tutti i prodotti.`
       : "Puoi scegliere l'inquadratura più armoniosa mantenendo tutti i prodotti richiesti.";
 
   const prompt = [
@@ -3496,7 +3618,9 @@ function buildRenderPrompt(
     piecesBlock,
     `Le foto di riferimento allegate mostrano l'aspetto ESATTO di ogni prodotto: mantieni identici modello, colore, tessuto e finiture — non inventare varianti.`,
     ...feedbackLines,
-    `Rendering fotorealistico ad alta risoluzione, vista prospettica grandangolare a livello degli occhi, dettagli nitidi dei materiali, ombre morbide, profondità di campo cinematografica.`,
+    renderMode === "faithful"
+      ? `Rendering fotorealistico ad alta risoluzione, vista 3D alta a tre quarti dall'alto (circa 35–50° rispetto al pavimento), pavimento e distanze chiaramente leggibili, obiettivo naturale senza distorsioni, dettagli nitidi dei materiali e ombre morbide. Non usare una vista frontale a livello degli occhi.`
+      : `Rendering fotorealistico ad alta risoluzione, vista prospettica grandangolare a livello degli occhi, dettagli nitidi dei materiali, ombre morbide, profondità di campo cinematografica.`,
   ].join(" ");
 
   return { prompt, images };
